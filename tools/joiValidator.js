@@ -5,12 +5,14 @@ module.exports = Joi.object({
         .max(30)
         .required(),
     password: Joi.string()
+        .min(4)
+        .max(50)
         .required(),
-    lastName: Joi.string()
+    firstName: Joi.string()
         .min(3)
         .max(30)
         .required(),
-    firstName: Joi.string()
+    lastName: Joi.string()
         .min(3)
         .max(30)
         .required(),
@@ -19,7 +21,8 @@ module.exports = Joi.object({
         .required(),
     sex: Joi.string()
         .required()
-        .valid('female', 'male'),
+        .valid('female', 'male')
+        .label('gender'),
     role: Joi.string(),
 
 })
