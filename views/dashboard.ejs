@@ -21,23 +21,39 @@
         <p>USERNAME:
             <%= user.username %>
         </p>
-        <p>EMAIL:
-            <%= user.email %>
+        <p>FIRSTNAME:
+            <%= user.firstName %>
+        </p>
+        <p>LASTNAME:
+            <%= user.lastName %>
         </p>
         <p>PHONE NUMBER:
-            <%= user.phone %>
+            <%= user.mobile %>
         </p>
-
+        <p>GENDER:
+            <%= user.sex %>
+        </p>
+        <p>ROLE:
+            <%= user.role %>
+        </p>
     </div>
 
 
 
 
     <div class="edit crud">
+        <label>ID</label>
         <input type="text" id="id" value="<%= user._id %>" disabled>
-        <input type="text" id="username" value="<%= user.username %>" disabled>
-        <input type="email" id="email" value="<%= user.email %>">
-        <input type="number" id="number" value="<%= user.phone %>">
+        <label>username</label>
+        <input type="text" id="username" value="<%= user.username %>">
+        <label>firstName</label>
+        <input type="text" id="firstName" value="<%= user.firstName %>">
+        <label>lastName</label>
+        <input type="text" id="lastName" value="<%= user.lastName %>">
+        <label>mobile</label>
+        <input type="number" id="number" value="<%= user.mobile %>">
+        <label>gender</label>
+        <input type="text" id="gender" value="<%= user.sex %>">
         <button id="save"> SAVE</button>
         <button id="close">Close</button>
     </div>

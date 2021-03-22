@@ -10,24 +10,29 @@ $(function() {
         $('.edit').slideToggle(1200);
     });
     $('body').on('click', '#save', function() {
-        const id = $('#id').val();
         const username = $('#username').val();
-        const email = $('#email').val();
+        const password = $('#password').val();
+        const firstName = $('#firstName').val();
+        const lastName = $('#lastName').val();
+        const gender = $('#gender').val();
         const number = $('#number').val();
 
         const user_edit = {
-            _id: id,
             username: username,
-            email: email,
-            phone: number
+            password: password,
+            firstName: firstName,
+            mobile: number,
+            lastName: lastName,
+            sex: gender
         }
+        console.log(user_edit);
         $.ajax({
             type: "POST",
             url: "/api/dashboard/edit",
             data: user_edit,
             success: function(data) {
-
-                if (data.msg === 'sucsses') {
+                console.log(data);
+                if (data.msg === "success") {
 
                     $('.modal-body').html(''), $('.modal-body').html('your information edited sucssesfully you need to login again'), $("#triger").click();
 
@@ -39,6 +44,7 @@ $(function() {
                 }
             },
             error: function(err) {
+                console.log(err);
                 $('.modal-body').html(''), $('.modal-body').html(err.responseText), $("#triger").click();
 
 
@@ -92,8 +98,10 @@ $(function() {
         const pass = $('#delete_pass').val()
 
         const check_pass = {
+            username: $('#username').val(),
             password: pass
         }
+        console.log(check_pass);
         $.ajax({
             type: "POST",
             url: "/api/dashboard/delete",

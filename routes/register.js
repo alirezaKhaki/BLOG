@@ -15,7 +15,7 @@ router.post('/', async function(req, res, next) {
     if (req.body.role == 'admin') return res.status(400).send('bad request :(')
     try {
         console.log(req.body);
-        let validate = await joiSchema.validateAsync(req.body);
+        let validate = await joiSchema.register.validateAsync(req.body);
         const checkUser = await users.findOne({ username: req.body.username });
         if (checkUser) return res.status(400).send('user already exist!')
         if (validate) {

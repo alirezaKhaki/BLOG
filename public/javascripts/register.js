@@ -9,13 +9,13 @@ $(function() {
         const number = $('#number').val();
 
 
-        // if (username.length < 3 || username.length > 30) {
+        if (username.length < 3 || username.length > 30) {
 
-        //     return $('.modal-body').html(''), $('.modal-body').html('username length must be between 3-20'), $("#triger").click();
-        // }
-        // if (password.length < 3) {
-        //     return $('.modal-body').html(''), $('.modal-body').html('password length must be between 3-20'), $("#triger").click();
-        // }
+            return $('.modal-body').html(''), $('.modal-body').html('username length must be between 3-20'), $("#triger").click();
+        }
+        if (password.length < 3) {
+            return $('.modal-body').html(''), $('.modal-body').html('password length must be between 3-20'), $("#triger").click();
+        }
         const newUser = {
             username: username,
             password: password,

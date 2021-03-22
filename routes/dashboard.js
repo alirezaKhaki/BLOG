@@ -3,9 +3,11 @@ const users = require('../model/user');
 const router = express.Router();
 const generalTools = require('../tools/general-tools');
 const bcrypt = require('bcrypt');
+const JoiSchema = require('../tools/joiValidator')
 
 router.get('/', generalTools.loginChecker, (req, res) => {
     const user = req.session.user
+    console.log(user);
     res.render('dashboard', { user })
 });
 
@@ -15,12 +17,36 @@ router.get('/logout', (req, res) => {
 
 })
 
-router.post('/edit', generalTools.loginChecker, (req, res) => {
-    users.findOneAndUpdate({ _id: req.body._id }, req.body, { new: true }, (err, user) => {
-        if (err) return res.status(500).send({ "msg": "server error " })
-        res.clearCookie("user_sid");
-        if (user) return res.send({ "msg": "sucsses" });
-    })
+router.post('/edit', generalTools.loginChecker, async(req, res) => {
+
+    if (req.body.role == 'admin') return res.status(400).send('bad request :(')
+    try {
+        if (req.session.user.username === req.body.username) {
+            console.log(true);
+            let validate = await JoiSchema.dashboard.validateAsync(req.body);
+            if (validate) {
+                console.log(true);
+                const Updated = await users.findOneAndUpdate({ username: req.body.username }, req.body, { new: true }).exec();
+                res.clearCookie("user_sid");
+                return res.send({ "msg": "success" })
+            }
+        }
+        let validate = await JoiSchema.dashboard.validateAsync(req.body);
+        const checkUser = await users.findOne({ username: req.body.username });
+        if (checkUser) return res.status(400).send('user already exist!')
+        if (validate) {
+            saveUser = await users.findOneAndUpdate({ username: req.session.user.username }, req.body, { new: true })
+            res.clearCookie("user_sid");
+            return res.send({ "msg": "success" })
+        }
+
+    } catch (err) {
+        if (err.stack.includes('ValidationError')) return res.status(400).send(err.details[0].message);
+        if (err) return res.status(500).send(err);
+    }
+
+
+
 })
 
 router.post('/password', generalTools.loginChecker, (req, res) => {
@@ -49,23 +75,32 @@ router.post('/password', generalTools.loginChecker, (req, res) => {
 })
 
 
-router.post('/delete', generalTools.loginChecker, (req, res) => {
+router.post('/delete', generalTools.loginChecker, async(req, res) => {
 
     const pass = req.session.user.password
     const id = req.session.user._id
+    console.log(req.body.username);
+
+
     if (!req.body.password) return res.status(400).send('password input is empty')
-    bcrypt.compare(req.body.password, pass, function(err, respoonse) {
-        if (err) res.status(500).send('server error');
-        if (respoonse) {
-            users.remove({ _id: id }, function(err) {
-                if (err) return res.status(500).send("server error :(")
-                res.clearCookie("user_sid");
-                res.send("deleted")
+    users.findOne({ username: req.body.username }, (err, user) => {
+        if (err) return res.status(500).send('server error')
+        if (user) {
+            bcrypt.compare(req.body.password, user.password, (err, data) => {
+                if (err) return res.status(500).send('server error :(')
+                if (data) {
+                    users.remove({ _id: user._id }, (err) => {
+                        if (err) return res.status(500).send('server error :((')
+                        res.clearCookie("user_sid");
+
+                        res.send('deleted')
+                    })
+                } else if (!data) return res.status(400).send('wrong password')
+
             })
-        } else {
-            res.status(401).send("wrong password")
-        }
-    });
+        } else if (!user) return res.status(400).send('user not found')
+    })
+
 })
 
 module.exports = router;

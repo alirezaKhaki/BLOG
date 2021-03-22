@@ -58,8 +58,8 @@ const UserSchema = new Schema({
 
 UserSchema.methods.toJSON = function() {
     let user = this.toObject()
-    delete user._id;
     delete user.__v;
+    delete user.password
     return user;
 }
 
