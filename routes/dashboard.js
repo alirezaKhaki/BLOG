@@ -92,7 +92,6 @@ router.post('/delete', generalTools.loginChecker, async(req, res) => {
                     users.remove({ _id: user._id }, (err) => {
                         if (err) return res.status(500).send('server error :((')
                         res.clearCookie("user_sid");
-
                         res.send('deleted')
                     })
                 } else if (!data) return res.status(400).send('wrong password')
