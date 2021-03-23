@@ -7,29 +7,30 @@ body {
 
 input {
     text-align: center;
+    width: 95%;
     display: inline-block;
     background: transparent;
     font-weight: 500;
     font-style: normal;
     font-size: 0.8rem;
-    color: rgba(223, 190, 106, 0.7);
+    color: rgba(250, 248, 248, 0.7);
     border-radius: 0;
     padding: 10px 2px 10px;
     transition: all 0.7s ease-out;
-    background: linear-gradient(270deg, rgba(223, 190, 106, 0.8), rgba(146, 111, 52, 0.8), rgba(34, 34, 34, 0), rgba(34, 34, 34, 0));
+    background: linear-gradient(270deg, rgb(248, 248, 248), rgba(37, 37, 37, 0.8), rgba(122, 122, 122, 0.589));
     background-position: 1% 50%;
     background-size: 300% 300%;
     text-decoration: none;
     margin: 0.625rem;
     border: none;
-    border: 1px solid rgba(223, 190, 106, 0.3);
+    border-radius: 5px;
 }
 
 input:focus {
-    color: #fff;
-    border: 1px solid rgba(223, 190, 106, 0);
+    border: 1px solid rgb(0, 0, 0);
     color: white;
     background-position: 99% 50%;
+    border-radius: 15px;
 }
 
 button {

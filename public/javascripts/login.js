@@ -24,7 +24,7 @@ $(function() {
 
 
                 $('.modal-body').html(''), $('.modal-body').html(data), $("#triger").click();
-                setTimeout(function() { window.location.href = '/api/login' }, 3000);
+                setTimeout(function() { window.location.href = '/api/login' }, 2000);
 
 
 
@@ -32,7 +32,7 @@ $(function() {
             },
             error: function(err) {
                 $('.modal-body').html(''), $('.modal-body').html(err.responseText), $("#triger").click();
-
+                setTimeout(function() { window.location.href = '/api/login' }, 2000);
 
             }
 

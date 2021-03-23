@@ -1,18 +1,18 @@
 body {
     font: 14px "Lucida Grande", Helvetica, Arial, sans-serif;
-    background-color: #231f20;
+    background-color: #1f1f1f;
 }
 
 .info {
     text-align: center;
     font-style: normal;
-    color: rgba(223, 190, 106, 0.7);
+    color: rgba(255, 255, 255, 0.7);
 }
 
 .modal-body,
 .modal-content {
     text-align: center;
-    background-color: rgba(223, 190, 106, 0.7);
+    background-color: rgba(145, 145, 145, 0.7);
     border-radius: 10px;
 }
 
@@ -23,11 +23,11 @@ body {
 
 p,
 h3 {
-    color: rgba(223, 190, 106, 0.7);
+    color: rgba(255, 255, 255, 0.7);
 }
 
 a {
-    color: rgba(223, 190, 106, 0.7);
+    color: rgba(255, 255, 255, 0.7);
 }
 
 #welcome {
@@ -36,34 +36,42 @@ a {
     font-style: normal;
     font-size: 1.8rem;
     letter-spacing: 0.3em;
-    color: rgba(223, 190, 106, 0.7);
+    color: rgba(255, 255, 255, 0.7);
 }
 
 input {
     text-align: center;
+    width: 95%;
     display: inline-block;
     background: transparent;
     font-weight: 500;
     font-style: normal;
     font-size: 0.8rem;
-    color: rgba(223, 190, 106, 0.7);
     border-radius: 0;
     padding: 10px 2px 10px;
     transition: all 0.7s ease-out;
-    background: linear-gradient(270deg, rgba(223, 190, 106, 0.8), rgba(146, 111, 52, 0.8), rgba(34, 34, 34, 0), rgba(34, 34, 34, 0));
+    background: linear-gradient(270deg, rgb(248, 248, 248), rgba(37, 37, 37, 0.8), rgba(122, 122, 122, 0.589));
     background-position: 1% 50%;
     background-size: 300% 300%;
     text-decoration: none;
     margin: 0.625rem;
     border: none;
-    border: 1px solid rgba(223, 190, 106, 0.3);
+    border-radius: 5px;
 }
 
 input:focus {
-    color: #fff;
-    border: 1px solid rgba(223, 190, 106, 0);
-    color: white;
+    border: 1px solid rgb(0, 0, 0);
+    color: rgb(71, 71, 71);
     background-position: 99% 50%;
+    border-radius: 15px;
+}
+
+::placeholder {
+    /* Chrome, Firefox, Opera, Safari 10.1+ */
+    color: rgba(22, 22, 22, 0.815);
+    font-size: large;
+    opacity: 1;
+    /* Firefox */
 }
 
 .container {
@@ -73,7 +81,7 @@ input:focus {
     margin: 50px auto;
     height: 450px;
     width: 350px;
-    background: linear-gradient(to bottom, #352f30 0%, #151515 100%);
+    background: linear-gradient(to bottom, #6d6d6d 0%, #151515 100%);
     border-radius: 10px;
 }
 
@@ -85,23 +93,22 @@ button {
     font-style: normal;
     font-size: 0.625rem;
     letter-spacing: 0.3em;
-    color: rgba(223, 190, 106, 0.7);
+    color: rgba(255, 255, 255, 0.7);
     border-radius: 0;
     padding: 18px 80px 20px;
     transition: all 0.7s ease-out;
-    background: linear-gradient(270deg, rgba(223, 190, 106, 0.8), rgba(146, 111, 52, 0.8), rgba(34, 34, 34, 0), rgba(34, 34, 34, 0));
+    background: linear-gradient(270deg, rgba(117, 117, 117, 0.308), rgba(0, 0, 0, 0.8), rgba(0, 0, 0, 0.8));
     background-position: 1% 50%;
     background-size: 300% 300%;
     text-decoration: none;
     margin: 0.625rem;
     border: none;
-    border: 1px solid rgba(223, 190, 106, 0.3);
+    border-radius: 5px;
 }
 
 button:hover {
-    color: #fff;
-    border: 1px solid rgba(223, 190, 106, 0);
-    color: white;
+    border: 1px solid rgba(78, 78, 78, 0.3);
+    color: rgb(255, 255, 255);
     background-position: 99% 50%;
 }
 
@@ -110,7 +117,7 @@ label {
     font-style: normal;
     font-size: 0.625rem;
     letter-spacing: 0.3em;
-    color: rgba(223, 190, 106, 0.7);
+    color: rgba(255, 255, 255, 0.7);
     padding: 18px 80px 0px 12px;
 }
 
