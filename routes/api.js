@@ -7,10 +7,12 @@ const joiSchema = require('../tools/joiValidator')
 const users = require('../model/user')
 
 /* GET home page. */
-router.use('/', login);
 router.use('/login', login);
 router.use('/register', register);
 router.use('/dashboard', dashbord);
+router.get('/', (req, res) => {
+    res.render('home.ejs')
+});
 
 
 // CREAT ADMIN  

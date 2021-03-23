@@ -2,12 +2,23 @@ $(function() {
     $(".edit").hide();
     $(".password").hide();
     $(".delete").hide();
+    $('body').on('click', '.closebtn', function() {
+        $(".password").slideUp(1200);
+        $(".delete").slideUp(1200);
+        $(".edit").slideUp(1200);
+        $(".container").slideDown(1200);
+    })
+
     $('body').on('click', '#edit', function() {
+        $(".container").slideUp(1200);
+        $(".password").slideUp(1200);
+        $(".delete").slideUp(1200);
         $(".edit").slideToggle(1200);
 
     });
     $('body').on('click', '#close', function() {
         $('.edit').slideToggle(1200);
+        $(".container").slideToggle(1200);
     });
     $('body').on('click', '#save', function() {
         const username = $('#username').val();
@@ -52,6 +63,9 @@ $(function() {
         })
     });
     $('body').on('click', '#change', function() {
+        $(".container").slideUp(1200);
+        $(".edit").slideUp(1200);
+        $(".delete").slideUp(1200);
         $('.password').slideToggle(1200);
     });
     $('body').on('click', '#pass_save', function() {
@@ -90,8 +104,12 @@ $(function() {
     });
     $('body').on('click', '#pass_close', function() {
         $('.password').slideToggle(1200);
+        $(".container").slideToggle(1200);
     });
     $('body').on('click', '#delete', function() {
+        $(".container").slideUp(1200);
+        $(".password").slideUp(1200);
+        $(".edit").slideUp(1200);
         $('.delete').slideToggle(1200);
     });
     $('body').on('click', '#delete_account', function() {
@@ -127,5 +145,19 @@ $(function() {
     });
     $('body').on('click', '#delete_account_close', function() {
         $('.delete').slideToggle(1200);
+        $(".container").slideToggle(1200);
     });
 });
+/* Set the width of the side navigation to 250px and the left margin of the page content to 250px and add a black background color to body */
+function openNav() {
+    document.getElementById("mySidenav").style.width = "250px";
+    document.getElementById("main").style.marginLeft = "200px";
+    document.body.style.backgroundColor = "rgba(216, 213, 213,0.4)";
+}
+
+/* Set the width of the side navigation to 0 and the left margin of the page content to 0, and the background color of body to white */
+function closeNav() {
+    document.getElementById("mySidenav").style.width = "0";
+    document.getElementById("main").style.marginLeft = "0";
+    document.body.style.backgroundColor = "#d8d5d5";
+}

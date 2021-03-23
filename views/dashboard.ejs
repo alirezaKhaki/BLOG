@@ -12,77 +12,76 @@
 </head>
 
 <body>
-
-    <div class="user" style="text-align: center;">
-        <h3>YOUR DASHBOARD</h3>
-        <p>ID:
-            <%= user._id %>
-        </p>
-        <p>USERNAME:
-            <%= user.username %>
-        </p>
-        <p>FIRSTNAME:
-            <%= user.firstName %>
-        </p>
-        <p>LASTNAME:
-            <%= user.lastName %>
-        </p>
-        <p>PHONE NUMBER:
-            <%= user.mobile %>
-        </p>
-        <p>GENDER:
-            <%= user.sex %>
-        </p>
-        <p>ROLE:
-            <%= user.role %>
-        </p>
+    <div id="mySidenav" class="sidenav">
+        <a href="javascript:void(0)" class="closebtn" onclick="closeNav()">&times;</a>
+        <h4 style="text-align: center; color: rgb(117, 117, 117);">DASHBOARD</h4>
+        <div class="buttons" style="display: flex; flex-direction: column; ">
+            <button id="edit">Edit Profile</button>
+            <button id="change">Change Password</button>
+            <button id="delete"> DELETE Account</button>
+            <form style="align-self: center;" action="/api/dashboard/logout" method="GET">
+                <button type="submit">logout</button>
+            </form>
+        </div>
     </div>
 
 
 
 
-    <div class="edit crud">
-        <label>ID</label>
-        <input type="text" id="id" value="<%= user._id %>" disabled>
-        <label>username</label>
-        <input type="text" id="username" value="<%= user.username %>">
-        <label>firstName</label>
-        <input type="text" id="firstName" value="<%= user.firstName %>">
-        <label>lastName</label>
-        <input type="text" id="lastName" value="<%= user.lastName %>">
-        <label>mobile</label>
-        <input type="number" id="number" value="<%= user.mobile %>">
-        <label>gender</label>
-        <input type="text" id="gender" value="<%= user.sex %>">
-        <button id="save"> SAVE</button>
-        <button id="close">Close</button>
+
+
+
+    <!-- Use any element to open the sidenav -->
+    <span onclick="openNav()" style="margin:20px 50px 0 0 ;">☰ DASHBOARD</span>
+
+    <!-- Add all page content inside this div if you want the side nav to push page content to the right (not used if you only want the sidenav to sit on top of the page -->
+    <div id="main" style="display: flex; flex-direction: column; justify-content: center; width: 800px; height: 500px; align-items: center;">
+        <div class="container">
+            <p style="text-align: center; margin:5px 0px 5px 5px;">WELCOME TO YOUR PAGE CLICK ON DASHBOARD BUTTON FOR MORE INFORMATION</p>
+        </div>
+        <div class="edit" style=" overflow: scroll;">
+            <div class="edit_box">
+                <p>ID:</p>
+                <input type="text" id="id" value="<%= user._id %>" disabled>
+                <p>USERNAME:</p>
+                <input type="text" id="username" value="<%= user.username %>">
+
+                <p>FIRST NAME:</p>
+                <input type="text" id="firstName" value="<%= user.firstName %>">
+                <p>LAST NAME:</p>
+                <input type="text" id="lastName" value="<%= user.lastName %>">
+
+
+                <p>NUMBER:</p>
+                <input type="number" id="number" value="<%= user.mobile %>">
+                <p>GENDER:</p>
+                <input type="text" id="gender" value="<%= user.sex %>">
+            </div>
+            <div style="width: 100%; display: flex; justify-content: space-between;">
+                <button id="save" style="width: 45%;"> SAVE</button>
+                <button id="close" style="width: 45%;">Close</button>
+            </div>
+
+        </div>
+
+
+        <div class="password">
+            <input type="password" id="old_pass" placeholder="previous password">
+            <input type="password" id="new_pass" placeholder="new password">
+            <button id="pass_save">Save</button>
+            <button id="pass_close">Close</button>
+        </div>
+
+        <div class="delete">
+            <input type="password" id="delete_pass" placeholder="enter your password">
+            <button id="delete_account">Delete Acount</button>
+            <button id="delete_account_close">close</button>
+        </div>
+
+
     </div>
-
-
-    <div class="password crud">
-        <input type="password" id="old_pass" placeholder="previous password">
-        <input type="password" id="new_pass" placeholder="new password">
-        <button id="pass_save">Save</button>
-        <button id="pass_close">Close</button>
-    </div>
-
-    <div class="delete crud">
-        <input type="password" id="delete_pass" placeholder="enter your password">
-        <button id="delete_account">Delete Acount</button>
-        <button id="delete_account_close">close</button>
-    </div>
-
-
-    <div class="buttons">
-        <button id="edit">Edit Profile</button>
-        <button id="change">Change Password</button>
-        <button id="delete"> DELETE Account</button>
-        <form style="align-self: center;" action="/api/dashboard/logout" method="GET">
-            <button type="submit">logout</button>
-        </form>
-    </div>
-
     <%- include('./partials/modal.ejs') %>
+
 
         <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
         <script src="/javascripts/dashboard.js"></script>

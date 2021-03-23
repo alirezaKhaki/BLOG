@@ -45,7 +45,7 @@ app.use((req, res, next) => {
 
 
 app.use('/api', api)
-app.get('/', api);
+app.use('/', api);
 
 
 // catch 404 and forward to error handler
