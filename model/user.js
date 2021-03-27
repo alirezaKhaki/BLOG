@@ -52,6 +52,9 @@ const UserSchema = new Schema({
         type: String,
         enum: ['admin', 'blogger'],
         default: 'blogger'
+    },
+    avatar: {
+        type: String
     }
 });
 
