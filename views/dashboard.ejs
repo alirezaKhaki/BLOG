@@ -13,9 +13,10 @@
 </head>
 
 <body>
-    <div id="mySidenav" class="sidenav">
+    <div id="mySidenav" class="sidenav" style="display: flex; justify-content: center; flex-direction: column;">
         <a href="javascript:void(0)" class="closebtn" onclick="closeNav()">&times;</a>
-        <h4 style="text-align: center; color: rgb(117, 117, 117);">DASHBOARD</h4>
+        <img src="/images/avatars/<%= user.avatar%>" alt="avatar" id="userAvatar">
+
         <h6 style="text-align: center; color: rgb(117, 117, 117);">WELCOME
             <%= user.username %>
         </h6>
@@ -43,17 +44,13 @@
     <div id="main" style="display: flex; flex-direction: column; justify-content: center; width: 800px; height: 500px; align-items: center;">
         <div class="container">
             <p style="text-align: center; margin:5px 0px 5px 5px;">WELCOME TO YOUR PAGE CLICK ON DASHBOARD BUTTON FOR MORE INFORMATION</p>
-            <img src="/images/avatars/<%= user.avatar%>" alt="">
 
-            <form action="/api/dashboard/avatar" method="post" enctype="multipart/form-data">
-                <input type="file" name="avatar" />
-                <button type="submit" value="submit">Submit</button>
-            </form>
 
-            <button id="deleteImage">delete avatar</button>
+
 
         </div>
         <div class="my_profile">
+            <img src="/images/avatars/<%= user.avatar%>" alt="avatar" style="width: 80px; height: 80px; border-radius: 50px;">
             <table class="table table-borderless ">
                 <thead>
                     <tr>

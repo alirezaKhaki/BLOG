@@ -170,6 +170,23 @@ td {
     text-align: center !important;
 }
 
+#userAvatar {
+    width: 60px;
+    height: 60px;
+    border-radius: 50px;
+    margin: 5px 0 5px 0;
+    align-self: center;
+}
+
+img:hover {
+    cursor: pointer;
+}
+
+#avatarInput {
+    width: 40px;
+    height: 40px;
+}
+
 
 /* hide number input arrow */
 

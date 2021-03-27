@@ -105,89 +105,48 @@ router.post('/delete', generalTools.loginChecker, async(req, res) => {
 
 })
 
-//**UPLOAD IMAGES**/
+//**UPLOAD AVATAR**/
 router.post('/avatar', generalTools.loginChecker, (req, res) => {
-        console.log('hi');
-        const upload = generalTools.uploadAvatar.single('avatar');
+    console.log('hi');
+    const upload = generalTools.uploadAvatar.single('avatar');
 
-        upload(req, res, (err) => {
-            if (err) {
-                res.status(500).send("server error")
+    upload(req, res, (err) => {
+        if (err) {
+            res.status(500).send("server error")
+        } else {
+            if (req.file == undefined) {
+
+                res.status(400).send('No File Selected!')
+
             } else {
-                if (req.file == undefined) {
 
-                    res.status(400).send('No File Selected!')
+                users.findByIdAndUpdate(req.session.user._id, { avatar: req.file.filename }, { new: true }, (err, user) => {
+                    if (err) return res.status(500).json({ msg: 'Server Error!' })
+                    if (user) {
+                        req.session.user = user
+                        res.send('/api/dashboard')
+                    }
+                });
 
-                } else {
-
-                    users.findByIdAndUpdate(req.session.user._id, { avatar: req.file.filename }, { new: true }, (err, user) => {
-                        if (err) {
-                            res.status(500).json({ msg: 'Server Error!' })
-                        } else {
-                            if (req.session.user.avatar) {
-                                fs.unlink(path.join(__dirname, '../public/images/avatars', req.session.user.avatar), err => {
-                                    if (err) {
-                                        console.log(err);
-                                        res.status(500).json({ msg: 'Server Error!' })
-                                    } else {
-                                        req.session.user = user;
-
-                                        res.redirect('/api/dashboard');
-                                    }
-                                })
-
-                            } else {
-                                req.session.user = user;
-
-                                res.redirect('/api/dashboard');
-                            }
-                        }
-                    });
-
-                }
             }
+        }
 
 
 
-        })
     })
-    //DELETE AVATAR 
+})
+
+
+
+//DELETE AVATAR 
 router.delete('/deleteAvatar', generalTools.loginChecker, (req, res) => {
     console.log(req.session.user.avatar);
-    fs.unlink(path.join(__dirname, '../public/images/avatars', req.session.user.avatar), err => {
-        if (err) return res.status(500).send('Server Error!')
-        return res.send('Avatar deleted')
+    if (req.session.user.avatar == 'default.png') return res.status(400).send("You Don't Have An Avatar")
+    users.findOneAndUpdate({ _id: req.session.user._id }, { avatar: 'default.png' }, { new: true }, (err, data) => {
+        if (err) return res.status(500).send('server error')
+        req.session.user = data
+        if (data) return res.send('Avatar deleted')
     })
 })
 
 module.exports = router;
-
-// if (err instanceof multer.MulterError) {
-//     res.status(500).send('Server Error!')
-// } else if (err) {
-//     res.status(404).send(err.message)
-// } else {
-//     user.findByIdAndUpdate(req.session.user._id, { avatar: req.file.filename }, { new: true }, (err, user) => {
-//         if (err) {
-//             res.status(500).json({ msg: 'Server Error!' })
-//         } else {
-//             if (req.session.user.avatar) {
-//                 fs.unlink(path.join(__dirname, '../public/images/avatars', req.session.user.avatar), err => {
-//                     if (err) {
-//                         res.status(500).json({ msg: 'Server Error!' })
-//                     } else {
-//                         req.session.user = user;
-
-//                         res.redirect('/api/dashboard');
-//                     }
-//                 })
-
-//             } else {
-//                 req.session.user = user;
-
-//                 res.redirect('/api/dashboard');
-//             }
-//         }
-//     });
-// }
-// })

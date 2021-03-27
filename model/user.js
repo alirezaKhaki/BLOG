@@ -54,7 +54,8 @@ const UserSchema = new Schema({
         default: 'blogger'
     },
     avatar: {
-        type: String
+        type: String,
+        default: "default.png"
     }
 });
 

@@ -117,6 +117,10 @@ $(function() {
         $('.password').slideToggle(1200);
         $(".container").slideToggle(1200);
     });
+    $('body').on('click', '#delete_account_close', function() {
+        $('.delete').slideToggle(1200);
+        $(".container").slideToggle(1200);
+    });
     $('body').on('click', '#delete', function() {
         $(".container").slideUp(1200);
         $(".password").slideUp(1200);
@@ -160,7 +164,8 @@ $(function() {
             url: '/api/dashboard/deleteAvatar',
             type: 'DELETE',
             success: function(data) {
-                $('.modal-body').html(''), $('.modal-body').html(data), $("#triger").click();
+
+                $('.modal-body').html(''), $('.modal-body').html(data)
 
                 setTimeout(function() {
                     window.location.href = '/api/register'
@@ -168,11 +173,21 @@ $(function() {
                 }, 2000);
             },
             error: function(err) {
-                $('.modal-body').html(''), $('.modal-body').html(err.responseText), $("#triger").click();
-
+                $('.modal-body').html(''), $('.modal-body').html(err.responseText)
+                setTimeout(function() {
+                    $("#triger").click();
+                }, 2000);
             }
         });
     });
+    $('body').on('click', '#userAvatar', function() {
+        $('.modal-body').html(''), $('.modal-body').html(` 
+        <form action="/api/dashboard/avatar" method="post" enctype="multipart/form-data">
+        <input type="file" name="avatar" id='avatarInput'>
+        <button type="submit" value="submit">Submit</button>
+        </form>    <button id="deleteImage">Delete Avatar</button>`), $("#triger").click();
+    })
+
 
 });
 /* Set the width of the side navigation to 250px and the left margin of the page content to 250px and add a black background color to body */
