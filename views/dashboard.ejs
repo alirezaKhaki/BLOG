@@ -6,6 +6,7 @@
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.0-beta2/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-BmbxuPwQa2lc/FVzBcNJ7UAyJxM6wuqIj61tLrc4wSX0szH/Ev+nYRRuWlolflfl" crossorigin="anonymous">
+    <script src="https://kit.fontawesome.com/1fb4402ed5.js" crossorigin="anonymous"></script>
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.0-beta2/dist/js/bootstrap.bundle.min.js" integrity="sha384-b5kHyXgcpbZJO/tY9Ul7kGkf1S0CWuKcCD38l8YkeH8z8QjE0GmW1gYU5S9FOnJ0" crossorigin="anonymous"></script>
     <link rel="stylesheet" href="/stylesheets/dashboard.css">
     <title>Dashboard</title>
@@ -15,7 +16,11 @@
     <div id="mySidenav" class="sidenav">
         <a href="javascript:void(0)" class="closebtn" onclick="closeNav()">&times;</a>
         <h4 style="text-align: center; color: rgb(117, 117, 117);">DASHBOARD</h4>
+        <h6 style="text-align: center; color: rgb(117, 117, 117);">WELCOME
+            <%= user.username %>
+        </h6>
         <div class="buttons" style="display: flex; flex-direction: column; ">
+            <button id="my_profile">About Me</button>
             <button id="edit">Edit Profile</button>
             <button id="change">Change Password</button>
             <button id="delete"> DELETE Account</button>
@@ -39,6 +44,56 @@
         <div class="container">
             <p style="text-align: center; margin:5px 0px 5px 5px;">WELCOME TO YOUR PAGE CLICK ON DASHBOARD BUTTON FOR MORE INFORMATION</p>
         </div>
+        <div class="my_profile">
+            <table class="table table-borderless ">
+                <thead>
+                    <tr>
+                        <th scope="col">ID</th>
+                        <th scope="col">USERNAME</th>
+                        <th scope="col">FIRST NAME</th>
+                        <th scope="col">LAST NAME</th>
+                        <th scope="col">GENDER</th>
+                        <th scope="col">PHONE NUMBER</th>
+                        <th scope="col">ROLE</th>
+
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+
+                        <td>
+                            <%= user._id %>
+                        </td>
+                        <td>
+                            <%= user.username %>
+                        </td>
+                        <td>
+                            <%= user.firstName %>
+                        </td>
+                        <td>
+                            <%= user.lastName%>
+                        </td>
+                        <td>
+                            <% if(user.sex==="male"){ %>
+
+                                <i class="fas fa-male"></i>
+
+
+                                <%} else{ %>
+                                    <i class="fas fa-female"></i>
+                                    <% } %>
+                        </td>
+                        <td>
+                            <%= user.mobile %>
+                        </td>
+                        <td>
+                            <%= user.role %>
+                        </td>
+                    </tr>
+                </tbody>
+            </table>
+
+        </div>
         <div class="edit" style=" overflow: scroll;">
             <div class="edit_box">
                 <p>ID:</p>
@@ -55,7 +110,13 @@
                 <p>NUMBER:</p>
                 <input type="number" id="number" value="<%= user.mobile %>">
                 <p>GENDER:</p>
-                <input type="text" id="gender" value="<%= user.sex %>">
+                <div style="display: flex; justify-content: center;">
+                    <input style="margin: 0; padding: 0; width: 15px;" type="radio" id="gender" name="gender" value="male">
+                    <label style="margin:0 7px 0 7px;"><i class="fas fa-male"></i></label>
+                    <input style="margin: 0; padding: 0; width: 15px;" type="radio" id="gender" name="gender" value="female">
+                    <label style="margin:0 7px 0 7px;"><i class="fas fa-female"></i></label>
+
+                </div>
             </div>
             <div style="width: 100%; display: flex; justify-content: space-between;">
                 <button id="save" style="width: 45%;"> SAVE</button>

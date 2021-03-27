@@ -2,18 +2,28 @@ $(function() {
     $(".edit").hide();
     $(".password").hide();
     $(".delete").hide();
-    $('body').on('click', '.closebtn', function() {
-        $(".password").slideUp(1200);
-        $(".delete").slideUp(1200);
-        $(".edit").slideUp(1200);
-        $(".container").slideDown(1200);
-    })
+    $(".my_profile").hide();
+    $('body').on('click', '#my_profile', function() {
+            $(".password").slideUp(1200);
+            $(".delete").slideUp(1200);
+            $(".edit").slideUp(1200);
+            $(".container").slideUp(1200);
+            $(".my_profile").slideToggle(1200);
+        })
+        // $('body').on('click', '.closebtn', function() {
+        //     $(".password").slideUp(1200);
+        //     $(".delete").slideUp(1200);
+        //     $(".my_profile").slideUp(1200);
+        //     $(".edit").slideUp(1200);
+        //     $(".container").slideDown(1200);
+        // })
 
     $('body').on('click', '#edit', function() {
         $(".container").slideUp(1200);
         $(".password").slideUp(1200);
         $(".delete").slideUp(1200);
-        $(".edit").slideToggle(1200);
+        $(".my_profile").slideUp(1200);
+        $(".edit").slideDown(1200);
 
     });
     $('body').on('click', '#close', function() {
@@ -25,7 +35,7 @@ $(function() {
         const password = $('#password').val();
         const firstName = $('#firstName').val();
         const lastName = $('#lastName').val();
-        const gender = $('#gender').val();
+        const gender = $('input[name="gender"]:checked').val();
         const number = $('#number').val();
 
         const user_edit = {
@@ -66,6 +76,7 @@ $(function() {
         $(".container").slideUp(1200);
         $(".edit").slideUp(1200);
         $(".delete").slideUp(1200);
+        $(".my_profile").slideUp(1200);
         $('.password').slideToggle(1200);
     });
     $('body').on('click', '#pass_save', function() {
@@ -110,7 +121,8 @@ $(function() {
         $(".container").slideUp(1200);
         $(".password").slideUp(1200);
         $(".edit").slideUp(1200);
-        $('.delete').slideToggle(1200);
+        $(".my_profile").slideUp(1200);
+        $('.delete').slideDown(1200);
     });
     $('body').on('click', '#delete_account', function() {
         const pass = $('#delete_pass').val()

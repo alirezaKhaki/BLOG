@@ -50,7 +50,7 @@ input {
     border-radius: 0;
     padding: 10px 2px 10px;
     transition: all 0.7s ease-out;
-    background: linear-gradient(270deg, rgb(248, 248, 248), rgba(37, 37, 37, 0.8), rgba(122, 122, 122, 0.589));
+    background: linear-gradient(270deg, rgba(214, 214, 214, 0.589), rgba(80, 80, 80, 0.8), rgba(255, 255, 255, 0.589));
     background-position: 1% 50%;
     background-size: 300% 300%;
     text-decoration: none;
@@ -81,7 +81,7 @@ input:focus {
     margin: 50px auto;
     height: 450px;
     width: 350px;
-    background: linear-gradient(to bottom, #6d6d6d 0%, #151515 100%);
+    background: linear-gradient(to bottom, #6d6d6d91 0%, #15151577 100%);
     border-radius: 10px;
 }
 
