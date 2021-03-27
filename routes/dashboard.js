@@ -4,6 +4,9 @@ const router = express.Router();
 const generalTools = require('../tools/general-tools');
 const bcrypt = require('bcrypt');
 const JoiSchema = require('../tools/joiValidator')
+const fs = require('fs')
+const path = require('path')
+const multer = require('multer');
 
 router.get('/', generalTools.loginChecker, (req, res) => {
     const user = req.session.user
@@ -102,4 +105,89 @@ router.post('/delete', generalTools.loginChecker, async(req, res) => {
 
 })
 
+//**UPLOAD IMAGES**/
+router.post('/avatar', generalTools.loginChecker, (req, res) => {
+        console.log('hi');
+        const upload = generalTools.uploadAvatar.single('avatar');
+
+        upload(req, res, (err) => {
+            if (err) {
+                res.status(500).send("server error")
+            } else {
+                if (req.file == undefined) {
+
+                    res.status(400).send('No File Selected!')
+
+                } else {
+
+                    users.findByIdAndUpdate(req.session.user._id, { avatar: req.file.filename }, { new: true }, (err, user) => {
+                        if (err) {
+                            res.status(500).json({ msg: 'Server Error!' })
+                        } else {
+                            if (req.session.user.avatar) {
+                                fs.unlink(path.join(__dirname, '../public/images/avatars', req.session.user.avatar), err => {
+                                    if (err) {
+                                        console.log(err);
+                                        res.status(500).json({ msg: 'Server Error!' })
+                                    } else {
+                                        req.session.user = user;
+
+                                        res.redirect('/api/dashboard');
+                                    }
+                                })
+
+                            } else {
+                                req.session.user = user;
+
+                                res.redirect('/api/dashboard');
+                            }
+                        }
+                    });
+
+                }
+            }
+
+
+
+        })
+    })
+    //DELETE AVATAR 
+router.delete('/deleteAvatar', generalTools.loginChecker, (req, res) => {
+    console.log(req.session.user.avatar);
+    fs.unlink(path.join(__dirname, '../public/images/avatars', req.session.user.avatar), err => {
+        if (err) return res.status(500).send('Server Error!')
+        return res.send('Avatar deleted')
+    })
+})
+
 module.exports = router;
+
+// if (err instanceof multer.MulterError) {
+//     res.status(500).send('Server Error!')
+// } else if (err) {
+//     res.status(404).send(err.message)
+// } else {
+//     user.findByIdAndUpdate(req.session.user._id, { avatar: req.file.filename }, { new: true }, (err, user) => {
+//         if (err) {
+//             res.status(500).json({ msg: 'Server Error!' })
+//         } else {
+//             if (req.session.user.avatar) {
+//                 fs.unlink(path.join(__dirname, '../public/images/avatars', req.session.user.avatar), err => {
+//                     if (err) {
+//                         res.status(500).json({ msg: 'Server Error!' })
+//                     } else {
+//                         req.session.user = user;
+
+//                         res.redirect('/api/dashboard');
+//                     }
+//                 })
+
+//             } else {
+//                 req.session.user = user;
+
+//                 res.redirect('/api/dashboard');
+//             }
+//         }
+//     });
+// }
+// })

@@ -43,6 +43,15 @@
     <div id="main" style="display: flex; flex-direction: column; justify-content: center; width: 800px; height: 500px; align-items: center;">
         <div class="container">
             <p style="text-align: center; margin:5px 0px 5px 5px;">WELCOME TO YOUR PAGE CLICK ON DASHBOARD BUTTON FOR MORE INFORMATION</p>
+            <img src="/images/avatars/<%= user.avatar%>" alt="">
+
+            <form action="/api/dashboard/avatar" method="post" enctype="multipart/form-data">
+                <input type="file" name="avatar" />
+                <button type="submit" value="submit">Submit</button>
+            </form>
+
+            <button id="deleteImage">delete avatar</button>
+
         </div>
         <div class="my_profile">
             <table class="table table-borderless ">
