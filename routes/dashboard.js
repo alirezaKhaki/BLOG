@@ -140,7 +140,6 @@ router.post('/avatar', generalTools.loginChecker, (req, res) => {
 
 //DELETE AVATAR 
 router.delete('/deleteAvatar', generalTools.loginChecker, (req, res) => {
-    console.log(req.session.user.avatar);
     if (req.session.user.avatar == 'default.png') return res.status(400).send("You Don't Have An Avatar")
     users.findOneAndUpdate({ _id: req.session.user._id }, { avatar: 'default.png' }, { new: true }, (err, data) => {
         if (err) return res.status(500).send('server error')

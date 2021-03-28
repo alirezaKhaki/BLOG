@@ -4,19 +4,16 @@ $(function() {
     $(".delete").hide();
     $(".my_profile").hide();
     $('body').on('click', '#my_profile', function() {
-            $(".password").slideUp(1200);
-            $(".delete").slideUp(1200);
-            $(".edit").slideUp(1200);
-            $(".container").slideUp(1200);
-            $(".my_profile").slideToggle(1200);
-        })
-        // $('body').on('click', '.closebtn', function() {
-        //     $(".password").slideUp(1200);
-        //     $(".delete").slideUp(1200);
-        //     $(".my_profile").slideUp(1200);
-        //     $(".edit").slideUp(1200);
-        //     $(".container").slideDown(1200);
-        // })
+        $(".password").slideUp(1200);
+        $(".delete").slideUp(1200);
+        $(".edit").slideUp(1200);
+        $(".container").slideUp(1200);
+        $(".my_profile").slideDown(1200);
+    })
+    $('body').on('click', '#closeAbout', function() {
+        $(".my_profile").slideUp(1200);
+        $(".container").slideDown(1200);
+    })
 
     $('body').on('click', '#edit', function() {
         $(".container").slideUp(1200);
@@ -182,10 +179,11 @@ $(function() {
     });
     $('body').on('click', '#userAvatar', function() {
         $('.modal-body').html(''), $('.modal-body').html(` 
-        <form action="/api/dashboard/avatar" method="post" enctype="multipart/form-data">
-        <input type="file" name="avatar" id='avatarInput'>
+        <form id='avatarForm' action="/api/dashboard/avatar" method="post" enctype="multipart/form-data">
+        <input type="file" class='form-control form-control-sm' name="avatar" id='avatarInput'>
         <button type="submit" value="submit">Submit</button>
-        </form>    <button id="deleteImage">Delete Avatar</button>`), $("#triger").click();
+        </form>
+        <button id="deleteImage">Delete Avatar</button>`), $("#triger").click();
     })
 
 
