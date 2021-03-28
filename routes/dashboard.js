@@ -1,5 +1,6 @@
 const express = require('express');
 const users = require('../model/user');
+const aritcels = require('../model/article')
 const router = express.Router();
 const generalTools = require('../tools/general-tools');
 const bcrypt = require('bcrypt');
@@ -7,6 +8,7 @@ const JoiSchema = require('../tools/joiValidator')
 const fs = require('fs')
 const path = require('path')
 const multer = require('multer');
+const { number } = require('joi');
 
 router.get('/', generalTools.loginChecker, (req, res) => {
     const user = req.session.user
@@ -146,6 +148,69 @@ router.delete('/deleteAvatar', generalTools.loginChecker, (req, res) => {
         req.session.user = data
         if (data) return res.send('Avatar deleted')
     })
+})
+
+// ADD NEW ARTICLE
+router.post('/newArticle', generalTools.loginChecker, async(req, res) => {
+    // if (!req.body.title || !req.body.text) return res.status(400).send('article must have title and text');
+    // if (!req.body.owner) return res.status(400).send('article must have an owner');
+    const upload = generalTools.uploadArticle.single('avatar');
+
+    upload(req, res, async(err) => {
+        console.log(req.body);
+        if (err) {
+            res.status(500).send("server error")
+        } else {
+            if (req.file == undefined) {
+                try {
+                    let newArticle = new aritcels({
+                        owner: req.session.user._id,
+                        text: req.body.text,
+                        title: req.body.title,
+                        avatar: 'ArticleDefault.jpg'
+                    })
+                    newArticle = await newArticle.save()
+                    if (newArticle) return res.send("New Article Created")
+                } catch (err) {
+                    return res.status(500).send(err)
+                }
+
+
+            } else {
+
+                try {
+                    let newArticle = new aritcels({
+                        owner: req.session.user._id,
+                        text: req.body.text,
+                        title: req.body.title,
+                        avatar: req.file.filename
+                    })
+                    newArticle = await newArticle.save()
+                    if (newArticle) return res.send("New Article Created")
+                } catch (err) {
+                    return res.status(500).send(err)
+                }
+
+            }
+        }
+
+
+
+    })
+
+})
+
+// ARTICLES OF ONE BLOGGER
+router.get('/myArticles/:id', generalTools.loginChecker, async(req, res) => {
+    console.log(req.params.id);
+    try {
+        let articles = await aritcels.find({ owner: req.params.id })
+        res.send({ articles });
+
+    } catch (err) {
+        console.log(err);
+    }
+
 })
 
 module.exports = router;

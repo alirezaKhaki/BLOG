@@ -28,6 +28,9 @@ const ArticleSchema = new Schema({
         type: Schema.Types.ObjectId,
         required: true,
         ref: 'User'
+    },
+    avatar: {
+        type: String,
     }
 });
 

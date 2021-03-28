@@ -1,5 +1,6 @@
 $(function() {
     $(".edit").hide();
+    $(".newArticle").hide();
     $(".password").hide();
     $(".delete").hide();
     $(".my_profile").hide();
@@ -117,6 +118,8 @@ $(function() {
     $('body').on('click', '#delete_account_close', function() {
         $('.delete').slideToggle(1200);
         $(".container").slideToggle(1200);
+        $(".container").css({ "overflow-y": 'scroll' });
+
     });
     $('body').on('click', '#delete', function() {
         $(".container").slideUp(1200);
@@ -178,14 +181,82 @@ $(function() {
         });
     });
     $('body').on('click', '#userAvatar', function() {
-        $('.modal-body').html(''), $('.modal-body').html(` 
+            $('.modal-body').html(''), $('.modal-body').html(` 
         <form id='avatarForm' action="/api/dashboard/avatar" method="post" enctype="multipart/form-data">
         <input type="file" class='form-control form-control-sm' name="avatar" id='avatarInput'>
         <button type="submit" value="submit">Submit</button>
         </form>
         <button id="deleteImage">Delete Avatar</button>`), $("#triger").click();
+        })
+        // *****ARTICLES*****
+
+    //get articles
+    $.ajax({
+        url: `/api/dashboard/myArticles/${$('#id').val()}`,
+        type: 'get',
+        success: function(data) {
+            for (let i = 0; i < data.articles.length; i++) {
+                $('.container').append(`
+                
+                <div class="pages mt-3 col-12 col-md-6 col-lg-4" style="width:100%;">
+                <div class="card">
+                    <div class="card-body" style="border-radius: 10px;">
+                        <h5 class="card-title">TITLE:${data.articles[i].title} </h5>
+                      <div> <p class="card-text">TEXT:${data.articles[i].text}</p> <a href="/articles/${data.articles[i]._id}">more...</a></div> 
+                        <img src="/images/avatars/${data.articles[i].avatar}" alt="avatar" class="photo">
+
+                    </div>
+                </div>
+    
+            </div>`)
+
+            }
+
+
+
+        },
+        error: function(err) {
+            $('.modal-body').html(''), $('.modal-body').html(err.responseText)
+            setTimeout(function() {
+                $("#triger").click();
+            }, 2000);
+        }
+    });
+
+    //creat article
+    $('body').on('click', '#addArticle', function() {
+        $(".container").slideUp(1200);
+        $(".password").slideUp(1200);
+        $(".edit").slideUp(1200);
+        $(".my_profile").slideUp(1200);
+        $('.delete').slideUp(1200);
+        $('.newArticle').slideDown(1200);
+
     })
 
+    $("form[name='avatarForm']").on("submit", function(ev) {
+        ev.preventDefault(); // Prevent browser default submit.
+
+        var formData = new FormData(this);
+        console.log(formData);
+
+
+        $.ajax({
+            url: "/api/dashboard/newArticle",
+            type: "POST",
+            data: formData,
+            success: function(msg) {
+                alert(msg)
+            },
+            error: function(err) {
+                alert(err.responseText)
+            },
+            cache: false,
+            contentType: false,
+            processData: false
+        });
+
+    });
 
 });
 /* Set the width of the side navigation to 250px and the left margin of the page content to 250px and add a black background color to body */

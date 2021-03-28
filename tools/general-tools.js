@@ -30,12 +30,31 @@ const avatarStorage = multer.diskStorage({
 });
 
 
+const articleStorage = multer.diskStorage({
+    destination: function(req, file, cb) {
+        cb(null, path.join(__dirname, '../public/images/avatars'))
+    },
+    filename: function(req, file, cb) {
+        cb(null, `${req.session.user._id}-${Date.now()}-${file.originalname}`)
+    }
+});
+
+generalTools.uploadArticle = multer({
+    storage: articleStorage,
+    fileFilter: function(req, file, cb) {
+        checkFile(file, cb)
+    }
+})
+
 generalTools.uploadAvatar = multer({
     storage: avatarStorage,
     fileFilter: function(req, file, cb) {
         checkFile(file, cb)
     }
 })
+
+
+
 
 
 //CHECK TYPE OF UPLOADING FILE

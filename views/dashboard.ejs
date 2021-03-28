@@ -6,7 +6,6 @@
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.0-beta2/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-BmbxuPwQa2lc/FVzBcNJ7UAyJxM6wuqIj61tLrc4wSX0szH/Ev+nYRRuWlolflfl" crossorigin="anonymous">
-    <script src="https://kit.fontawesome.com/1fb4402ed5.js" crossorigin="anonymous"></script>
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.0-beta2/dist/js/bootstrap.bundle.min.js" integrity="sha384-b5kHyXgcpbZJO/tY9Ul7kGkf1S0CWuKcCD38l8YkeH8z8QjE0GmW1gYU5S9FOnJ0" crossorigin="anonymous"></script>
     <link rel="stylesheet" href="/stylesheets/dashboard.css">
     <title>Dashboard</title>
@@ -22,6 +21,7 @@
         </h6>
         <div class="buttons" style="display: flex; flex-direction: column; ">
             <button id="my_profile">About Me</button>
+            <button id="addArticle">Add Article</button>
             <button id="edit">Edit Profile</button>
             <button id="change">Change Password</button>
             <button id="delete"> DELETE Account</button>
@@ -41,13 +41,9 @@
     <span onclick="openNav()" style="margin:20px 50px 0 0 ;">☰ DASHBOARD</span>
 
     <!-- Add all page content inside this div if you want the side nav to push page content to the right (not used if you only want the sidenav to sit on top of the page -->
-    <div id="main" style="display: flex; flex-direction: column; justify-content: center; width: 800px; height: 500px; align-items: center;">
-        <div class="container">
-            <p style="text-align: center; margin:5px 0px 5px 5px;">WELCOME TO YOUR PAGE CLICK ON DASHBOARD BUTTON FOR MORE INFORMATION</p>
-
-
-
-
+    <div id="main" style=" display: flex; flex-direction: column; justify-content: center; width: 80%; height: 500px; align-items: center; align-self: flex-end;overflow-y:scroll;">
+        <div class="container column mt-5" style="width: 100%;height: 100%; margin-top: 25px;  ">
+            <h1>YOUR ARTICLES</h1>
         </div>
         <div class="my_profile ">
             <img src="/images/avatars/<%= user.avatar%>" alt="avatar" style="width: 80px; height: 80px; border-radius: 50px;">
@@ -80,14 +76,7 @@
                             <%= user.lastName%>
                         </td>
                         <td>
-                            <% if(user.sex==="male"){ %>
-
-                                <i class="fas fa-male"></i>
-
-
-                                <%} else{ %>
-                                    <i class="fas fa-female"></i>
-                                    <% } %>
+                            <%= user.sex%>
                         </td>
                         <td>
                             <%= user.mobile %>
@@ -132,6 +121,19 @@
 
         </div>
 
+        <div class="newArticle edit">
+            <form name='avatarForm' style="overflow: scroll;" action="/api/dashboard/newArticle" method="post" enctype="multipart/form-data">
+                <label>Choose Article Title:</label>
+                <input style="width: 90%;" type="text" class='form-control form-control-sm' name="title">
+                <br>
+                <label>Choose Article Text:</label>
+                <textarea style="vertical-align: top;" id="" cols="100" rows="10" name="text"></textarea>
+                <br>
+                <label>Choose Article Avatar:</label>
+                <input style="width: 90%;" type="file" class='form-control form-control-sm' name="avatar">
+                <button type="submit">Submit</button>
+            </form>
+        </div>
 
         <div class="password">
             <input type="password" id="old_pass" placeholder="previous password">
