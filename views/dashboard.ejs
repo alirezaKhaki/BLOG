@@ -20,6 +20,7 @@
             <%= user.username %>
         </h6>
         <div class="buttons" style="display: flex; flex-direction: column; ">
+            <button id="closeBtn">My Articles</button>
             <button id="my_profile">About Me</button>
             <button id="addArticle">Add Article</button>
             <button id="edit">Edit Profile</button>
@@ -87,7 +88,7 @@
                     </tr>
                 </tbody>
             </table>
-            <button id="closeAbout">Close</button>
+            <button id="closeBtn">Close</button>
 
         </div>
         <div class="edit" style=" overflow: scroll;">
@@ -116,12 +117,12 @@
             </div>
             <div style="width: 100%; display: flex; justify-content: space-between;">
                 <button id="save" style="width: 45%;"> SAVE</button>
-                <button id="close" style="width: 45%;">Close</button>
+                <button id="closeBtn" style="width: 45%;">Close</button>
             </div>
 
         </div>
 
-        <div class="newArticle edit">
+        <div class="newArticle">
             <form name='avatarForm' style="overflow: scroll;" action="/api/dashboard/newArticle" method="post" enctype="multipart/form-data">
                 <label>Choose Article Title:</label>
                 <input style="width: 90%;" type="text" class='form-control form-control-sm' name="title">
@@ -133,19 +134,20 @@
                 <input style="width: 90%;" type="file" class='form-control form-control-sm' name="avatar">
                 <button type="submit">Submit</button>
             </form>
+            <button id="closeBtn">close</button>
         </div>
 
         <div class="password">
             <input type="password" id="old_pass" placeholder="previous password">
             <input type="password" id="new_pass" placeholder="new password">
             <button id="pass_save">Save</button>
-            <button id="pass_close">Close</button>
+            <button id="closeBtn">Close</button>
         </div>
 
         <div class="delete">
             <input type="password" id="delete_pass" placeholder="enter your password">
             <button id="delete_account">Delete Acount</button>
-            <button id="delete_account_close">close</button>
+            <button id="closeBtn">close</button>
         </div>
 
 

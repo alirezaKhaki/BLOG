@@ -172,7 +172,7 @@ router.post('/newArticle', generalTools.loginChecker, async(req, res) => {
                     newArticle = await newArticle.save()
                     if (newArticle) return res.send("New Article Created")
                 } catch (err) {
-                    return res.status(500).send(err)
+                    return res.status(400).send('title and text are necessary')
                 }
 
 
@@ -188,7 +188,7 @@ router.post('/newArticle', generalTools.loginChecker, async(req, res) => {
                     newArticle = await newArticle.save()
                     if (newArticle) return res.send("New Article Created")
                 } catch (err) {
-                    return res.status(500).send(err)
+                    return res.status(400).send('title and text are necessary')
                 }
 
             }
@@ -204,7 +204,7 @@ router.post('/newArticle', generalTools.loginChecker, async(req, res) => {
 router.get('/myArticles/:id', generalTools.loginChecker, async(req, res) => {
     console.log(req.params.id);
     try {
-        let articles = await aritcels.find({ owner: req.params.id })
+        const articles = await aritcels.find({ owner: req.params.id })
         res.send({ articles });
 
     } catch (err) {

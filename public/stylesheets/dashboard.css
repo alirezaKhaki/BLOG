@@ -103,7 +103,8 @@ button:hover {
     border-radius: 15px;
 } */
 
-.edit {
+.edit,
+.newArticle {
     color: rgb(212, 212, 212);
     margin-top: 20px;
     padding: 10px;

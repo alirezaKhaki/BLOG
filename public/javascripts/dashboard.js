@@ -1,33 +1,73 @@
 $(function() {
+    //*****HIDE ALL TABS ON PAGE RENDERING */
     $(".edit").hide();
     $(".newArticle").hide();
     $(".password").hide();
     $(".delete").hide();
     $(".my_profile").hide();
-    $('body').on('click', '#my_profile', function() {
-        $(".password").slideUp(1200);
-        $(".delete").slideUp(1200);
-        $(".edit").slideUp(1200);
-        $(".container").slideUp(1200);
-        $(".my_profile").slideDown(1200);
-    })
-    $('body').on('click', '#closeAbout', function() {
-        $(".my_profile").slideUp(1200);
-        $(".container").slideDown(1200);
-    })
+    //*****BUTTONS*****
 
+    //CLOSE BUTTON
+    $('body').on('click', '#closeBtn', function() {
+            $(".password").slideUp(1200);
+            $(".delete").slideUp(1200);
+            $(".edit").slideUp(1200);
+            $(".my_profile").slideUp(1200);
+            $(".newArticle").slideUp(1200);
+            $(".container").slideDown(1200);
+            $(".container").css({ "overflow-y": 'scroll' });
+        })
+        // OPEN MY PROFILE PANEL
+    $('body').on('click', '#my_profile', function() {
+            $(".password").slideUp(1200);
+            $(".delete").slideUp(1200);
+            $(".edit").slideUp(1200);
+            $(".container").slideUp(1200);
+            $(".newArticle").slideUp(1200);
+            $(".my_profile").slideDown(1200);
+        })
+        //OPEN EDIT PANEL
     $('body').on('click', '#edit', function() {
         $(".container").slideUp(1200);
         $(".password").slideUp(1200);
         $(".delete").slideUp(1200);
         $(".my_profile").slideUp(1200);
+        $(".newArticle").slideUp(1200);
         $(".edit").slideDown(1200);
 
     });
-    $('body').on('click', '#close', function() {
-        $('.edit').slideToggle(1200);
-        $(".container").slideToggle(1200);
+    //OPEN CHANGE PASSWORD PANEL
+    $('body').on('click', '#change', function() {
+        $(".container").slideUp(1200);
+        $(".edit").slideUp(1200);
+        $(".delete").slideUp(1200);
+        $(".my_profile").slideUp(1200);
+        $(".newArticle").slideUp(1200);
+        $('.password').slideToggle(1200);
     });
+    //OPNE DELETE ACCOUNT PANEL
+
+    $('body').on('click', '#delete', function() {
+        $(".container").slideUp(1200);
+        $(".password").slideUp(1200);
+        $(".edit").slideUp(1200);
+        $(".my_profile").slideUp(1200);
+        $(".newArticle").slideUp(1200);
+        $('.delete').slideDown(1200);
+    });
+    //OPEN ADD NEW ARTICLE PANEL
+    $('body').on('click', '#addArticle', function() {
+        $(".container").slideUp(1200);
+        $(".password").slideUp(1200);
+        $(".edit").slideUp(1200);
+        $(".my_profile").slideUp(1200);
+        $('.delete').slideUp(1200);
+        $('.newArticle').slideDown(1200);
+
+    });
+
+    //*****FUNCTIONS*****
+    //SEND EDIT PANEL DATA TO SERVER
     $('body').on('click', '#save', function() {
         const username = $('#username').val();
         const password = $('#password').val();
@@ -70,13 +110,7 @@ $(function() {
             }
         })
     });
-    $('body').on('click', '#change', function() {
-        $(".container").slideUp(1200);
-        $(".edit").slideUp(1200);
-        $(".delete").slideUp(1200);
-        $(".my_profile").slideUp(1200);
-        $('.password').slideToggle(1200);
-    });
+    // SEND CHANGE PASSWORD DATA TO SERVER
     $('body').on('click', '#pass_save', function() {
         const id = $('#id').val();
         const pass = $('#old_pass').val();
@@ -111,23 +145,8 @@ $(function() {
             }
         })
     });
-    $('body').on('click', '#pass_close', function() {
-        $('.password').slideToggle(1200);
-        $(".container").slideToggle(1200);
-    });
-    $('body').on('click', '#delete_account_close', function() {
-        $('.delete').slideToggle(1200);
-        $(".container").slideToggle(1200);
-        $(".container").css({ "overflow-y": 'scroll' });
+    // SEND DELETE ACCOUNT DATA TO SERVER
 
-    });
-    $('body').on('click', '#delete', function() {
-        $(".container").slideUp(1200);
-        $(".password").slideUp(1200);
-        $(".edit").slideUp(1200);
-        $(".my_profile").slideUp(1200);
-        $('.delete').slideDown(1200);
-    });
     $('body').on('click', '#delete_account', function() {
         const pass = $('#delete_pass').val()
 
@@ -159,6 +178,8 @@ $(function() {
             }
         })
     });
+    // SEND DELETE AVATAR IMAGE DATA TO SERVER
+
     $('body').on('click', '#deleteImage', function() {
         $.ajax({
             url: '/api/dashboard/deleteAvatar',
@@ -180,17 +201,18 @@ $(function() {
             }
         });
     });
+    // SEND ADD NEW AVATAR DATA TO SERVER
+
     $('body').on('click', '#userAvatar', function() {
-            $('.modal-body').html(''), $('.modal-body').html(` 
+        $('.modal-body').html(''), $('.modal-body').html(` 
         <form id='avatarForm' action="/api/dashboard/avatar" method="post" enctype="multipart/form-data">
         <input type="file" class='form-control form-control-sm' name="avatar" id='avatarInput'>
         <button type="submit" value="submit">Submit</button>
         </form>
         <button id="deleteImage">Delete Avatar</button>`), $("#triger").click();
-        })
-        // *****ARTICLES*****
+    })
 
-    //get articles
+    //GET USER ARTICLES FROM SERVER AND RENDER THEM
     $.ajax({
         url: `/api/dashboard/myArticles/${$('#id').val()}`,
         type: 'get',
@@ -223,17 +245,7 @@ $(function() {
         }
     });
 
-    //creat article
-    $('body').on('click', '#addArticle', function() {
-        $(".container").slideUp(1200);
-        $(".password").slideUp(1200);
-        $(".edit").slideUp(1200);
-        $(".my_profile").slideUp(1200);
-        $('.delete').slideUp(1200);
-        $('.newArticle').slideDown(1200);
-
-    })
-
+    //SEND NEW ARTICLE DATA TO SERVER
     $("form[name='avatarForm']").on("submit", function(ev) {
         ev.preventDefault(); // Prevent browser default submit.
 
@@ -246,10 +258,14 @@ $(function() {
             type: "POST",
             data: formData,
             success: function(msg) {
-                alert(msg)
+                $('.modal-body').html(''), $('.modal-body').html(msg), $("#triger").click();
+                setTimeout(function() {
+                    window.location.href = '/api/dashboard'
+                }, 2000);
             },
             error: function(err) {
-                alert(err.responseText)
+                $('.modal-body').html(''), $('.modal-body').html(err.responseText), $("#triger").click();
+
             },
             cache: false,
             contentType: false,
@@ -259,6 +275,16 @@ $(function() {
     });
 
 });
+//GET ALL ARTICLES FROM SERVER AND RENDER THEM
+
+
+
+
+
+
+
+
+//*****SIDE NAV FUNCTIONS *****/
 /* Set the width of the side navigation to 250px and the left margin of the page content to 250px and add a black background color to body */
 function openNav() {
     document.getElementById("mySidenav").style.width = "250px";
