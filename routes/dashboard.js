@@ -208,9 +208,11 @@ router.get('/myArticles/:id', generalTools.loginChecker, async(req, res) => {
         res.send({ articles });
 
     } catch (err) {
-        console.log(err);
+        res.status(500).send(err);
     }
 
 })
+
+
 
 module.exports = router;
