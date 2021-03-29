@@ -1,3 +1,6 @@
 $(function() {
-    // $('.article').html('<p>csdlkcnsdklncdkjvblksjdbvkjdsbvskdvbksdljvnksdbvsdkjvbskdvbskvksdjnvlk</p>')
+    $.get('/api/allArticles', (err, data) => {
+        console.log(err);
+        console.log(data);
+    })
 })
