@@ -81,7 +81,7 @@ input:focus {
     margin: 50px auto;
     height: 450px;
     width: 350px;
-    background: linear-gradient(to bottom, #6d6d6d91 0%, #15151577 100%);
+    background: linear-gradient(to bottom, #00000091 0%, #000000 100%);
     border-radius: 10px;
 }
 

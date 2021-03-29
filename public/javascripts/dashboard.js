@@ -273,7 +273,6 @@ $(function() {
         });
 
     });
-
 });
 //GET ALL ARTICLES FROM SERVER AND RENDER THEM
 
@@ -289,12 +288,21 @@ $(function() {
 function openNav() {
     document.getElementById("mySidenav").style.width = "250px";
     document.getElementById("main").style.marginLeft = "200px";
-    document.body.style.backgroundColor = "rgba(216, 213, 213,0.4)";
 }
 
 /* Set the width of the side navigation to 0 and the left margin of the page content to 0, and the background color of body to white */
 function closeNav() {
     document.getElementById("mySidenav").style.width = "0";
     document.getElementById("main").style.marginLeft = "0";
-    document.body.style.backgroundColor = "#d8d5d5";
 }
+var getCookies = function() {
+    var pairs = document.cookie.split(";");
+    var cookies = {};
+    for (var i = 0; i < pairs.length; i++) {
+        var pair = pairs[i].split("=");
+        cookies[(pair[0] + '').trim()] = unescape(pair.slice(1).join('='));
+    }
+    return cookies;
+}
+var myCookies = getCookies();
+console.log(myCookies);

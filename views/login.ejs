@@ -12,31 +12,31 @@
 </head>
 
 <body>
-    <div class="container">
+    <%- include('./partials/navbar.ejs') %>
+        <div class="container">
+            <p id="welcome">WELCOME</p>
+            <label>USER NAME:</label>
+            <input type="text" id="username" name="username" placeholder="username">
+            <label>PASSWORD:</label>
+            <input type="password" id="password" name="password" placeholder="password">
+            <button id="register">Login</button>
+            <div class="info">
+                <h6>DON'T HAVE AN ACCOUNT? <a href="/api/register">SIGN UP</a></h6>
+                <p id="by">BY ALIREZA KHAKI <a href="https://github.com/alirezaKhaki">GITHUB PAGE</a></p>
 
-        <p id="welcome">WELCOME</p>
-        <label>USER NAME:</label>
-        <input type="text" id="username" name="username" placeholder="username">
-        <label>PASSWORD:</label>
-        <input type="password" id="password" name="password" placeholder="password">
-        <button id="register">Login</button>
-        <div class="info">
-            <h6>DON'T HAVE AN ACCOUNT? <a href="/api/register">SIGN UP</a></h6>
-            <p id="by">BY ALIREZA KHAKI <a href="https://github.com/alirezaKhaki">GITHUB PAGE</a></p>
+            </div>
+
+
 
         </div>
 
 
-
-    </div>
-
-
-    <%- include('./partials/modal.ejs') %>
+        <%- include('./partials/modal.ejs') %>
 
 
 
-        <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
-        <script src="/javascripts/login.js"></script>
+            <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+            <script src="/javascripts/login.js"></script>
 
 </body>
 
