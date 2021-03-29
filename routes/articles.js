@@ -10,7 +10,7 @@ const path = require('path')
 
 
 router.get('/', (req, res) => {
-    articles.find({}).populate('owner', 'username').exec((err, article) => {
+    articles.find({}).populate('owner', 'username').sort({ createdAt: -1 }).exec((err, article) => {
         if (err) return res.status(500).json({ msg: "Server Error :)", err: err.message })
         res.send(article)
 
