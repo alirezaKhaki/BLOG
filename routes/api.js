@@ -1,7 +1,7 @@
 const express = require('express');
 const register = require('./register');
 const login = require('./login');
-const allarticles = require('./articles');
+const articles = require('./articles');
 const dashbord = require('./dashboard');
 const router = express.Router();
 const joiSchema = require('../tools/joiValidator')
@@ -11,7 +11,7 @@ const users = require('../model/user')
 router.use('/login', login);
 router.use('/register', register);
 router.use('/dashboard', dashbord);
-router.use('/allArticles', allarticles);
+router.use('/articles', articles);
 router.get('/', (req, res) => {
     res.render('home.ejs')
 });

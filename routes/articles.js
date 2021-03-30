@@ -9,10 +9,19 @@ const fs = require('fs')
 const path = require('path')
 
 
-router.get('/', (req, res) => {
+router.get('/getAll', (req, res) => {
     articles.find({}).populate('owner', 'username').sort({ createdAt: -1 }).exec((err, article) => {
         if (err) return res.status(500).json({ msg: "Server Error :)", err: err.message })
-        res.send(article)
+        if (article) return res.send(article)
+
+    })
+})
+
+router.get('/:id', (req, res) => {
+    console.log('hi');
+    articles.findOne({ _id: req.params.id }).populate('owner', 'username').exec((err, article) => {
+        if (err) return res.status(500).json({ msg: "Server Error :)", err: err.message })
+        if (article) return res.render('article', { article })
 
     })
 })
