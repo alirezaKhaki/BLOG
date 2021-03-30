@@ -224,7 +224,7 @@ $(function() {
                 <div class="card">
                     <div class="card-body" style="border-radius: 10px;">
                         <h5 class="card-title">TITLE:${data.articles[i].title} </h5>
-                      <div> <p class="card-text">TEXT:${data.articles[i].text}</p> <a href="/articles/${data.articles[i]._id}">more...</a></div> 
+                      <div> <p class="card-text">TEXT:${data.articles[i].text}</p> <a href="/api/articles/${data.articles[i]._id}">more...</a></div> 
                         <img src="/images/avatars/${data.articles[i].avatar}" alt="avatar" class="photo">
 
                     </div>
