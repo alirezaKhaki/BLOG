@@ -10,18 +10,23 @@ const path = require('path')
 const multer = require('multer');
 const { number } = require('joi');
 
+//GET DASHBOARD PAGE
 router.get('/', generalTools.loginChecker, (req, res) => {
     const user = req.session.user
     console.log(user);
     res.render('dashboard', { user })
 });
 
+//LOGOUT FUNCTION !
 router.get('/logout', (req, res) => {
     res.clearCookie("user_sid");
     res.redirect('/api/dashboard')
 
 })
 
+// *****USER CRUD*****
+
+//PROFILE EDIT
 router.post('/edit', generalTools.loginChecker, async(req, res) => {
 
     if (req.body.role == 'admin') return res.status(400).send('bad request :(')
@@ -54,6 +59,7 @@ router.post('/edit', generalTools.loginChecker, async(req, res) => {
 
 })
 
+//CHANGE PASSWORD
 router.post('/password', generalTools.loginChecker, (req, res) => {
     if (!req.body.password) return res.status(400).send('old password input is empty')
     if (!req.body.new_password) return res.status(400).send('new password input is empty')
@@ -79,7 +85,7 @@ router.post('/password', generalTools.loginChecker, (req, res) => {
     })
 })
 
-
+//DELETE ACCOUNT
 router.post('/delete', generalTools.loginChecker, async(req, res) => {
 
     const pass = req.session.user.password
