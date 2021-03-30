@@ -1,5 +1,5 @@
 $(function() {
-    $.get('/api/allArticles', (data, err) => {
+    $.get('/api/articles/getAll', (data, err) => {
 
         if (data) {
             for (let i = 0; i < data.length; i++) {
