@@ -214,7 +214,7 @@ $(function() {
 
     //GET USER ARTICLES FROM SERVER AND RENDER THEM
     $.ajax({
-        url: `/api/dashboard/myArticles/${$('#id').val()}`,
+        url: `/api/articles/myArticles/${$('#id').val()}`,
         type: 'get',
         success: function(data) {
             for (let i = 0; i < data.articles.length; i++) {
@@ -254,7 +254,7 @@ $(function() {
 
 
         $.ajax({
-            url: "/api/dashboard/newArticle",
+            url: "/api/articles/newArticle",
             type: "POST",
             data: formData,
             success: function(msg) {
