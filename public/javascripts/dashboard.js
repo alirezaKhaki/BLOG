@@ -217,16 +217,19 @@ $(function() {
         url: `/api/articles/myArticles/${$('#id').val()}`,
         type: 'get',
         success: function(data) {
-            for (let i = 0; i < data.articles.length; i++) {
+
+            for (let i = 0; i < data.article.length; i++) {
+                let date = data.article[i].createdAt
+                date = date.substring(0, date.length - 14);
                 $('.container').append(`
                 
                 <div class="pages mt-3 col-12 col-md-6 col-lg-4" style="width:100%;">
                 <div class="card">
                     <div class="card-body" style="border-radius: 10px;">
-                        <h5 class="card-title">TITLE:${data.articles[i].title} </h5>
-                      <div> <p class="card-text">TEXT:${data.articles[i].text}</p> <a href="/api/articles/${data.articles[i]._id}">more...</a></div> 
-                        <img src="/images/avatars/${data.articles[i].avatar}" alt="avatar" class="photo">
-
+                        <h5 class="card-title">TITLE:${data.article[i].title} </h5>
+                        <div> <p class="card-text">TEXT:${data.article[i].text}</p> <a href="/api/articles/${data.article[i]._id}">more...</a></div> 
+                        <p>CREATED AT:${date}</p>
+                        <img src="/images/avatars/${data.article[i].avatar}" alt="avatar" class="photo">
                     </div>
                 </div>
     
@@ -238,6 +241,7 @@ $(function() {
 
         },
         error: function(err) {
+            console.log(err);
             $('.modal-body').html(''), $('.modal-body').html(err.responseText)
             setTimeout(function() {
                 $("#triger").click();

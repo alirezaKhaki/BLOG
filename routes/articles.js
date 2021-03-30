@@ -41,7 +41,7 @@ router.post('/newArticle', generalTools.loginChecker, async(req, res) => {
         } else {
             if (req.file == undefined) {
                 try {
-                    let newArticle = new aritcels({
+                    let newArticle = new articles({
                         owner: req.session.user._id,
                         text: req.body.text,
                         title: req.body.title,
@@ -50,14 +50,15 @@ router.post('/newArticle', generalTools.loginChecker, async(req, res) => {
                     newArticle = await newArticle.save()
                     if (newArticle) return res.send("New Article Created")
                 } catch (err) {
-                    return res.status(400).send('title and text are necessary')
+                    if (err.stack.includes("Path `text` is required")) return res.status(400).send('title and text is required')
+                    if (err.stack.includes("minimum allowed length")) return res.status(400).send(' text is minimum allowed length(100)')
                 }
 
 
             } else {
 
                 try {
-                    let newArticle = new aritcels({
+                    let newArticle = new articles({
                         owner: req.session.user._id,
                         text: req.body.text,
                         title: req.body.title,
@@ -66,7 +67,8 @@ router.post('/newArticle', generalTools.loginChecker, async(req, res) => {
                     newArticle = await newArticle.save()
                     if (newArticle) return res.send("New Article Created")
                 } catch (err) {
-                    return res.status(400).send('title and text are necessary')
+                    if (err.stack.includes("Path `text` is required")) return res.status(400).send('title and text is required')
+                    if (err.stack.includes("minimum allowed length")) return res.status(400).send(' text is minimum allowed length(100)')
                 }
 
             }
@@ -82,11 +84,11 @@ router.post('/newArticle', generalTools.loginChecker, async(req, res) => {
 router.get('/myArticles/:id', generalTools.loginChecker, async(req, res) => {
     console.log(req.params.id);
     try {
-        const articles = await aritcels.find({ owner: req.params.id })
-        res.send({ articles });
+        const article = await articles.find({ owner: req.params.id }).sort({ createdAt: -1 })
+        res.send({ article });
 
     } catch (err) {
-        res.status(500).send(err);
+        res.status(500).send('server error');
     }
 
 })
