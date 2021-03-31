@@ -5,7 +5,7 @@ $(function() {
         const password = $('#password').val();
         const firstName = $('#firstName').val();
         const lastName = $('#lastName').val();
-        const gender = $('#gender').val();
+        const gender = $('input[name="gender"]:checked').val();
         const number = $('#number').val();
 
 
