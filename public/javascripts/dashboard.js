@@ -222,7 +222,6 @@ $(function() {
                 let date = data.article[i].createdAt
                 date = date.substring(0, date.length - 14);
                 $('.container').append(`
-                
                 <div class="pages mt-3 col-12 col-md-6 col-lg-4" style="width:100%;">
                 <div class="card">
                     <div class="card-body" style="border-radius: 10px;">
@@ -230,18 +229,52 @@ $(function() {
                         <div> <p class="card-text">TEXT:${data.article[i].text}</p> <a href="/api/articles/${data.article[i]._id}">more...</a></div> 
                         <p>CREATED AT:${date}</p>
                         <img src="/images/avatars/${data.article[i].avatar}" alt="avatar" class="photo">
+                        <div class="${data.article[i]._id}">
+                        <button class="editArticle">EDIT</button>
+                        <button class="deleteArticle">DELETE</button>
+                        </div>
                     </div>
                 </div>
-    
             </div>`)
 
             }
+            //DELETE ARTICLE FUNCTION
+            $('body').on('click', '.deleteArticle', function() {
+                $('.modal-body').html(''), $('.modal-body').html(`
+                <h3> ARE YOU SURE YOU WANT TO DELETE THIS ARTICLE?</h3>
+                <button id="deleteThis">YES</button>
+                <button id="no">NO</button>
+                `), $("#triger").click();
+                const article_id = ($(this).parent().attr('class'));
+                $('body').on('click', '#no', function() {
+                    $('.modal-body').html(''), $("#triger").click();
+                })
+                $('body').on('click', '#deleteThis', function() {
+                    $.ajax({
+                        url: `/api/articles/delete/${article_id}`,
+                        type: 'GET',
+                        success: function(data) {
 
+                            $('.modal-body').html(''), $('.modal-body').html(data)
+
+                            setTimeout(function() {
+                                window.location.href = '/api/register'
+
+                            }, 2000);
+                        },
+                        error: function(err) {
+                            $('.modal-body').html(''), $('.modal-body').html(err.responseText)
+                            setTimeout(function() {
+                                $("#triger").click();
+                            }, 2000);
+                        }
+                    });
+                })
+            })
 
 
         },
         error: function(err) {
-            console.log(err);
             $('.modal-body').html(''), $('.modal-body').html(err.responseText)
             setTimeout(function() {
                 $("#triger").click();
@@ -299,14 +332,3 @@ function closeNav() {
     document.getElementById("mySidenav").style.width = "0";
     document.getElementById("main").style.marginLeft = "0";
 }
-var getCookies = function() {
-    var pairs = document.cookie.split(";");
-    var cookies = {};
-    for (var i = 0; i < pairs.length; i++) {
-        var pair = pairs[i].split("=");
-        cookies[(pair[0] + '').trim()] = unescape(pair.slice(1).join('='));
-    }
-    return cookies;
-}
-var myCookies = getCookies();
-console.log(myCookies);

@@ -6,7 +6,8 @@ const generalTools = require('../tools/general-tools');
 const bcrypt = require('bcrypt');
 const JoiSchema = require('../tools/joiValidator')
 const fs = require('fs')
-const path = require('path')
+const path = require('path');
+const { log } = require('console');
 
 // ALL ARTICLES
 router.get('/getAll', (req, res) => {
@@ -19,7 +20,6 @@ router.get('/getAll', (req, res) => {
     // DETAILS OF ONE ARTICLE
 
 router.get('/:id', (req, res) => {
-    console.log('hi');
     articles.findOne({ _id: req.params.id }).populate('owner', 'username').exec((err, article) => {
         if (err) return res.status(500).json({ msg: "Server Error :)", err: err.message })
         if (article) return res.render('article', { article })
@@ -35,7 +35,6 @@ router.post('/newArticle', generalTools.loginChecker, async(req, res) => {
     const upload = generalTools.uploadArticle.single('avatar');
 
     upload(req, res, async(err) => {
-        console.log(req.body);
         if (err) {
             res.status(500).send("server error")
         } else {
@@ -82,17 +81,22 @@ router.post('/newArticle', generalTools.loginChecker, async(req, res) => {
 
 // ARTICLES OF ONE BLOGGER
 router.get('/myArticles/:id', generalTools.loginChecker, async(req, res) => {
-    console.log(req.params.id);
-    try {
-        const article = await articles.find({ owner: req.params.id }).sort({ createdAt: -1 })
-        res.send({ article });
+        try {
+            const article = await articles.find({ owner: req.params.id }).sort({ createdAt: -1 })
+            res.send({ article });
 
-    } catch (err) {
-        res.status(500).send('server error');
-    }
+        } catch (err) {
+            res.status(500).send('server error');
+        }
 
+    })
+    //DELETE ARTICLE
+router.get('/delete/:id', (req, res) => {
+    articles.findByIdAndDelete({ _id: req.params.id }, (err) => {
+        if (err) return res.status(500).send('server error')
+        return res.send('this article has been deleted!')
+    })
 })
-
 
 
 
