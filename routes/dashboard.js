@@ -132,7 +132,7 @@ router.post('/avatar', generalTools.loginChecker, (req, res) => {
                     if (err) return res.status(500).json({ msg: 'Server Error!' })
                     if (user) {
                         req.session.user = user
-                        res.send('/api/dashboard')
+                        return res.send('avatar added')
                     }
                 });
 
