@@ -205,11 +205,40 @@ $(function() {
 
     $('body').on('click', '#userAvatar', function() {
         $('.modal-body').html(''), $('.modal-body').html(` 
-        <form id='avatarForm' action="/api/dashboard/avatar" method="post" enctype="multipart/form-data">
+        <form name='userAvatar' action="/api/dashboard/avatar" method="post" enctype="multipart/form-data">
         <input type="file" class='form-control form-control-sm' name="avatar" id='avatarInput'>
         <button type="submit" value="submit">Submit</button>
         </form>
         <button id="deleteImage">Delete Avatar</button>`), $("#triger").click();
+        $("form[name='userAvatar']").on("submit", function(ev) {
+            ev.preventDefault(); // Prevent browser default submit.
+
+            var formData = new FormData(this);
+            console.log(formData);
+
+
+            $.ajax({
+                url: "/api/dashboard/avatar",
+                type: "POST",
+                data: formData,
+                success: function(msg) {
+                    $('.modal-body').html(''), $('.modal-body').html(msg)
+                    setTimeout(function() {
+                        window.location.href = '/api/dashboard'
+                    }, 2000);
+                },
+                error: function(err) {
+                    $('.modal-body').html(''), $('.modal-body').html(err.responseText)
+                    setTimeout(function() {
+                        $("#triger").click();
+                    }, 2000);
+                },
+                cache: false,
+                contentType: false,
+                processData: false
+            });
+
+        });
     })
 
     //GET USER ARTICLES FROM SERVER AND RENDER THEM
@@ -228,7 +257,7 @@ $(function() {
                         <h5 class="card-title">TITLE:${data.article[i].title} </h5>
                         <div> <p class="card-text">TEXT:${data.article[i].text}</p> <a href="/api/articles/${data.article[i]._id}">more...</a></div> 
                         <p>CREATED AT:${date}</p>
-                        <img src="/images/avatars/${data.article[i].avatar}" alt="avatar" class="photo">
+                        <img style="width:auto;" src="/images/avatars/${data.article[i].avatar}" alt="avatar" class="photo">
                         <div class="${data.article[i]._id}">
                         <button class="editArticle">EDIT</button>
                         <button class="deleteArticle">DELETE</button>
@@ -272,7 +301,126 @@ $(function() {
                 })
             })
 
+            //EDIT ARITCLE FUNCTION
+            $('body').on('click', '.editArticle', function() {
+                const article_id = ($(this).parent().attr('class'));
+                $('body').on('click', '#no', function() {
+                    $('.modal-body').html(''), $("#triger").click();
+                })
+                $.ajax({
+                    url: `/api/articles/article/${article_id}`,
+                    type: 'GET',
+                    success: function(data) {
+                        $('.modal-body').html(''), $('.modal-body').html(`
+                        <img id="article_avatar" src="/images/avatars/${data.avatar}" alt="avatar" style="width: 80px; height: 80px; border-radius: 50px;">
+                        <br>
+                        <label>Choose Article Title:</label>
+                        <input id="title_input" style="width: 90%;" type="text" class='form-control form-control-sm' name="title" value="${data.title}">
+                        <br>
+                        <label>Choose Article Text:</label>
+                        <textarea id="text_input" style="vertical-align: top;" id="" cols="50" rows="10" name="text">${data.text}</textarea>
+                        <br>
+                        <button id="send_edit">Submit</button>
+                        <button id="no">close</button>`), $("#triger").click();
+                        //POST EDIT ARTICLE DATA TO SERVER
+                        $('body').on('click', '#send_edit', function() {
+                                $.ajax({
+                                    url: `/api/articles/article/${article_id}`,
+                                    type: 'POST',
+                                    data: {
+                                        title: $('#title_input').val(),
+                                        text: $('textarea#text_input').val(),
+                                        lastUpdate: Date.now
+                                    },
+                                    success: function(data) {
+                                        console.log(data);
+                                        $('.modal-body').html(''), $('.modal-body').html(data)
 
+                                        setTimeout(function() {
+                                            window.location.href = '/api/register'
+
+                                        }, 2000);
+                                    },
+                                    error: function(err) {
+                                        $('.modal-body').html(''), $('.modal-body').html(err.responseText)
+                                        setTimeout(function() {
+                                            $("#triger").click();
+                                        }, 2000);
+                                    }
+                                });
+                            })
+                            //change/delete avatar
+                        $('body').on('click', '#article_avatar', function() {
+                            $('.modal-body').html(''), $('.modal-body').html(`
+                            <form name='articleAvatarForm'  action="/api/articles/newAvatar" method="post" enctype="multipart/form-data">
+                                <label>Choose Article Avatar:</label>
+                                <input style="width: 90%;" type="file" class='form-control form-control-sm' name="avatar">
+                                <button style="width: 95%;"  type="submit">Submit</button>
+                            </form>
+                            <div style='display:flex;flex-direction:column'>
+                            <button id="deleteAvatar">Delete Avatar</button>
+                            <button id="no">close</button>
+                            </div>
+                                `)
+                            $('body').on('click', '#deleteAvatar', function() {
+                                $.ajax({
+                                    url: `/api/articles/deleteAvatar/${article_id}`,
+                                    type: 'DELETE',
+                                    success: function(data) {
+
+                                        $('.modal-body').html(''), $('.modal-body').html(data)
+
+                                        setTimeout(function() {
+                                            window.location.href = '/api/register'
+
+                                        }, 2000);
+                                    },
+                                    error: function(err) {
+                                        $('.modal-body').html(''), $('.modal-body').html(err.responseText)
+                                        setTimeout(function() {
+                                            $("#triger").click();
+                                        }, 2000);
+                                    }
+                                });
+                            })
+                            $("form[name='articleAvatarForm']").on("submit", function(ev) {
+                                ev.preventDefault(); // Prevent browser default submit.
+
+                                var formData = new FormData(this);
+
+
+                                $.ajax({
+                                    url: `/api/articles/addAvatar/${article_id}`,
+                                    type: "POST",
+                                    data: formData,
+                                    success: function(msg) {
+                                        $('.modal-body').html(''), $('.modal-body').html(msg)
+                                        setTimeout(function() {
+                                            window.location.href = '/api/dashboard'
+                                        }, 2000);
+                                    },
+                                    error: function(err) {
+                                        $('.modal-body').html(''), $('.modal-body').html(err.responseText)
+                                        setTimeout(function() {
+                                            $("#triger").click();
+                                        }, 2000);
+                                    },
+                                    cache: false,
+                                    contentType: false,
+                                    processData: false
+                                });
+
+                            });
+                        })
+                    },
+                    error: function(err) {
+                        $('.modal-body').html(''), $('.modal-body').html(err.responseText)
+                        setTimeout(function() {
+                            $("#triger").click();
+                        }, 2000);
+                    }
+                });
+            });
         },
         error: function(err) {
             $('.modal-body').html(''), $('.modal-body').html(err.responseText)
@@ -311,7 +459,6 @@ $(function() {
 
     });
 });
-//GET ALL ARTICLES FROM SERVER AND RENDER THEM
 
 
 
@@ -332,3 +479,6 @@ function closeNav() {
     document.getElementById("mySidenav").style.width = "0";
     document.getElementById("main").style.marginLeft = "0";
 }
+
+
+{ /* <img src="/images/avatars/${data.avatar}" alt="avatar" style="width: 80px; height: 80px; border-radius: 50px;"> */ }

@@ -11,14 +11,23 @@ const { log } = require('console');
 
 // ALL ARTICLES
 router.get('/getAll', (req, res) => {
-        articles.find({}).populate('owner', 'username').sort({ createdAt: -1 }).exec((err, article) => {
-            if (err) return res.status(500).json({ msg: "Server Error :)", err: err.message })
-            if (article) return res.send(article)
+    articles.find({}).populate('owner', 'username').sort({ createdAt: -1 }).exec((err, article) => {
+        if (err) return res.status(500).json({ msg: "Server Error :)", err: err.message })
+        if (article) return res.send(article)
 
-        })
     })
-    // DETAILS OF ONE ARTICLE
+})
 
+// DETAILS OF ONE ARTICLE 
+router.get('/article/:id', (req, res) => {
+    articles.findOne({ _id: req.params.id }).populate('owner', 'username').exec((err, article) => {
+        if (err) return res.status(500).json({ msg: "Server Error :)", err: err.message })
+        if (article) return res.send(article)
+
+    })
+})
+
+// DETAILS OF ONE ARTICLE(WITH PAGE RENDERING)
 router.get('/:id', (req, res) => {
     articles.findOne({ _id: req.params.id }).populate('owner', 'username').exec((err, article) => {
         if (err) return res.status(500).json({ msg: "Server Error :)", err: err.message })
@@ -91,17 +100,72 @@ router.get('/myArticles/:id', generalTools.loginChecker, async(req, res) => {
 
     })
     //DELETE ARTICLE
-router.get('/delete/:id', (req, res) => {
+router.get('/delete/:id', generalTools.loginChecker, async(req, res) => {
     articles.findByIdAndDelete({ _id: req.params.id }, (err) => {
         if (err) return res.status(500).send('server error')
         return res.send('this article has been deleted!')
     })
 })
 
+//EDIT ARTICLE
 
+//edit text and title of article
+router.post('/article/:id', generalTools.loginChecker, (req, res) => {
 
+        articles.findOne({ _id: req.params.id, owner: req.session.user._id }, (err, article) => {
+            if (err) return res.status(500).send('server error')
+            if (!article) return res.status(403).send('acces denied!')
+            articles.findByIdAndUpdate({ _id: req.params.id }, req.body, { new: true }, (err, article) => {
+                if (err) return res.status(500).send('server error')
+                if (article) return res.send('article edited!')
+            })
+        })
+    })
+    //delete article avatar
+router.delete('/deleteAvatar/:id', generalTools.loginChecker, (req, res) => {
 
+        articles.findOne({ _id: req.params.id, owner: req.session.user._id }, (err, article) => {
+            if (err) return res.status(500).send('server error')
+            if (!article) return res.status(403).send('acces denied!')
+            console.log(article.avatar);
+            if (article.avatar === 'ArticleDefault.jpg') return res.status(400).send('this article don not have an avatar')
+            articles.findByIdAndUpdate({ _id: req.params.id }, { avatar: 'ArticleDefault.jpg' }, { new: true }, (err, article) => {
+                if (err) return res.status(500).send('server error')
+                if (article) return res.send('avatar deleted!')
+            })
+        })
+    })
+    //add article avatar
+router.post('/addAvatar/:id', generalTools.loginChecker, (req, res) => {
 
+    articles.findOne({ _id: req.params.id, owner: req.session.user._id }, (err, article) => {
+        if (err) return res.status(500).send('server error')
+        if (!article) return res.status(403).send('acces denied!')
+        const upload = generalTools.uploadAvatar.single('avatar');
+
+        upload(req, res, (err) => {
+            if (err) {
+                res.status(500).send("server error")
+            } else {
+                if (req.file == undefined) {
+
+                    res.status(400).send('No File Selected!')
+
+                } else {
+
+                    articles.findByIdAndUpdate(req.params.id, { avatar: req.file.filename }, { new: true }, (err, article) => {
+                        if (err) return res.status(500).json({ msg: 'Server Error!' })
+                        if (article) {
+                            return res.send('avatar added')
+                        }
+                    });
+
+                }
+            }
+        })
+
+    })
+})
 
 
 
