@@ -38,8 +38,8 @@ router.post('/edit', generalTools.loginChecker, async(req, res) => {
     if (req.body.role == 'admin') return res.status(400).send('bad request :(')
     try {
         if (req.session.user.username === req.body.username) {
-            console.log(true);
-            let validate = await JoiSchema.dashboard.validateAsync(req.body);
+
+            let validate = await JoiSchema.editDashboard.validateAsync(req.body);
             if (validate) {
                 console.log(true);
                 const Updated = await users.findOneAndUpdate({ username: req.body.username }, req.body, { new: true }).exec();
@@ -47,7 +47,7 @@ router.post('/edit', generalTools.loginChecker, async(req, res) => {
                 return res.send({ "msg": "success" })
             }
         }
-        let validate = await JoiSchema.dashboard.validateAsync(req.body);
+        let validate = await JoiSchema.editDashboard.validateAsync(req.body);
         const checkUser = await users.findOne({ username: req.body.username });
         if (checkUser) return res.status(400).send('user already exist!')
         if (validate) {
@@ -67,26 +67,39 @@ router.post('/edit', generalTools.loginChecker, async(req, res) => {
 
 //CHANGE PASSWORD
 router.post('/password', generalTools.loginChecker, (req, res) => {
-    if (!req.body.password) return res.status(400).send('old password input is empty')
-    if (!req.body.new_password) return res.status(400).send('new password input is empty')
+        if (!req.body.password) return res.status(400).send('old password input is empty')
+        if (!req.body.new_password) return res.status(400).send('new password input is empty')
 
-    users.findOne({ _id: req.body._id }, function(err, user) {
-        if (err) return res.status(500).send({ "msg": "server error " })
+        users.findOne({ _id: req.body._id }, function(err, user) {
+            if (err) return res.status(500).send({ "msg": "server error " })
+            if (user) {
+                bcrypt.compare(req.body.password, user.password, function(err, respoonse) {
+                    if (err) return res.status(500).send({ "msg": "server error " })
+                    if (respoonse) {
+                        users.findOneAndUpdate({ _id: req.body._id }, { password: req.body.new_password }, { new: true }, function(err, user) {
+                            if (err) return res.status(500).send({ "msg": "server error " })
+                            res.clearCookie("user_sid");
+                            if (user) res.send({ "msg": "sucsses" })
+                        });
+                    } else {
+
+                        return res.status(401).send('wrong password');
+                    }
+                    if (!user) return re.status(404).send("user not found")
+                });
+            }
+        })
+    })
+    //RESET PASSWORD
+router.get('/resetPassword/:id', (req, res) => {
+    if (req.session.user.role !== "admin") return res.status(403).send('acces denied!')
+    users.findOne({ _id: req.params.id }, (err, user) => {
+        if (err) return res.status(500).send('server error')
         if (user) {
-            bcrypt.compare(req.body.password, user.password, function(err, respoonse) {
-                if (err) return res.status(500).send({ "msg": "server error " })
-                if (respoonse) {
-                    users.findOneAndUpdate({ _id: req.body._id }, { password: req.body.new_password }, { new: true }, function(err, user) {
-                        if (err) return res.status(500).send({ "msg": "server error " })
-                        res.clearCookie("user_sid");
-                        if (user) res.send({ "msg": "sucsses" })
-                    });
-                } else {
-
-                    return res.status(401).send('wrong password');
-                }
-                if (!user) return re.status(404).send("user not found")
-            });
+            users.findOneAndUpdate({ _id: user.id }, { password: user.mobile }, (err, user1) => {
+                if (err) return res.status(500).send('server error')
+                if (user1) return res.send(`password changed to ${user.mobile}`)
+            })
         }
     })
 })
