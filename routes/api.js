@@ -6,8 +6,8 @@ const dashbord = require('./dashboard');
 const router = express.Router();
 const joiSchema = require('../tools/joiValidator')
 const users = require('../model/user')
-
-/* GET home page. */
+const Joi = require("joi")
+    /* GET home page. */
 router.use('/login', login);
 router.use('/register', register);
 router.use('/dashboard', dashbord);
@@ -22,7 +22,7 @@ router.post('/createadmin', async(req, res) => {
     try {
         const isAdmin = await users.findOne({ role: 'admin' })
         if (isAdmin) return res.status(400).send('bad request :(')
-        let validate = await joiSchema.validateAsync(req.body);
+        let validate = await joiSchema.dashboard.validateAsync(req.body)
         const checkUser = await users.findOne({ username: req.body.username });
         if (checkUser) return res.status(400).send('user already exist!')
         if (validate) {
