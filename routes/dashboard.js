@@ -69,6 +69,7 @@ router.post('/edit', generalTools.loginChecker, async(req, res) => {
 router.post('/password', generalTools.loginChecker, (req, res) => {
         if (!req.body.password) return res.status(400).send('old password input is empty')
         if (!req.body.new_password) return res.status(400).send('new password input is empty')
+        if (req.session.user._id !== req.body._id) return res.status(403).send('acces denied!')
 
         users.findOne({ _id: req.body._id }, function(err, user) {
             if (err) return res.status(500).send({ "msg": "server error " })
@@ -109,7 +110,7 @@ router.post('/delete', generalTools.loginChecker, async(req, res) => {
 
         const pass = req.session.user.password
         const id = req.session.user._id
-        console.log(req.body.username);
+        if (req.session.user.username !== req.body.username) return res.status(403).send('acces denied!')
 
         if (req.session.user.username !== req.body.username) return res.status(403).send('acces denied!')
         if (!req.body.password) return res.status(400).send('password input is empty')

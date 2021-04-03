@@ -375,6 +375,7 @@ $(function() {
                         <h5 class="card-text">LAST NAME:${data[i].lastName}</h5> 
                         <h5 class="card-text">ROLE:${data[i].role}</h5> 
                         <h5 class="card-text">GENDER:${data[i].sex}</h5> 
+                        <h5 class="card-text">MOBILE:${data[i].mobile}</h5> 
                         <h5>JOINED AT:${date}</h5>
                         <div class="${data[i]._id}">
                         <button class="resetPassword">RESET PASSWORD</button>
@@ -404,10 +405,36 @@ $(function() {
 
                         $('.modal-body').html(''), $('.modal-body').html(data)
 
-                        setTimeout(function() {
-                            window.location.href = '/api/register'
 
+                    },
+                    error: function(err) {
+                        $('.modal-body').html(''), $('.modal-body').html(err.responseText)
+                        setTimeout(function() {
+                            $("#triger").click();
                         }, 2000);
+                    }
+                });
+            })
+        })
+        $('body').on('click', '.resetPassword', function() {
+            const user_id = ($(this).parent().attr('class'));
+            $('.modal-body').html(''), $('.modal-body').html(`
+                    <h3> ARE YOU SURE YOU WANT TO RESET THIS USERS PASSWORD TO MOBILE?</h3>
+                    <button id="resetThis">YES</button>
+                    <button id="no">NO</button>
+                    `), $("#triger").click();
+            $('body').on('click', '#no', function() {
+                $('.modal-body').html(''), $("#triger").click();
+            })
+            $('body').on('click', '#resetThis', function() {
+                $.ajax({
+                    url: `/api/dashboard/resetPassword/${user_id}`,
+                    type: 'GET',
+                    success: function(data) {
+
+                        $('.modal-body').html(''), $('.modal-body').html(`${data}<button id="no">OK</button>`)
+
+
                     },
                     error: function(err) {
                         $('.modal-body').html(''), $('.modal-body').html(err.responseText)
