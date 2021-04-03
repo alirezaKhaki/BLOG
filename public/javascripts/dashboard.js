@@ -70,6 +70,7 @@ $(function() {
     //OPEN OTHER ALL USERS PANEL
     $('body').on('click', '#allUsers', function() {
         $(".container").slideUp(1200);
+        $(".container2").slideUp(1200);
         $(".password").slideUp(1200);
         $(".delete").slideUp(1200);
         $(".my_profile").slideUp(1200);
@@ -376,7 +377,8 @@ $(function() {
                         <h5 class="card-text">GENDER:${data[i].sex}</h5> 
                         <h5>JOINED AT:${date}</h5>
                         <div class="${data[i]._id}">
-                        <button class="deleteUser">DELETE</button>
+                        <button class="resetPassword">RESET PASSWORD</button>
+                        <button class="deleteUser">DELETE USER</button>
                         </div>
                     </div>
                 </div>

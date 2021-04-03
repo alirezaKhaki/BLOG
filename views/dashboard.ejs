@@ -20,9 +20,9 @@
 
         <!-- Add all page content inside this div if you want the side nav to push page content to the right (not used if you only want the sidenav to sit on top of the page -->
 
-        <div id="main" style=" display: flex; flex-direction: column; justify-content: center; width: 80%; height: 500px; align-items: center; align-self: flex-end;overflow-y:scroll;">
+        <div id="main" style=" display: flex; flex-direction: column; justify-content: center; width: 80%; height: auto; align-items: center; align-self: flex-end;overflow-y:scroll;">
 
-            <div id="mySidenav" class="sidenav" style="width: 250px; z-index: 1;">
+            <div id="mySidenav" class="sidenav" style="width: 250px; ">
                 <img src="/images/avatars/<%= user.avatar%>" alt="avatar" id="userAvatar">
 
                 <h6 style="text-align: center; color: rgb(117, 117, 117);">WELCOME
@@ -103,7 +103,7 @@
                                 <button id="delete"> DELETE Account</button>
                                 <button id="closeBtn">Close</button>
                             </div>
-                            <div class="edit" style=" overflow: scroll;">
+                            <div class="edit" style=" overflow: scroll; height: auto;">
                                 <div class="edit_box">
                                     <p>ID:</p>
                                     <input type="text" id="id" value="<%= user._id %>" disabled>
@@ -134,8 +134,8 @@
 
                             </div>
 
-                            <div class="newArticle">
-                                <form name='avatarForm' style="overflow: scroll;" action="/api/dashboard/newArticle" method="post" enctype="multipart/form-data">
+                            <div class="newArticle" style="height: auto;">
+                                <form name='avatarForm' action="/api/dashboard/newArticle" method="post" enctype="multipart/form-data">
                                     <label>Choose Article Title:</label>
                                     <input style="width: 90%;" type="text" class='form-control form-control-sm' name="title">
                                     <br>
@@ -149,14 +149,16 @@
                                 <button id="closeBtn">close</button>
                             </div>
 
-                            <div class="password">
+                            <div class="password ">
+
                                 <input type="password" id="old_pass" placeholder="previous password">
                                 <input type="password" id="new_pass" placeholder="new password">
                                 <button id="pass_save">Save</button>
                                 <button id="closeBtn">Close</button>
+
                             </div>
 
-                            <div class="delete">
+                            <div class="delete" style="height: auto;">
                                 <input type="password" id="delete_pass" placeholder="enter your password">
                                 <button id="delete_account">Delete Acount</button>
                                 <button id="closeBtn">close</button>
