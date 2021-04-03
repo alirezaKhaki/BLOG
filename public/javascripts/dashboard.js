@@ -657,6 +657,3 @@ function closeNav() {
     document.getElementById("mySidenav").style.width = "0";
     document.getElementById("main").style.marginLeft = "0";
 }
-
-
-{ /* <img src="/images/avatars/${data.avatar}" alt="avatar" style="width: 80px; height: 80px; border-radius: 50px;"> */ }
