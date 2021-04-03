@@ -11,7 +11,7 @@ const { log } = require('console');
 
 // ALL ARTICLES
 router.get('/getAll', (req, res) => {
-    articles.find({}).populate('owner', 'username').sort({ createdAt: -1 }).exec((err, article) => {
+    articles.find({}).populate('owner').sort({ createdAt: -1 }).exec((err, article) => {
         if (err) return res.status(500).json({ msg: "Server Error :)", err: err.message })
         if (article) return res.send(article)
 
@@ -91,7 +91,7 @@ router.post('/newArticle', generalTools.loginChecker, async(req, res) => {
 // ARTICLES OF ONE BLOGGER
 router.get('/myArticles/:id', generalTools.loginChecker, async(req, res) => {
         try {
-            const article = await articles.find({ owner: req.params.id }).sort({ createdAt: -1 })
+            const article = await articles.find({ owner: req.params.id }).sort({ createdAt: -1 }).populate('owner')
             res.send({ article });
 
         } catch (err) {
@@ -101,10 +101,22 @@ router.get('/myArticles/:id', generalTools.loginChecker, async(req, res) => {
     })
     //DELETE ARTICLE
 router.get('/delete/:id', generalTools.loginChecker, async(req, res) => {
-    articles.findByIdAndDelete({ _id: req.params.id }, (err) => {
-        if (err) return res.status(500).send('server error')
-        return res.send('this article has been deleted!')
-    })
+    if (req.session.user.role !== "admin") {
+        articles.findOne({ _id: req.params.id, owner: req.session.user._id }, (err, article) => {
+            if (err) return res.status(500).send('server error')
+            if (!article) return res.status(403).send('acces denied!')
+            articles.findByIdAndDelete({ _id: req.params.id }, (err) => {
+                if (err) return res.status(500).send('server error')
+                return res.send('this article has been deleted!')
+            })
+        })
+    } else {
+        articles.findByIdAndDelete({ _id: req.params.id }, (err) => {
+            if (err) return res.status(500).send('server error')
+            return res.send('this article has been deleted!')
+        })
+    }
+
 })
 
 //EDIT ARTICLE

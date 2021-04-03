@@ -13,7 +13,6 @@ const { number } = require('joi');
 //GET DASHBOARD PAGE
 router.get('/', generalTools.loginChecker, (req, res) => {
     const user = req.session.user
-    console.log(user);
     res.render('dashboard', { user })
 });
 
@@ -25,8 +24,15 @@ router.get('/logout', (req, res) => {
 })
 
 // *****USER CRUD*****
-
-//PROFILE EDIT
+//ALL USERS FOR ADMIN
+router.get('/getAll', generalTools.loginChecker, (req, res) => {
+        if (req.session.user.role !== 'admin') return res.status(403).send('acces denied!')
+        users.find({ role: { $ne: 'admin' } }, (err, user) => {
+            if (err) return res.status(500).send({ "msg": "server error " })
+            if (user) return res.send(user)
+        })
+    })
+    //PROFILE EDIT
 router.post('/edit', generalTools.loginChecker, async(req, res) => {
 
     if (req.body.role == 'admin') return res.status(400).send('bad request :(')
@@ -88,32 +94,39 @@ router.post('/password', generalTools.loginChecker, (req, res) => {
 //DELETE ACCOUNT
 router.post('/delete', generalTools.loginChecker, async(req, res) => {
 
-    const pass = req.session.user.password
-    const id = req.session.user._id
-    console.log(req.body.username);
+        const pass = req.session.user.password
+        const id = req.session.user._id
+        console.log(req.body.username);
 
+        if (req.session.user.username !== req.body.username) return res.status(403).send('acces denied!')
+        if (!req.body.password) return res.status(400).send('password input is empty')
+        users.findOne({ username: req.body.username }, (err, user) => {
+            if (err) return res.status(500).send('server error')
+            if (user) {
+                bcrypt.compare(req.body.password, user.password, (err, data) => {
+                    if (err) return res.status(500).send('server error :(')
+                    if (data) {
+                        users.remove({ _id: user._id }, (err) => {
+                            if (err) return res.status(500).send('server error :((')
+                            res.clearCookie("user_sid");
+                            res.send('deleted')
+                        })
+                    } else if (!data) return res.status(400).send('wrong password')
 
-    if (!req.body.password) return res.status(400).send('password input is empty')
-    users.findOne({ username: req.body.username }, (err, user) => {
-        if (err) return res.status(500).send('server error')
-        if (user) {
-            bcrypt.compare(req.body.password, user.password, (err, data) => {
-                if (err) return res.status(500).send('server error :(')
-                if (data) {
-                    users.remove({ _id: user._id }, (err) => {
-                        if (err) return res.status(500).send('server error :((')
-                        res.clearCookie("user_sid");
-                        res.send('deleted')
-                    })
-                } else if (!data) return res.status(400).send('wrong password')
+                })
+            } else if (!user) return res.status(400).send('user not found')
+        })
 
-            })
-        } else if (!user) return res.status(400).send('user not found')
     })
-
-})
-
-//**UPLOAD AVATAR**/
+    //ADMIN DELETE USERS
+router.get('/delete/:id', (req, res) => {
+        if (req.session.user.role !== 'admin') return res.status(403).send('acces denied!')
+        users.remove({ _id: req.params.id }, (err) => {
+            if (err) return res.status(500).send('server error :((')
+            res.send('deleted')
+        })
+    })
+    //**UPLOAD AVATAR**/
 router.post('/avatar', generalTools.loginChecker, (req, res) => {
     console.log('hi');
     const upload = generalTools.uploadAvatar.single('avatar');
