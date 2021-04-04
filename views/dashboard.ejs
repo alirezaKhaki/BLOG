@@ -33,7 +33,7 @@
 
         <!-- Add all page content inside this div if you want the side nav to push page content to the right (not used if you only want the sidenav to sit on top of the page -->
 
-        <div id="main" style=" display: flex; flex-direction: column; justify-content: center; width: 80%; height: auto; align-items: center; align-self: flex-end;overflow-y:scroll;">
+        <div id="main" style=" display: flex; flex-direction: column; justify-content: center; width: 80%; height: 90%; align-items: center; align-self: flex-end;overflow-y:scroll;">
 
             <div id="mySidenav" class="sidenav" style="width: 250px; ">
                 <img src="/images/avatars/<%= user.avatar%>" alt="avatar" id="userAvatar">
@@ -56,7 +56,7 @@
                                     </form>
                 </div>
             </div>
-            <div class="container column mt-5" style="width: 100%;height: 100%; margin-top: 25px;  ">
+            <div class="container column mt-5" style="width: 100%;height: 100%; margin:25px 0 25px 0;  ">
                 <h1>YOUR ARTICLES</h1>
             </div>
             <% if(user.role==="admin") { %>
@@ -116,7 +116,7 @@
                                 <button id="delete"> DELETE Account</button>
                                 <button id="closeBtn">Close</button>
                             </div>
-                            <div class="edit" style=" overflow: scroll; height: auto;">
+                            <div class="edit" style=" overflow-y: scroll;">
                                 <div class="edit_box">
                                     <p>ID:</p>
                                     <input type="text" id="id" value="<%= user._id %>" disabled>
