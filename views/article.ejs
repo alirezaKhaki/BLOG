@@ -32,16 +32,16 @@
                             <%= article.title%>
                         </h5>
                         <div>
-                            <p id="more" class="card-text">TEXT:
-                                <%= article.text%>
-                            </p>
-                            <p>CREATED BY:
-                                <%= article.owner.username%>
-                            </p>
-                            <p>CREATED AT:
-                                <%= article.createdAt%>
-                            </p>
-                            <img src="/images/avatars/<%= article.avatar%>" alt="avatar" class="photo">
+                            TEXT:
+                            <%- article.text%>
+
+                                <p>CREATED BY:
+                                    <%= article.owner.username%>
+                                </p>
+                                <p>CREATED AT:
+                                    <%= article.createdAt%>
+                                </p>
+                                <img src="/images/avatars/<%= article.avatar%>" alt="avatar" class="photo">
                         </div>
 
 

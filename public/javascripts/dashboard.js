@@ -462,7 +462,8 @@ $(function() {
                     <img style="width:50px;height:50px;" src="/images/avatars/${data.article[i].owner.avatar}" alt="avatar" class="photo">
                         <h5 class="card-title">TITLE:${data.article[i].title} </h5>
                         <h6 class="card-title">BY:${data.article[i].owner.username} </h6>
-                        <div> <p class="card-text">TEXT:${data.article[i].text}</p> <a href="/api/articles/${data.article[i]._id}">more...</a></div> 
+                        <div class="article_text">TEXT:${data.article[i].text}</div> 
+                        <a href="/api/articles/${data.article[i]._id}">more...</a>
                         <p>CREATED AT:${date}</p>
                         <img style="width:auto;" src="/images/avatars/${data.article[i].avatar}" alt="avatar" class="photo">
                         <div class="${data.article[i]._id}">
@@ -525,10 +526,26 @@ $(function() {
                         <input id="title_input" style="width: 90%;" type="text" class='form-control form-control-sm' name="title" value="${data.title}">
                         <br>
                         <label>Choose Article Text:</label>
-                        <textarea id="text_input" style="vertical-align: top;" id="" cols="50" rows="10" name="text">${data.text}</textarea>
+                        <textarea id="text_input" style="vertical-align: top;"  cols="50" rows="10" name="text">${data.text}</textarea>
                         <br>
                         <button id="send_edit">Submit</button>
-                        <button id="no">close</button>`), $("#triger").click();
+                        <button id="no">close</button>`).promise().done(function() {
+                            tinymce.init({
+                                selector: "textarea",
+                                width: '100%',
+                                height: 500,
+                                plugins: ["advlist autolink lists link image charmap print preview anchor",
+                                    "searchreplace visualblocks code fullscreen",
+                                    "insertdatetime media table paste"
+                                ],
+                                toolbar: "insertfile undo redo | styleselect | bold italic | alignleft aligncenter alignright alignjustify | bullist numlist outdent indent | link image",
+                                setup: function(editor) {
+                                    editor.on('change', function() {
+                                        tinymce.triggerSave();
+                                    });
+                                }
+                            });
+                        }), $("#triger").click();
                         //POST EDIT ARTICLE DATA TO SERVER
                         $('body').on('click', '#send_edit', function() {
                                 $.ajax({
