@@ -312,7 +312,8 @@ $(function() {
             <img style="width:50px;height:50px;" src="/images/avatars/${data[i].owner.avatar}" alt="avatar" class="photo">
                 <h5 class="card-title">TITLE:${data[i].title} </h5>
                 <h6 class="card-title">BY:${data[i].owner.username} </h6>
-                <div> <p class="card-text">TEXT:${data[i].text}</p> <a href="/api/articles/${data[i]._id}">more...</a></div> 
+                <div class="article_text"> TEXT:${data[i].text}</p></div> 
+                <a href="/api/articles/${data[i]._id}">more...</a>
                 <p>CREATED AT:${date}</p>
                 <img style="width:auto;" src="/images/avatars/${data[i].avatar}" alt="avatar" class="photo">
                 <div class="${data[i]._id}">
@@ -365,24 +366,56 @@ $(function() {
             let date = data[i].createdAt
             date = date.substring(0, date.length - 14);
             $('.users').append(`
-                <div class="pages mt-3 col-12 col-md-6 col-lg-4" style="width:100%;">
-                <div class="card">
-                    <div class="card-body" style="border-radius: 10px;">
+                
+                <div class="my_profile ">
                     <img style="width:110px;height:110px;border-radius:50px;" src="/images/avatars/${data[i].avatar}" alt="avatar" class="photo">
-                    <h5 class="card-title">_id:${data[i]._id} </h5>
-                    <h5 class="card-title">USERNAME:${data[i].username} </h5>
-                        <h5 class="card-title">FIRTS NAME:${data[i].firstName} </h5>
-                        <h5 class="card-text">LAST NAME:${data[i].lastName}</h5> 
-                        <h5 class="card-text">ROLE:${data[i].role}</h5> 
-                        <h5 class="card-text">GENDER:${data[i].sex}</h5> 
-                        <h5 class="card-text">MOBILE:${data[i].mobile}</h5> 
-                        <h5>JOINED AT:${date}</h5>
+                    <table class="table table-borderless ">
+                    <thead>
+                    <tr>
+                        <th scope="col">ID</th>
+                        <th scope="col">USERNAME</th>
+                        <th scope="col">FIRST NAME</th>
+                        <th scope="col">LAST NAME</th>
+                        <th scope="col">GENDER</th>
+                        <th scope="col">PHONE NUMBER</th>
+                        <th scope="col">ROLE</th>
+                        <th scope="col">JOINED AT</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td>
+                        ${data[i]._id}
+                        </td>
+                        <td>
+                        ${data[i].username}
+                        </td>
+                        <td>
+                        ${data[i].firstName}
+                        </td>
+                        <td>
+                        ${data[i].lastName}
+                        </td>
+                        <td>
+                        ${data[i].sex}
+                        </td>
+                        <td>
+                        ${data[i].mobile}
+                        </td>
+                        <td>
+                        ${data[i].role}
+                        </td>
+                        <td>
+                        ${data[i].createdAt}
+                        </td>
+                    </tr>
+                </tbody>
+            </table>
                         <div class="${data[i]._id}">
                         <button class="resetPassword">RESET PASSWORD</button>
                         <button class="deleteUser">DELETE USER</button>
                         </div>
-                    </div>
-                </div>
+                 
             </div>
                `)
         }

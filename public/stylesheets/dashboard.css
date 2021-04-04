@@ -219,6 +219,11 @@ img:hover {
     top: 0;
 }
 
+.my_profile {
+    border: 1px solid rgba(0, 0, 0, 0.384);
+    margin: 0 10px 5px 0;
+}
+
 
 /* hide number input arrow */
 

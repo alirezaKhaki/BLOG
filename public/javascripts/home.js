@@ -10,7 +10,8 @@ $(function() {
                 <div class="card">
                     <div class="card-body" style="border-radius: 10px;">
                     <h5 class="card-title">TITLE:${data[i].title} </h5>
-                    <div><p id="more" class="card-text">TEXT:${data[i].text}</p><a href="/api/articles/${data[i]._id}">more</a></div>
+                    <div class="article_text">TEXT:${data[i].text}</div>
+                    <a href="/api/articles/${data[i]._id}">more</a>
                     <p>CREATED BY:${data[i].owner.username}</p>
                     <p>CREATED AT:${date}</p>
                     <img src="/images/avatars/${data[i].avatar}" alt="avatar" class="photo">
