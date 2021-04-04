@@ -147,7 +147,7 @@ router.post('/avatar', generalTools.loginChecker, (req, res) => {
 
     upload(req, res, (err) => {
         if (err) {
-            res.status(500).send("server error")
+            res.status(500).send(err)
         } else {
             if (req.file == undefined) {
 
