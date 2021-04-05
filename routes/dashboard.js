@@ -1,14 +1,9 @@
 const express = require('express');
 const users = require('../model/user');
-const aritcels = require('../model/article')
 const router = express.Router();
 const generalTools = require('../tools/general-tools');
 const bcrypt = require('bcrypt');
 const JoiSchema = require('../tools/joiValidator')
-const fs = require('fs')
-const path = require('path')
-const multer = require('multer');
-const { number } = require('joi');
 
 //GET DASHBOARD PAGE
 router.get('/', generalTools.loginChecker, (req, res) => {
