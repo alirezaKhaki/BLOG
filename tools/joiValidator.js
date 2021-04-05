@@ -78,3 +78,13 @@ module.exports.editDashboard = Joi.object({
     role: Joi.string(),
 
 })
+module.exports.comment = Joi.object({
+    text: Joi.string()
+        .min(3)
+        .max(200)
+        .required(),
+    owner: Joi.string()
+        .required(),
+    article: Joi.string()
+        .required(),
+})

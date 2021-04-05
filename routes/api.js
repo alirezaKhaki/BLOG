@@ -3,6 +3,7 @@ const register = require('./register');
 const login = require('./login');
 const articles = require('./articles');
 const dashbord = require('./dashboard');
+const comments = require('./comment');
 const router = express.Router();
 const joiSchema = require('../tools/joiValidator')
 const users = require('../model/user')
@@ -12,6 +13,7 @@ router.use('/login', login);
 router.use('/register', register);
 router.use('/dashboard', dashbord);
 router.use('/articles', articles);
+router.use('/comments', comments);
 router.get('/', (req, res) => {
     res.render('home.ejs')
 });

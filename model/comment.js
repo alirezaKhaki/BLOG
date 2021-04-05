@@ -13,10 +13,6 @@ const CommentSchema = new Schema({
         type: Date,
         default: Date.now
     },
-    lastUpdate: {
-        type: Date,
-        default: Date.now
-    },
     owner: {
         type: Schema.Types.ObjectId,
         required: true,
