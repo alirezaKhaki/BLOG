@@ -16,24 +16,27 @@ router.get('/allComments', generalTools.loginChecker, (req, res) => {
 
 
 router.get('/articleComment/:id', (req, res) => {
-    comments.find({ article: req.params.id }).populate('owner').exec((err, comment) => {
+    comments.find({ article: req.params.id }).populate('owner').sort({ createdAt: -1 }).exec((err, comment) => {
         if (err) return res.status(500).send('server error')
         if (comment) return res.send(comment)
     })
 })
 
 
-router.post('/newComment', generalTools.loginChecker, async(req, res) => {
+router.post('/newComment/:id', async(req, res) => {
     try {
-        let validate = await JoiSchema.comment.validateAsync(req.body);
-        if (validate) {
-            let comment = new comments(req.body)
-            comment = await comment.save();
-            if (comment) return res.send('comment saved')
-        }
+        if (!req.session.user) return res.status(400).send('login first')
+        if (req.body.text === "") return res.status(400).send('text input is empty')
+        let comment = new comments({
+            text: req.body.text,
+            owner: req.session.user._id,
+            article: req.params.id
+        })
+        comment = await comment.save();
+        if (comment) return res.send('comment saved')
+
     } catch (err) {
-        if (err.stack.includes('ValidationError')) return res.status(400).send(err.details[0].message);
-        if (err) return res.status(500).send(err);
+        if (err) return res.status(500).send(err.message);
     }
 })
 

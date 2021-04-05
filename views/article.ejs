@@ -16,8 +16,45 @@
             object-fit: contain;
             border-radius: 10px;
         }
+        
+        .modal-body,
+        .modal-content {
+            text-align: center;
+            background-color: rgba(94, 94, 94, 0.7);
+            border-radius: 10px;
+            color: white;
+        }
+        
+        button {
+            float: right;
+            background: transparent;
+            text-transform: uppercase;
+            font-weight: 500;
+            font-style: normal;
+            font-size: 0.625rem;
+            letter-spacing: 0.3em;
+            color: rgba(255, 255, 255, 0.7);
+            border-radius: 0;
+            padding: 18px 80px 20px;
+            transition: all 0.7s ease-out;
+            background: linear-gradient(270deg, rgba(117, 117, 117, 0.308), rgba(0, 0, 0, 0.8), rgba(0, 0, 0, 0.8));
+            background-position: 1% 50%;
+            background-size: 300% 300%;
+            text-decoration: none;
+            margin: 0.625rem;
+            border: none;
+            border-radius: 5px;
+        }
+        
+        button:hover {
+            border: 1px solid rgba(78, 78, 78, 0.3);
+            color: rgb(255, 255, 255);
+            background-position: 99% 50%;
+        }
     </style>
-    <title>Article</title>
+    <title>
+        <%= article.title%>
+    </title>
 </head>
 
 <body>
@@ -26,36 +63,44 @@
         <div class="articles" style="padding: 50px;">
             <div class="pages mt-3 col-12 col-md-6 col-lg-4" style="width:100%;">
                 <div class="card">
-
                     <div class="card-body" style="border-radius: 10px;">
                         <h5 class="card-title">TITLE:
                             <%= article.title%>
                         </h5>
                         <div>
-                            TEXT:
-                            <%- article.text%>
+                            <p>TEXT:
+                                <%- article.text%>
+                            </p>
 
-                                <p>CREATED BY:
-                                    <%= article.owner.username%>
-                                </p>
-                                <p>CREATED AT:
-                                    <%= article.createdAt%>
-                                </p>
-                                <img src="/images/avatars/<%= article.avatar%>" alt="avatar" class="photo">
+                            <p>CREATED BY:
+                                <%= article.owner.username%>
+                            </p>
+                            <p>CREATED AT:
+                                <%= article.createdAt%>
+                            </p>
+                            <img src="/images/avatars/<%= article.avatar%>" alt="avatar" class="photo">
                         </div>
-
-
                     </div>
-
                 </div>
             </div>
+        </div>
 
+        <div class="comments" style="padding: 50px;">
+        </div>
 
+        <div class="postComent">
 
-            <%- include('./partials/modal.ejs') %>
+            <div class="mb-3" style="padding: 50px;">
+                <label for="postComment" class="form-label">New Comment:(*maximum 300 characters)</label>
+                <textarea class="form-control" id="postComment" rows="3"></textarea>
+                <button id="submit">Submit</button>
+            </div>
 
-                <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
-                <script src="/javascripts/article.js"></script>
+        </div>
+        <%- include('./partials/modal.ejs') %>
+
+            <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+            <script src="/javascripts/article.js"></script>
 </body>
 
 </html>
