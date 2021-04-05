@@ -264,100 +264,43 @@ $(function() {
     // SEND ADD NEW AVATAR DATA TO SERVER
 
     $('body').on('click', '#userAvatar', function() {
-            $('.modal-body').html(''), $('.modal-body').html(` 
+        $('.modal-body').html(''), $('.modal-body').html(` 
         <form name='userAvatar' action="/api/dashboard/avatar" method="post" enctype="multipart/form-data">
         <input type="file" class='form-control form-control-sm' name="avatar" id='avatarInput'>
         <button type="submit" value="submit">Submit</button>
         </form>
         <button id="deleteImage">Delete Avatar</button>`), $("#triger").click();
-            $("form[name='userAvatar']").on("submit", function(ev) {
-                ev.preventDefault(); // Prevent browser default submit.
+        $("form[name='userAvatar']").on("submit", function(ev) {
+            ev.preventDefault(); // Prevent browser default submit.
 
-                var formData = new FormData(this);
-                console.log(formData);
+            var formData = new FormData(this);
+            console.log(formData);
 
 
-                $.ajax({
-                    url: "/api/dashboard/avatar",
-                    type: "POST",
-                    data: formData,
-                    success: function(msg) {
-                        $('.modal-body').html(''), $('.modal-body').html(msg)
-                        setTimeout(function() {
-                            window.location.href = '/api/dashboard'
-                        }, 2000);
-                    },
-                    error: function(err) {
-                        $('.modal-body').html(''), $('.modal-body').html(err.responseText)
-                        setTimeout(function() {
-                            $("#triger").click();
-                        }, 2000);
-                    },
-                    cache: false,
-                    contentType: false,
-                    processData: false
-                });
-
+            $.ajax({
+                url: "/api/dashboard/avatar",
+                type: "POST",
+                data: formData,
+                success: function(msg) {
+                    $('.modal-body').html(''), $('.modal-body').html(msg)
+                    setTimeout(function() {
+                        window.location.href = '/api/dashboard'
+                    }, 2000);
+                },
+                error: function(err) {
+                    $('.modal-body').html(''), $('.modal-body').html(err.responseText)
+                    setTimeout(function() {
+                        $("#triger").click();
+                    }, 2000);
+                },
+                cache: false,
+                contentType: false,
+                processData: false
             });
-        })
-        //GET ALL ARTICLES FOR ADMIN
-    function allArticles(data) {
-        for (let i = 0; i < data.length; i++) {
-            let date = data[i].createdAt
-            date = date.substring(0, date.length - 14);
-            $('.container2').append(`
-        <div class="pages mt-3 col-12 col-md-6 col-lg-4" style="width:100%;">
-        <div class="card">
-            <div class="card-body" style="border-radius: 10px;">
-            <img style="width:50px;height:50px;" src="/images/avatars/${data[i].owner.avatar}" alt="avatar" class="photo">
-                <h5 class="card-title">TITLE:${data[i].title} </h5>
-                <h6 class="card-title">BY:${data[i].owner.username} </h6>
-                <div class="article_text"> TEXT:${data[i].text}</p></div> 
-                <a href="/api/articles/${data[i]._id}">more...</a>
-                <p>CREATED AT:${date}</p>
-                <img style="width:auto;" src="/images/avatars/${data[i].avatar}" alt="avatar" class="photo">
-                <div class="${data[i]._id}">
-                <button class="deleteArticle">DELETE</button>
-                </div>
-            </div>
-        </div>
-    </div>
-       `)
-        }
-        //DELETE ARTICLE FUNCTION
-        $('body').on('click', '.deleteArticle', function() {
-            $('.modal-body').html(''), $('.modal-body').html(`
-            <h3> ARE YOU SURE YOU WANT TO DELETE THIS ARTICLE?</h3>
-            <button id="deleteThis">YES</button>
-            <button id="no">NO</button>
-            `), $("#triger").click();
-            const article_id = ($(this).parent().attr('class'));
-            $('body').on('click', '#no', function() {
-                $('.modal-body').html(''), $("#triger").click();
-            })
-            $('body').on('click', '#deleteThis', function() {
-                $.ajax({
-                    url: `/api/articles/delete/${article_id}`,
-                    type: 'GET',
-                    success: function(data) {
 
-                        $('.modal-body').html(''), $('.modal-body').html(data)
+        });
+    })
 
-                        setTimeout(function() {
-                            window.location.href = '/api/register'
-
-                        }, 2000);
-                    },
-                    error: function(err) {
-                        $('.modal-body').html(''), $('.modal-body').html(err.responseText)
-                        setTimeout(function() {
-                            $("#triger").click();
-                        }, 2000);
-                    }
-                });
-            })
-        })
-    }
 
     //GET ALL USERS FOR ADMIN
     function allUsers(data) {

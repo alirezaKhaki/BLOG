@@ -1,13 +1,8 @@
 const express = require('express');
-const users = require('../model/user');
+const comments = require('../model/comment');
 const articles = require('../model/article')
 const router = express.Router();
 const generalTools = require('../tools/general-tools');
-const bcrypt = require('bcrypt');
-const JoiSchema = require('../tools/joiValidator')
-const fs = require('fs')
-const path = require('path');
-const { log } = require('console');
 
 // ALL ARTICLES
 router.get('/getAll', (req, res) => {
@@ -31,10 +26,17 @@ router.get('/article/:id', (req, res) => {
 router.get('/:id', (req, res) => {
     articles.findOne({ _id: req.params.id }).populate('owner', 'username').exec((err, article) => {
         if (err) return res.status(500).json({ msg: "Server Error :)", err: err.message })
-        if (article) return res.render('article', { article })
+        if (article) {
+            comments.find({ article: req.params.id }).populate('owner').sort({ createdAt: -1 }).exec((err, comment) => {
+                if (err) return res.status(500).send('server error')
+                if (comment) return res.render('article', { article: article, comments: comment, session: req.session })
+            })
+        }
 
     })
+
 })
+
 
 
 // ADD NEW ARTICLE
@@ -111,7 +113,7 @@ router.get('/delete/:id', generalTools.loginChecker, async(req, res) => {
             })
         })
     } else {
-        articles.findByIdAndDelete({ _id: req.params.id }, (err) => {
+        articles.findByIdAndDelete(req.params.id, (err) => {
             if (err) return res.status(500).send('server error')
             return res.send('this article has been deleted!')
         })

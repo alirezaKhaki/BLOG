@@ -58,6 +58,9 @@
 </head>
 
 <body>
+
+
+
     <%- include('./partials/navbar.ejs') %>
 
         <div class="articles" style="padding: 50px;">
@@ -68,7 +71,7 @@
                             <%= article.title%>
                         </h5>
                         <div>
-                            <p>TEXT:
+                            <p id="text">TEXT:
                                 <%- article.text%>
                             </p>
 
@@ -79,6 +82,9 @@
                                 <%= article.createdAt%>
                             </p>
                             <img src="/images/avatars/<%= article.avatar%>" alt="avatar" class="photo">
+                            <div class=" <%= article._id%>">
+                                <button class="deleteArticle">Delete</button>
+                            </div>
                         </div>
                     </div>
                 </div>
@@ -86,6 +92,28 @@
         </div>
 
         <div class="comments" style="padding: 50px;">
+            <% for(let i in comments){ %>
+                <div class="pages mt-3 col-12 col-md-6 col-lg-4" style="width:100%;">
+                    <div class="card">
+                        <div class="card-body" style="border-radius: 10px;">
+                            <img src="/images/avatars/<%= comments[i].owner.avatar%>" alt="avatar" style="width:50px;height:50px;border-radius:50px">
+                            <div class="article_text">USERNAME:
+                                <%= comments[i].owner.username%>
+                            </div>
+                            <p class="card-title">COMMENT:
+                                <%= comments[i].text%>
+                            </p>
+                            <p id="created">CREATED AT:
+                                <%= comments[i].createdAt%>
+                            </p>
+                            <div class=" <%= comments[i]._id%>">
+                                <button class="deleteComment">Delete</button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <%}%>
+
         </div>
 
         <div class="postComent">
@@ -98,9 +126,22 @@
 
         </div>
         <%- include('./partials/modal.ejs') %>
-
             <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
             <script src="/javascripts/article.js"></script>
+            <% if('user' in session===false) {%>
+                <script>
+                    $('.deleteArticle').remove();
+                    $('.deleteComment').remove();
+                </script>
+                <%}else if('user' in session) {%>
+                    <% if(session.user.role!=='admin') {%>
+                        <script>
+                            $('.deleteArticle').remove();
+                            $('.deleteComment').remove();
+                        </script>
+                        <%}%>
+                            <%}%>
+
 </body>
 
 </html>

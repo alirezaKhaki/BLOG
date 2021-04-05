@@ -2,7 +2,6 @@ const express = require('express');
 const comments = require('../model/comment');
 const router = express.Router();
 const generalTools = require('../tools/general-tools');
-const JoiSchema = require('../tools/joiValidator')
 
 
 
@@ -38,6 +37,14 @@ router.post('/newComment/:id', async(req, res) => {
     } catch (err) {
         if (err) return res.status(500).send(err.message);
     }
+})
+
+router.delete('/delete/:id', (req, res) => {
+    if (req.session.user.role !== 'admin') return res.status(403).send('access denied!')
+    comments.findByIdAndDelete({ _id: req.params.id }, (err) => {
+        if (err) return res.status(500).send('server error')
+        res.send('comment deleted')
+    })
 })
 
 

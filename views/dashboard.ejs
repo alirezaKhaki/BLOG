@@ -46,136 +46,129 @@
                     <button id="my_profile">About Me</button>
                     <button id="addArticle">Add Article</button>
                     <% if(user.role==="admin") { %>
-                        <button id="allArticles">All Articles</button>
+                        <button id="allUsers">All Users</button>
                         <%}%>
-                            <% if(user.role==="admin") { %>
-                                <button id="allUsers">All Users</button>
-                                <%}%>
-                                    <form style="align-self: center;" action="/api/dashboard/logout" method="GET">
-                                        <button type="submit">logout</button>
-                                    </form>
+                            <form style="align-self: center;" action="/api/dashboard/logout" method="GET">
+                                <button type="submit">logout</button>
+                            </form>
                 </div>
             </div>
             <div class="container column mt-5" style="width: 100%;height: 100%; margin:25px 0 25px 0;  ">
                 <h1>YOUR ARTICLES</h1>
             </div>
+
             <% if(user.role==="admin") { %>
-                <div class="container2 column mt-5" style="width: 100%;height: 100%; margin-top: 25px;  ">
-                    <h1>All Articles</h1>
+                <div class="users row mt-5" style="width: 100%;height: 100%;margin:25px 0 25px 0; ">
+                    <h1>All Users</h1>
                 </div>
                 <%}%>
-                    <% if(user.role==="admin") { %>
-                        <div class="users row mt-5" style="width: 100%;height: 100%;margin:25px 0 25px 0; ">
-                            <h1>All Users</h1>
+                    <div class="my_profile">
+                        <img id="userAvatar" src="/images/avatars/<%= user.avatar%>" alt="avatar" style="width: 80px; height: 80px; border-radius: 50px;">
+                        <table class="table table-borderless ">
+                            <thead>
+                                <tr>
+                                    <th scope="col">ID</th>
+                                    <th scope="col">USERNAME</th>
+                                    <th scope="col">FIRST NAME</th>
+                                    <th scope="col">LAST NAME</th>
+                                    <th scope="col">GENDER</th>
+                                    <th scope="col">PHONE NUMBER</th>
+                                    <th scope="col">ROLE</th>
+
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr>
+
+                                    <td>
+                                        <%= user._id %>
+                                    </td>
+                                    <td>
+                                        <%= user.username %>
+                                    </td>
+                                    <td>
+                                        <%= user.firstName %>
+                                    </td>
+                                    <td>
+                                        <%= user.lastName%>
+                                    </td>
+                                    <td>
+                                        <%= user.sex%>
+                                    </td>
+                                    <td>
+                                        <%= user.mobile %>
+                                    </td>
+                                    <td>
+                                        <%= user.role %>
+                                    </td>
+                                </tr>
+                            </tbody>
+                        </table>
+                        <button id="edit">Edit Profile</button>
+                        <button id="change">Change Password</button>
+                        <button id="delete"> DELETE Account</button>
+                        <button id="closeBtn">Close</button>
+                    </div>
+                    <div class="edit" style=" overflow-y: scroll;">
+                        <div class="edit_box">
+                            <p>ID:</p>
+                            <input type="text" id="id" value="<%= user._id %>" disabled>
+                            <p>USERNAME:</p>
+                            <input type="text" id="username" value="<%= user.username %>">
+
+                            <p>FIRST NAME:</p>
+                            <input type="text" id="firstName" value="<%= user.firstName %>">
+                            <p>LAST NAME:</p>
+                            <input type="text" id="lastName" value="<%= user.lastName %>">
+
+
+                            <p>NUMBER:</p>
+                            <input type="number" id="number" value="<%= user.mobile %>">
+                            <p>GENDER:</p>
+                            <div style="display: flex; justify-content: center;">
+                                <input style="margin: 0; padding: 0; width: 15px;" type="radio" id="gender" name="gender" value="male">
+                                <label style="margin:0 7px 0 7px;">MALE</label>
+                                <input style="margin: 0; padding: 0; width: 15px;" type="radio" id="gender" name="gender" value="female">
+                                <label style="margin:0 7px 0 7px;">FEMALE</label>
+
+                            </div>
                         </div>
-                        <%}%>
-                            <div class="my_profile">
-                                <img id="userAvatar" src="/images/avatars/<%= user.avatar%>" alt="avatar" style="width: 80px; height: 80px; border-radius: 50px;">
-                                <table class="table table-borderless ">
-                                    <thead>
-                                        <tr>
-                                            <th scope="col">ID</th>
-                                            <th scope="col">USERNAME</th>
-                                            <th scope="col">FIRST NAME</th>
-                                            <th scope="col">LAST NAME</th>
-                                            <th scope="col">GENDER</th>
-                                            <th scope="col">PHONE NUMBER</th>
-                                            <th scope="col">ROLE</th>
+                        <div style="width: 100%; display: flex; justify-content: space-between;">
+                            <button id="save" style="width: 45%;"> SAVE</button>
+                            <button id="closeBtn" style="width: 45%;">Close</button>
+                        </div>
 
-                                        </tr>
-                                    </thead>
-                                    <tbody>
-                                        <tr>
+                    </div>
 
-                                            <td>
-                                                <%= user._id %>
-                                            </td>
-                                            <td>
-                                                <%= user.username %>
-                                            </td>
-                                            <td>
-                                                <%= user.firstName %>
-                                            </td>
-                                            <td>
-                                                <%= user.lastName%>
-                                            </td>
-                                            <td>
-                                                <%= user.sex%>
-                                            </td>
-                                            <td>
-                                                <%= user.mobile %>
-                                            </td>
-                                            <td>
-                                                <%= user.role %>
-                                            </td>
-                                        </tr>
-                                    </tbody>
-                                </table>
-                                <button id="edit">Edit Profile</button>
-                                <button id="change">Change Password</button>
-                                <button id="delete"> DELETE Account</button>
-                                <button id="closeBtn">Close</button>
-                            </div>
-                            <div class="edit" style=" overflow-y: scroll;">
-                                <div class="edit_box">
-                                    <p>ID:</p>
-                                    <input type="text" id="id" value="<%= user._id %>" disabled>
-                                    <p>USERNAME:</p>
-                                    <input type="text" id="username" value="<%= user.username %>">
+                    <div class="newArticle" style="height: auto;">
+                        <form name='avatarForm' action="/api/dashboard/newArticle" method="post" enctype="multipart/form-data">
+                            <label>Choose Article Title:</label>
+                            <input style="width: 90%;" type="text" class='form-control form-control-sm' name="title">
+                            <br>
+                            <label>Choose Article Text:</label>
+                            <textarea style="vertical-align: top;" id="mytextarea" cols="100" rows="10" name="text"></textarea>
+                            <br>
+                            <label>Choose Article Avatar:</label>
+                            <input style="width: 90%;" type="file" class='form-control form-control-sm' name="avatar">
+                            <button type="submit">Submit</button>
+                        </form>
+                        <button id="closeBtn">close</button>
+                    </div>
 
-                                    <p>FIRST NAME:</p>
-                                    <input type="text" id="firstName" value="<%= user.firstName %>">
-                                    <p>LAST NAME:</p>
-                                    <input type="text" id="lastName" value="<%= user.lastName %>">
+                    <div class="password ">
 
+                        <input type="password" id="old_pass" placeholder="previous password">
+                        <input type="password" id="new_pass" placeholder="new password">
+                        <button id="pass_save">Save</button>
+                        <button id="closeBtn">Close</button>
 
-                                    <p>NUMBER:</p>
-                                    <input type="number" id="number" value="<%= user.mobile %>">
-                                    <p>GENDER:</p>
-                                    <div style="display: flex; justify-content: center;">
-                                        <input style="margin: 0; padding: 0; width: 15px;" type="radio" id="gender" name="gender" value="male">
-                                        <label style="margin:0 7px 0 7px;">MALE</label>
-                                        <input style="margin: 0; padding: 0; width: 15px;" type="radio" id="gender" name="gender" value="female">
-                                        <label style="margin:0 7px 0 7px;">FEMALE</label>
+                    </div>
 
-                                    </div>
-                                </div>
-                                <div style="width: 100%; display: flex; justify-content: space-between;">
-                                    <button id="save" style="width: 45%;"> SAVE</button>
-                                    <button id="closeBtn" style="width: 45%;">Close</button>
-                                </div>
-
-                            </div>
-
-                            <div class="newArticle" style="height: auto;">
-                                <form name='avatarForm' action="/api/dashboard/newArticle" method="post" enctype="multipart/form-data">
-                                    <label>Choose Article Title:</label>
-                                    <input style="width: 90%;" type="text" class='form-control form-control-sm' name="title">
-                                    <br>
-                                    <label>Choose Article Text:</label>
-                                    <textarea style="vertical-align: top;" id="mytextarea" cols="100" rows="10" name="text"></textarea>
-                                    <br>
-                                    <label>Choose Article Avatar:</label>
-                                    <input style="width: 90%;" type="file" class='form-control form-control-sm' name="avatar">
-                                    <button type="submit">Submit</button>
-                                </form>
-                                <button id="closeBtn">close</button>
-                            </div>
-
-                            <div class="password ">
-
-                                <input type="password" id="old_pass" placeholder="previous password">
-                                <input type="password" id="new_pass" placeholder="new password">
-                                <button id="pass_save">Save</button>
-                                <button id="closeBtn">Close</button>
-
-                            </div>
-
-                            <div class="delete" style="height: auto;">
-                                <input type="password" id="delete_pass" placeholder="enter your password">
-                                <button id="delete_account">Delete Acount</button>
-                                <button id="closeBtn">close</button>
-                            </div>
+                    <div class="delete" style="height: auto;">
+                        <input type="password" id="delete_pass" placeholder="enter your password">
+                        <button id="delete_account">Delete Acount</button>
+                        <button id="closeBtn">close</button>
+                    </div>
 
 
         </div>
