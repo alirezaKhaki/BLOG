@@ -15,6 +15,12 @@ router.get('/allComments', generalTools.loginChecker, (req, res) => {
 })
 
 
+router.get('/articleComment/:id', (req, res) => {
+    comments.find({ article: req.params.id }).populate('owner').exec((err, comment) => {
+        if (err) return res.status(500).send('server error')
+        if (comment) return res.send(comment)
+    })
+})
 
 
 router.post('/newComment', generalTools.loginChecker, async(req, res) => {
