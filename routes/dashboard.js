@@ -1,5 +1,7 @@
 const express = require('express');
 const users = require('../model/user');
+const articles = require('../model/article');
+const comments = require('../model/comment');
 const router = express.Router();
 const generalTools = require('../tools/general-tools');
 const bcrypt = require('bcrypt');
@@ -102,11 +104,6 @@ router.get('/resetPassword/:id', (req, res) => {
 
 //DELETE ACCOUNT
 router.post('/delete', generalTools.loginChecker, async(req, res) => {
-
-        const pass = req.session.user.password
-        const id = req.session.user._id
-        if (req.session.user.username !== req.body.username) return res.status(403).send('acces denied!')
-
         if (req.session.user.username !== req.body.username) return res.status(403).send('acces denied!')
         if (!req.body.password) return res.status(400).send('password input is empty')
         users.findOne({ username: req.body.username }, (err, user) => {
@@ -117,11 +114,16 @@ router.post('/delete', generalTools.loginChecker, async(req, res) => {
                     if (data) {
                         users.remove({ _id: user._id }, (err) => {
                             if (err) return res.status(500).send('server error :((')
-                            res.clearCookie("user_sid");
-                            res.send('deleted')
+                            articles.remove({ owner: req.params.id }, (err) => {
+                                if (err) return res.status(500).send('server error')
+                                comments.remove({ owner: req.params.id }, (err) => {
+                                    if (err) return res.status(500).send('server error')
+                                    res.clearCookie("user_sid");
+                                    res.send('deleted')
+                                })
+                            })
                         })
                     } else if (!data) return res.status(400).send('wrong password')
-
                 })
             } else if (!user) return res.status(400).send('user not found')
         })
@@ -132,7 +134,13 @@ router.get('/delete/:id', (req, res) => {
         if (req.session.user.role !== 'admin') return res.status(403).send('acces denied!')
         users.remove({ _id: req.params.id }, (err) => {
             if (err) return res.status(500).send('server error :((')
-            res.send('deleted')
+            articles.remove({ owner: req.params.id }, (err) => {
+                if (err) return res.status(500).send('server error')
+                comments.remove({ owner: req.params.id }, (err) => {
+                    if (err) return res.status(500).send('server error')
+                    res.send('deleted')
+                })
+            })
         })
     })
     //**UPLOAD AVATAR**/

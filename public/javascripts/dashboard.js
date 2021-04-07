@@ -362,7 +362,7 @@ $(function() {
             </div>
                `)
         }
-        //DELETE ARTICLE FUNCTION
+        //DELETE USER FUNCTION
         $('body').on('click', '.deleteUser', function() {
             const user_id = ($(this).parent().attr('class'));
             $('.modal-body').html(''), $('.modal-body').html(`
@@ -380,13 +380,16 @@ $(function() {
                     success: function(data) {
 
                         $('.modal-body').html(''), $('.modal-body').html(data)
+                        setTimeout(function() {
+                            location.reload()
 
+                        }, 2000);
 
                     },
                     error: function(err) {
                         $('.modal-body').html(''), $('.modal-body').html(err.responseText)
                         setTimeout(function() {
-                            $("#triger").click();
+                            location.reload()
                         }, 2000);
                     }
                 });

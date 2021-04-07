@@ -109,13 +109,19 @@ router.get('/delete/:id', generalTools.loginChecker, async(req, res) => {
             if (!article) return res.status(403).send('acces denied!')
             articles.findByIdAndDelete({ _id: req.params.id }, (err) => {
                 if (err) return res.status(500).send('server error')
-                return res.send('this article has been deleted!')
+                comments.remove({ article: req.params.id }, (err) => {
+                    if (err) return res.status(500).send('server error')
+                    return res.send('this article has been deleted!')
+                })
             })
         })
     } else {
         articles.findByIdAndDelete(req.params.id, (err) => {
             if (err) return res.status(500).send('server error')
-            return res.send('this article has been deleted!')
+            comments.remove({ owner: req.params.id }, (err) => {
+                if (err) return res.status(500).send('server error')
+                return res.send('this article has been deleted!')
+            })
         })
     }
 
