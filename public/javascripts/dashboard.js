@@ -19,7 +19,7 @@ $(function() {
             $(".container2").slideUp(1200);
             $(".users").slideUp(1200);
             $(".container").slideDown(1200);
-            $(".container").css({ "overflow-y": 'scroll' });
+
         })
         // OPEN MY PROFILE PANEL
     $('body').on('click', '#my_profile', function() {
@@ -44,29 +44,7 @@ $(function() {
         $(".edit").slideDown(1200);
 
     });
-    //OPEN OTHER ARTICLES PANEL
-    $('body').on('click', '#allArticles', function() {
-        $(".container").slideUp(1200);
-        $(".password").slideUp(1200);
-        $(".delete").slideUp(1200);
-        $(".my_profile").slideUp(1200);
-        $(".newArticle").slideUp(1200);
-        $(".edit").slideUp(1200);
-        $(".users").slideUp(1200);
 
-        $.get('/api/articles/getAll', (data, err) => {
-            if (err !== 'success') {
-                return $('.modal-body').html(''), $('.modal-body').html(err.responseText), $("#triger").click();
-            }
-            if (data) {
-                allArticles(data)
-            }
-        })
-
-        $(".container2").slideDown(1200);
-        $(".container2").css({ "overflow-y": 'scroll' });
-
-    });
     //OPEN OTHER ALL USERS PANEL
     $('body').on('click', '#allUsers', function() {
         $(".container").slideUp(1200);
@@ -76,7 +54,7 @@ $(function() {
         $(".my_profile").slideUp(1200);
         $(".newArticle").slideUp(1200);
         $(".edit").slideUp(1200);
-        $(".allArticles").slideUp(1200);
+
 
         $.get('/api/dashboard/getAll', (data, err) => {
             if (err !== 'success') {
@@ -88,7 +66,7 @@ $(function() {
         })
 
         $(".users").slideDown(1200);
-        $(".users").css({ "overflow-y": 'scroll' });
+
 
     });
     //OPEN CHANGE PASSWORD PANEL
@@ -309,7 +287,7 @@ $(function() {
             let date = data[i].createdAt
             date = date.substring(0, date.length - 14);
             $('.users').append(`
-                
+            <div class="card-body">
                 <div class="my_profile ">
                     <img style="width:110px;height:110px;border-radius:50px;" src="/images/avatars/${data[i].avatar}" alt="avatar" class="photo">
                     <table class="table table-borderless ">
@@ -360,9 +338,10 @@ $(function() {
                         </div>
                  
             </div>
+            </div>
                `)
         }
-        //DELETE USER FUNCTION
+        //DELETE ARTICLE FUNCTION
         $('body').on('click', '.deleteUser', function() {
             const user_id = ($(this).parent().attr('class'));
             $('.modal-body').html(''), $('.modal-body').html(`
@@ -381,8 +360,7 @@ $(function() {
 
                         $('.modal-body').html(''), $('.modal-body').html(data)
                         setTimeout(function() {
-                            location.reload()
-
+                            $("#triger").click();
                         }, 2000);
 
                     },
@@ -674,11 +652,13 @@ $(function() {
 /* Set the width of the side navigation to 250px and the left margin of the page content to 250px and add a black background color to body */
 function openNav() {
     document.getElementById("mySidenav").style.width = "250px";
-    document.getElementById("main").style.marginLeft = "200px";
+    document.getElementById("main").style.marginLeft = "250px";
+    document.getElementById("nav").style.marginLeft = "250px";
 }
 
 /* Set the width of the side navigation to 0 and the left margin of the page content to 0, and the background color of body to white */
 function closeNav() {
     document.getElementById("mySidenav").style.width = "0";
     document.getElementById("main").style.marginLeft = "0";
+    document.getElementById("nav").style.marginLeft = "0";
 }
