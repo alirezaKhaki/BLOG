@@ -1,8 +1,6 @@
 body {
     font-family: "Lato", sans-serif;
     color: rgb(43, 42, 42);
-    display: flex;
-    flex-direction: column;
 }
 
 .card {
@@ -14,7 +12,7 @@ body {
     padding: 0;
 }
 
-.main {
+#main {
     display: flex;
     flex-direction: column;
     justify-content: center;
@@ -83,7 +81,7 @@ body {
 }
 
 button {
-    display: inline-block;
+    float: right;
     background: transparent;
     text-transform: uppercase;
     font-weight: 500;
@@ -184,6 +182,13 @@ img:hover {
     position: absolute;
     right: 0;
     top: 0;
+}
+
+::placeholder {
+    /* Chrome, Firefox, Opera, Safari 10.1+ */
+    color: rgb(247, 244, 244);
+    opacity: 1;
+    /* Firefox */
 }
 
 

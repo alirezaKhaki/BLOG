@@ -52,10 +52,10 @@
 
         <!-- Add all page content inside this div if you want the side nav to push page content to the right (not used if you only want the sidenav to sit on top of the page -->
 
-        <div id="main" style=" display: flex; flex-direction: column; justify-content: center;  align-items: center; margin-bottom: 5px;">
+        <div id="main">
             <!-- Use any element to open the sidenav -->
             <button onclick="openNav()">Dashboard</button>
-            <div class="container column mt-5" style="width: 100%;height: 100%; ">
+            <div class="container column mt-5">
                 <h1>YOUR ARTICLES</h1>
             </div>
 
@@ -115,7 +115,7 @@
                             <button id="closeBtn">Close</button>
                         </div>
                     </div>
-                    <div class="edit card" style="width: 100%;">
+                    <div class="edit card" style="width: 85%;">
                         <div class="card-body">
                             <h5 class="card-title">Edit Profile</h5>
                             <div class="edit_box">
@@ -141,7 +141,7 @@
 
                                 </div>
                             </div>
-                            <div style="width: 100%; display: flex; justify-content: space-between;">
+                            <div style="width: 85%; display: flex; justify-content: space-between;">
                                 <button id="save" style="width: 45%;"> SAVE</button>
                                 <button id="closeBtn" style="width: 45%;">Close</button>
                             </div>
@@ -167,7 +167,7 @@
                     </div>
 
 
-                    <div class="password card" style="width: 100%;">
+                    <div class="password card" style="width: 85%;">
                         <div class="card-body">
                             <h5 class="card-title">Change Password</h5>
                             <input type="password" id="old_pass" placeholder="previous password">
@@ -177,7 +177,7 @@
                         </div>
                     </div>
 
-                    <div class=" delete card" style="width: 100%;">
+                    <div class=" delete card" style="width: 85%;">
                         <div class="card-body">
                             <h5 class="card-title">Delete Acount</h5>
                             <input type="password" id="delete_pass" placeholder="enter your password">
@@ -187,12 +187,11 @@
                     </div>
 
         </div>
-        <%- include('./partials/footer.ejs') %>
-            <%- include('./partials/modal.ejs') %>
+        <%- include('./partials/modal.ejs') %>
 
 
-                <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
-                <script src="/javascripts/dashboard.js"></script>
+            <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+            <script src="/javascripts/dashboard.js"></script>
 </body>
 
 </html>
