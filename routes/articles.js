@@ -1,8 +1,10 @@
 const express = require('express');
 const comments = require('../model/comment');
 const articles = require('../model/article')
+const views = require('../model/views')
 const router = express.Router();
 const generalTools = require('../tools/general-tools');
+const ip = require('ip');
 
 // ALL ARTICLES
 router.get('/getAll', (req, res) => {
@@ -24,17 +26,32 @@ router.get('/article/:id', (req, res) => {
 
 // DETAILS OF ONE ARTICLE(WITH PAGE RENDERING)
 router.get('/:id', (req, res) => {
-    articles.findOne({ _id: req.params.id }).populate('owner', 'username').exec((err, article) => {
+    const myIp = ip.address() //get ip
+
+    views.find({ ip: myIp }, (err, view) => {
         if (err) return res.status(500).json({ msg: "Server Error :)", err: err.message })
-        if (article) {
-            comments.find({ article: req.params.id }).populate('owner').sort({ createdAt: -1 }).exec((err, comment) => {
-                if (err) return res.status(500).send('server error')
-                if (comment) return res.render('article', { article: article, comments: comment, session: req.session })
-            })
+        if (view.length === 0) {
+            const newIp = new views({
+                    ip: myIp,
+                    article: req.params.id
+                }).save() //creat an ip if it's new
         }
+        articles.findOne({ _id: req.params.id }).populate('owner', 'username').exec((err, article) => {
+            if (err) return res.status(500).json({ msg: "Server Error :)", err: err.message })
+            if (article) {
+                comments.find({ article: req.params.id }).populate('owner').sort({ createdAt: -1 }).exec((err, comment) => {
+                    if (err) return res.status(500).send('server error')
+                    if (comment) {
+                        views.find({ article: req.params.id }, (err, view) => {
+                            if (err) return res.status(500).send('server error')
+                            if (view) return res.status(200).render('article', { article: article, comments: comment, session: req.session, views: view })
+                        })
+                    }
+                })
+            }
 
+        })
     })
-
 })
 
 
@@ -158,35 +175,44 @@ router.delete('/deleteAvatar/:id', generalTools.loginChecker, (req, res) => {
     //add article avatar
 router.post('/addAvatar/:id', generalTools.loginChecker, (req, res) => {
 
-    articles.findOne({ _id: req.params.id, owner: req.session.user._id }, (err, article) => {
-        if (err) return res.status(500).send('server error')
-        if (!article) return res.status(403).send('acces denied!')
-        const upload = generalTools.uploadAvatar.single('avatar');
+        articles.findOne({ _id: req.params.id, owner: req.session.user._id }, (err, article) => {
+            if (err) return res.status(500).send('server error')
+            if (!article) return res.status(403).send('acces denied!')
+            const upload = generalTools.uploadAvatar.single('avatar');
 
-        upload(req, res, (err) => {
-            if (err) {
-                res.status(500).send("server error")
-            } else {
-                if (req.file == undefined) {
-
-                    res.status(400).send('No File Selected!')
-
+            upload(req, res, (err) => {
+                if (err) {
+                    res.status(500).send("server error")
                 } else {
+                    if (req.file == undefined) {
 
-                    articles.findByIdAndUpdate(req.params.id, { avatar: req.file.filename }, { new: true }, (err, article) => {
-                        if (err) return res.status(500).json({ msg: 'Server Error!' })
-                        if (article) {
-                            return res.send('avatar added')
-                        }
-                    });
+                        res.status(400).send('No File Selected!')
 
+                    } else {
+
+                        articles.findByIdAndUpdate(req.params.id, { avatar: req.file.filename }, { new: true }, (err, article) => {
+                            if (err) return res.status(500).json({ msg: 'Server Error!' })
+                            if (article) {
+                                return res.send('avatar added')
+                            }
+                        });
+
+                    }
                 }
-            }
+            })
+
         })
-
     })
+    //get ip adress for view count
+
+router.get('/getIp/:id', async(req, res) => {
+    try {
+        let view = await views.find({ article: req.params.id })
+        res.status(200).send(view)
+    } catch (error) {
+        res.status(500).send('server error')
+
+    }
 })
-
-
 
 module.exports = router;

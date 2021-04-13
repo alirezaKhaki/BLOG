@@ -9,13 +9,15 @@ const session = require('express-session');
 
 const app = express();
 
+mongoose.set('useNewUrlParser', true);
 mongoose.set('useFindAndModify', false);
+mongoose.set('useCreateIndex', true)
 mongoose.connect(
     'mongodb://localhost:27017/blog', {
         useNewUrlParser: true,
         useUnifiedTopology: true
     }
-);
+);;
 // view engine setup
 app.set('views', path.join(__dirname, 'views'));
 app.set('view engine', 'ejs');
@@ -25,6 +27,8 @@ app.use(express.json());
 app.use(express.urlencoded({ extended: false }));
 app.use(cookieParser());
 app.use(express.static(path.join(__dirname, 'public')));
+
+
 
 app.use(session({
     key: 'user_sid',
