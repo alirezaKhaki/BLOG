@@ -27,9 +27,11 @@ router.get('/article/:id', (req, res) => {
 // DETAILS OF ONE ARTICLE(WITH PAGE RENDERING)
 router.get('/:id', (req, res) => {
     const myIp = ip.address() //get ip
-
-    views.find({ ip: myIp }, (err, view) => {
+    console.log(myIp);
+    views.find({ article: req.params.id, ip: myIp }, (err, view) => {
         if (err) return res.status(500).json({ msg: "Server Error :)", err: err.message })
+        console.log(view);
+
         if (view.length === 0) {
             const newIp = new views({
                     ip: myIp,
