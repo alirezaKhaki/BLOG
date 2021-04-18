@@ -30,16 +30,16 @@
         <div id="mySidenav" class="sidenav">
             <a href="javascript:void(0)" class="closebtn" onclick="closeNav()">&times;</a>
 
-            <img src="/images/avatars/<%= user.avatar%>" alt="avatar" id="userAvatar">
+            <img src="/images/avatars/<%= session.avatar%>" alt="avatar" id="userAvatar">
 
             <h6 style="text-align: center; color: rgb(117, 117, 117);">WELCOME
-                <%= user.username %>
+                <%= session.username %>
             </h6>
             <div class="buttons" style="display: flex; flex-direction: column; ">
                 <button id="closeBtn" onclick="closeNav()">My Articles</button>
                 <button id="my_profile" onclick="closeNav()">About Me</button>
                 <button id="addArticle" onclick="closeNav()">Add Article</button>
-                <% if(user.role==="admin") { %>
+                <% if(session.role==="admin") { %>
                     <button id="allUsers" onclick="closeNav()">All Users</button>
                     <%}%>
                         <form style="align-self: center;" action="/api/dashboard/logout" method="GET">
@@ -59,7 +59,7 @@
                 <h1>YOUR ARTICLES</h1>
             </div>
 
-            <% if(user.role==="admin") { %>
+            <% if(session.role==="admin") { %>
                 <div class="users row" style="width: 85%;">
                     <h1>All Users</h1>
                 </div>
@@ -68,7 +68,7 @@
                     <div class="my_profile card" style="width: 85%;">
                         <div class="card-body">
                             <h5 class="card-title">My Profile</h5>
-                            <img id="userAvatar" src="/images/avatars/<%= user.avatar%>" alt="avatar" style="width: 80px; height: 80px; border-radius: 50px;">
+                            <img id="userAvatar" src="/images/avatars/<%= session.avatar%>" alt="avatar" style="width: 80px; height: 80px; border-radius: 50px;">
                             <table class="table table-borderless">
                                 <thead>
                                     <tr>
@@ -86,25 +86,25 @@
                                     <tr>
 
                                         <td>
-                                            <%= user._id %>
+                                            <%= session._id %>
                                         </td>
                                         <td>
-                                            <%= user.username %>
+                                            <%= session.username %>
                                         </td>
                                         <td>
-                                            <%= user.firstName %>
+                                            <%= session.firstName %>
                                         </td>
                                         <td>
-                                            <%= user.lastName%>
+                                            <%= session.lastName%>
                                         </td>
                                         <td>
-                                            <%= user.sex%>
+                                            <%= session.sex%>
                                         </td>
                                         <td>
-                                            <%= user.mobile %>
+                                            <%= session.mobile %>
                                         </td>
                                         <td>
-                                            <%= user.role %>
+                                            <%= session.role %>
                                         </td>
                                     </tr>
                                 </tbody>
@@ -120,18 +120,18 @@
                             <h5 class="card-title">Edit Profile</h5>
                             <div class="edit_box">
                                 <p>ID:</p>
-                                <input type="text" id="id" value="<%= user._id %>" disabled>
+                                <input type="text" id="id" value="<%= session._id %>" disabled>
                                 <p>USERNAME:</p>
-                                <input type="text" id="username" value="<%= user.username %>">
+                                <input type="text" id="username" value="<%= session.username %>">
 
                                 <p>FIRST NAME:</p>
-                                <input type="text" id="firstName" value="<%= user.firstName %>">
+                                <input type="text" id="firstName" value="<%= session.firstName %>">
                                 <p>LAST NAME:</p>
-                                <input type="text" id="lastName" value="<%= user.lastName %>">
+                                <input type="text" id="lastName" value="<%= session.lastName %>">
 
 
                                 <p>NUMBER:</p>
-                                <input type="number" id="number" value="<%= user.mobile %>">
+                                <input type="number" id="number" value="<%= session.mobile %>">
                                 <p>GENDER:</p>
                                 <div style="display: flex; justify-content: center;">
                                     <input style="margin: 0; padding: 0; width: 15px;" type="radio" id="gender" name="gender" value="male">

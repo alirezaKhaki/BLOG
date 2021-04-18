@@ -6,7 +6,7 @@ const bcrypt = require('bcrypt');
 const generalTools = require('../tools/general-tools');
 
 router.get('/', generalTools.sessionChecker, (req, res) => {
-    res.render('login')
+    res.render('login', { session: req.session.user })
 })
 
 router.post('/', (req, res) => {

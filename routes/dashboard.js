@@ -9,8 +9,8 @@ const JoiSchema = require('../tools/joiValidator')
 
 //GET DASHBOARD PAGE
 router.get('/', generalTools.loginChecker, (req, res) => {
-    const user = req.session.user
-    res.render('dashboard', { user })
+
+    res.render('dashboard', { session: req.session.user })
 });
 
 //LOGOUT FUNCTION !

@@ -14,9 +14,9 @@ router.use('/register', register);
 router.use('/dashboard', dashbord);
 router.use('/articles', articles);
 router.use('/comments', comments);
-router.get('/', (req, res) => {
-    res.render('home.ejs')
-});
+router.get('/', articles)
+
+
 
 
 // CREAT ADMIN  

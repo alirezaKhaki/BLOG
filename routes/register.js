@@ -8,7 +8,7 @@ const Joi = require("joi")
 const joiSchema = require('../tools/joiValidator')
 
 router.get('/', generalTools.sessionChecker, (req, res) => {
-    res.render('register')
+    res.render('register', { session: req.session.user })
 })
 
 router.post('/', async function(req, res, next) {

@@ -6,11 +6,10 @@ const router = express.Router();
 const generalTools = require('../tools/general-tools');
 
 // ALL ARTICLES
-router.get('/getAll', (req, res) => {
+router.get('/', generalTools.loginChecker, (req, res) => {
     articles.find({}).populate('owner').sort({ createdAt: -1 }).exec((err, article) => {
         if (err) return res.status(500).json({ msg: "Server Error :)", err: err.message })
-        if (article) return res.send(article)
-
+        if (article) return res.render('allArticles', { article: article, session: req.session.user })
     })
 })
 
@@ -174,44 +173,34 @@ router.delete('/deleteAvatar/:id', generalTools.loginChecker, (req, res) => {
     //add article avatar
 router.post('/addAvatar/:id', generalTools.loginChecker, (req, res) => {
 
-        articles.findOne({ _id: req.params.id, owner: req.session.user._id }, (err, article) => {
-            if (err) return res.status(500).send('server error')
-            if (!article) return res.status(403).send('acces denied!')
-            const upload = generalTools.uploadAvatar.single('avatar');
+    articles.findOne({ _id: req.params.id, owner: req.session.user._id }, (err, article) => {
+        if (err) return res.status(500).send('server error')
+        if (!article) return res.status(403).send('acces denied!')
+        const upload = generalTools.uploadAvatar.single('avatar');
 
-            upload(req, res, (err) => {
-                if (err) {
-                    res.status(500).send("server error")
+        upload(req, res, (err) => {
+            if (err) {
+                res.status(500).send("server error")
+            } else {
+                if (req.file == undefined) {
+
+                    res.status(400).send('No File Selected!')
+
                 } else {
-                    if (req.file == undefined) {
 
-                        res.status(400).send('No File Selected!')
+                    articles.findByIdAndUpdate(req.params.id, { avatar: req.file.filename }, { new: true }, (err, article) => {
+                        if (err) return res.status(500).json({ msg: 'Server Error!' })
+                        if (article) {
+                            return res.send('avatar added')
+                        }
+                    });
 
-                    } else {
-
-                        articles.findByIdAndUpdate(req.params.id, { avatar: req.file.filename }, { new: true }, (err, article) => {
-                            if (err) return res.status(500).json({ msg: 'Server Error!' })
-                            if (article) {
-                                return res.send('avatar added')
-                            }
-                        });
-
-                    }
                 }
-            })
-
+            }
         })
+
     })
-    //get ip adress for view count
-
-router.get('/getIp/:id', async(req, res) => {
-    try {
-        let view = await views.find({ article: req.params.id })
-        res.status(200).send(view)
-    } catch (error) {
-        res.status(500).send('server error')
-
-    }
 })
+
 
 module.exports = router;

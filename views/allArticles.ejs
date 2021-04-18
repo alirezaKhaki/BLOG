@@ -26,9 +26,33 @@
     <%- include('./partials/navbar.ejs') %>
 
         <div class="articles" style="padding: 50px;">
+            <% for (let i = 0; i< article.length; i++) { %>
+                <h1></h1>
+                <div class="pages mt-3 col-12 col-md-6 col-lg-4" style="width:100%;">
+                    <div class="card">
+                        <div class="card-body" style="border-radius: 10px;">
+                            <img src="/images/avatars/<%= article[i].owner.avatar %>" alt="avatar" id="avatar">
 
+                            <h5 class="card-title">TITLE:
+                                <%= article[i].title %>
+                            </h5>
+                            <div class="article_text">TEXT:
+                                <%- article[i].text %>
+                            </div>
+                            <a href="/api/articles/<%= article[i]._id %>">more</a>
+                            <p>CREATED BY:
+                                <%= article[i].owner.username %>
+                            </p>
+                            <p>CREATED AT:
+                                <%= article[i].createdAt %>
+                            </p>
+                            <img src="/images/avatars/<%= article[i].avatar %>" alt="avatar" class="photo">
+                        </div>
+                    </div>
+                    <% } %>
+
+                </div>
         </div>
-
 
 
         <%- include('./partials/modal.ejs') %>
