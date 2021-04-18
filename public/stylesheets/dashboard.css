@@ -68,6 +68,7 @@ body {
 
 #main,
 #nav {
+    width: auto;
     transition: margin-left .5s;
 }
 

@@ -4,8 +4,8 @@ const articles = require('../model/article')
 const views = require('../model/views')
 const router = express.Router();
 const generalTools = require('../tools/general-tools');
-
-// ALL ARTICLES
+const fs = require('fs')
+    // ALL ARTICLES
 router.get('/', generalTools.loginChecker, (req, res) => {
     articles.find({}).populate('owner').sort({ createdAt: -1 }).exec((err, article) => {
         if (err) return res.status(500).json({ msg: "Server Error :)", err: err.message })
@@ -130,7 +130,7 @@ router.get('/delete/:id', generalTools.loginChecker, async(req, res) => {
                 })
             })
         })
-    } else {
+    } else if (req.session.user.role === "admin") {
         articles.findByIdAndDelete(req.params.id, (err) => {
             if (err) return res.status(500).send('server error')
             comments.remove({ owner: req.params.id }, (err) => {
@@ -164,6 +164,7 @@ router.delete('/deleteAvatar/:id', generalTools.loginChecker, (req, res) => {
             if (!article) return res.status(403).send('acces denied!')
             console.log(article.avatar);
             if (article.avatar === 'ArticleDefault.jpg') return res.status(400).send('this article don not have an avatar')
+            fs.unlinkSync(`public/images/avatars/${article.avatar}`)
             articles.findByIdAndUpdate({ _id: req.params.id }, { avatar: 'ArticleDefault.jpg' }, { new: true }, (err, article) => {
                 if (err) return res.status(500).send('server error')
                 if (article) return res.send('avatar deleted!')

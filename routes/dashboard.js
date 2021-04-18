@@ -6,8 +6,8 @@ const router = express.Router();
 const generalTools = require('../tools/general-tools');
 const bcrypt = require('bcrypt');
 const JoiSchema = require('../tools/joiValidator')
-
-//GET DASHBOARD PAGE
+const fs = require('fs')
+    //GET DASHBOARD PAGE
 router.get('/', generalTools.loginChecker, (req, res) => {
 
     res.render('dashboard', { session: req.session.user })
@@ -181,6 +181,7 @@ router.delete('/deleteAvatar', generalTools.loginChecker, (req, res) => {
     if (req.session.user.avatar == 'default.png') return res.status(400).send("You Don't Have An Avatar")
     users.findOneAndUpdate({ _id: req.session.user._id }, { avatar: 'default.png' }, { new: true }, (err, data) => {
         if (err) return res.status(500).send('server error')
+        fs.unlinkSync(`public/images/avatars/${req.session.user.avatar}`)
         req.session.user = data
         if (data) return res.send('Avatar deleted')
     })
