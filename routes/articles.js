@@ -4,7 +4,6 @@ const articles = require('../model/article')
 const views = require('../model/views')
 const router = express.Router();
 const generalTools = require('../tools/general-tools');
-const ip = require('ip');
 
 // ALL ARTICLES
 router.get('/getAll', (req, res) => {
@@ -25,16 +24,12 @@ router.get('/article/:id', (req, res) => {
 })
 
 // DETAILS OF ONE ARTICLE(WITH PAGE RENDERING)
-router.get('/:id', (req, res) => {
-    const myIp = ip.address() //get ip
-    console.log(myIp);
-    views.find({ article: req.params.id, ip: myIp }, (err, view) => {
+router.get('/:id', generalTools.loginChecker, (req, res) => {;
+    views.find({ article: req.params.id, viewer: req.session.user._id }, (err, view) => {
         if (err) return res.status(500).json({ msg: "Server Error :)", err: err.message })
-        console.log(view);
-
         if (view.length === 0) {
             const newIp = new views({
-                    ip: myIp,
+                    viewer: req.session.user._id,
                     article: req.params.id
                 }).save() //creat an ip if it's new
         }
@@ -63,8 +58,8 @@ router.post('/newArticle', generalTools.loginChecker, async(req, res) => {
     // if (!req.body.title || !req.body.text) return res.status(400).send('article must have title and text');
     // if (!req.body.owner) return res.status(400).send('article must have an owner');
     const upload = generalTools.uploadArticle.single('avatar');
-
     upload(req, res, async(err) => {
+        console.log(req.body);
         if (err) {
             res.status(500).send("server error")
         } else {
@@ -79,8 +74,9 @@ router.post('/newArticle', generalTools.loginChecker, async(req, res) => {
                     newArticle = await newArticle.save()
                     if (newArticle) return res.send("New Article Created")
                 } catch (err) {
+                    if (err.stack.includes("maximum allowed length")) return res.status(400).send(' text maximum allowed length is (1000)')
                     if (err.stack.includes("Path `text` is required")) return res.status(400).send('title and text is required')
-                    if (err.stack.includes("minimum allowed length")) return res.status(400).send(' text is minimum allowed length(100)')
+                    if (err.stack.includes("minimum allowed length")) return res.status(400).send(' text minimum allowed length is (100)')
                 }
 
 
@@ -96,6 +92,7 @@ router.post('/newArticle', generalTools.loginChecker, async(req, res) => {
                     newArticle = await newArticle.save()
                     if (newArticle) return res.send("New Article Created")
                 } catch (err) {
+                    if (err.stack.includes("maximum allowed length")) return res.status(400).send(' text maximum allowed length is (1000)')
                     if (err.stack.includes("Path `text` is required")) return res.status(400).send('title and text is required')
                     if (err.stack.includes("minimum allowed length")) return res.status(400).send(' text is minimum allowed length(100)')
                 }

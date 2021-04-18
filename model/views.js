@@ -2,7 +2,7 @@ const mongoose = require('mongoose');
 const Schema = mongoose.Schema;
 
 const views = new Schema({
-    ip: {
+    viewer: {
         type: String,
         required: true,
     },
