@@ -81,7 +81,7 @@ body {
 }
 
 button {
-    float: right;
+    align-self: center;
     background: transparent;
     text-transform: uppercase;
     font-weight: 500;
@@ -99,6 +99,7 @@ button {
     margin: 0.625rem;
     border: none;
     border-radius: 5px;
+    width: auto;
 }
 
 button:hover {
@@ -188,6 +189,13 @@ img:hover {
     color: rgb(247, 244, 244);
     opacity: 1;
     /* Firefox */
+}
+
+#reset {
+    width: auto;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
 }
 
 

@@ -55,12 +55,12 @@
         <div id="main">
             <!-- Use any element to open the sidenav -->
             <button onclick="openNav()">Dashboard</button>
-            <div class="container column mt-5">
+            <div class="container row mt-5">
                 <h1>YOUR ARTICLES</h1>
             </div>
 
             <% if(user.role==="admin") { %>
-                <div class="users row mt-5" style="width: 85%;">
+                <div class="users row" style="width: 85%;">
                     <h1>All Users</h1>
                 </div>
                 <%}%>

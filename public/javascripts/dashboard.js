@@ -282,66 +282,29 @@ $(function() {
 
     //GET ALL USERS FOR ADMIN
     function allUsers(data) {
-        console.log(data);
+
+        $('.users').html('')
         for (let i = 0; i < data.length; i++) {
             let date = data[i].createdAt
             date = date.substring(0, date.length - 14);
             $('.users').append(`
-            <div class="card-body">
-                <div class="my_profile ">
-                    <img style="width:110px;height:110px;border-radius:50px;" src="/images/avatars/${data[i].avatar}" alt="avatar" class="photo">
-                    <table class="table table-borderless ">
-                    <thead>
-                    <tr>
-                        <th scope="col">ID</th>
-                        <th scope="col">USERNAME</th>
-                        <th scope="col">FIRST NAME</th>
-                        <th scope="col">LAST NAME</th>
-                        <th scope="col">GENDER</th>
-                        <th scope="col">PHONE NUMBER</th>
-                        <th scope="col">ROLE</th>
-                        <th scope="col">JOINED AT</th>
-                    </tr>
-                </thead>
-                <tbody>
-                    <tr>
-                        <td>
-                        ${data[i]._id}
-                        </td>
-                        <td>
-                        ${data[i].username}
-                        </td>
-                        <td>
-                        ${data[i].firstName}
-                        </td>
-                        <td>
-                        ${data[i].lastName}
-                        </td>
-                        <td>
-                        ${data[i].sex}
-                        </td>
-                        <td>
-                        ${data[i].mobile}
-                        </td>
-                        <td>
-                        ${data[i].role}
-                        </td>
-                        <td>
-                        ${data[i].createdAt}
-                        </td>
-                    </tr>
-                </tbody>
-            </table>
-                        <div class="${data[i]._id}">
-                        <button class="resetPassword">RESET PASSWORD</button>
-                        <button class="deleteUser">DELETE USER</button>
-                        </div>
-                 
+            <div class="card " style="width: 18rem; margin:10px">
+                <img src="/images/avatars/${data[i].avatar}" class="card-img-top" style="width:150px; height:150px; border-radius:50px;">
+                <div class="card-body">
+                <h5 class="card-title">User Name: ${data[i].username}</h5>
+                <p class="card-text">First Name: ${data[i].firstName}</p>
+                <p class="card-text">Last Name:  ${data[i].lastName}</p>
+                <p class="card-text">Gender:  ${data[i].sex}</p>
+                <p class="card-text">Mobile:  ${data[i].mobile}</p>
+                <p class="card-text">Joined: ${data[i].createdAt}</p>
+                <div class="${data[i]._id}" id="reset">
+                <button class="resetPassword">RESET PASSWORD</button>
+                <button class="deleteUser">DELETE USER</button>
+                </div>
             </div>
-            </div>
-               `)
+             </div> `)
         }
-        //DELETE ARTICLE FUNCTION
+        //DELETE USER FUNCTION
         $('body').on('click', '.deleteUser', function() {
             const user_id = ($(this).parent().attr('class'));
             $('.modal-body').html(''), $('.modal-body').html(`
@@ -361,6 +324,7 @@ $(function() {
                         $('.modal-body').html(''), $('.modal-body').html(data)
                         setTimeout(function() {
                             $("#triger").click();
+                            $("#allUsers").click();
                         }, 2000);
 
                     },
@@ -413,6 +377,7 @@ $(function() {
                 let date = data.article[i].createdAt
                 date = date.substring(0, date.length - 14);
                 $('.container').append(`
+                <div class="card-body">
                 <div class="pages mt-3 col-12 col-md-6 col-lg-4" style="width:100%;">
                 <div class="card">
                     <div class="card-body" style="border-radius: 10px;">
@@ -429,7 +394,8 @@ $(function() {
                         </div>
                     </div>
                 </div>
-            </div>`)
+            </div>
+               `)
 
             }
             //DELETE ARTICLE FUNCTION
