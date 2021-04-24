@@ -61,7 +61,18 @@ $(function() {
                 return $('.modal-body').html(''), $('.modal-body').html(err.responseText), $("#triger").click();
             }
             if (data) {
-                allUsers(data)
+                for (let i = 0; i < Math.ceil(data.usersLength / 4); i++) {
+                    $('.usersNav').append(`
+                   <li class="page-item" id='${i+1}'><a class="page-link" href="#nav">${i+1}</a></li>
+                   `)
+                    $('body').on('click', `#${i+1}`, function() {
+                        const page = ($(this).attr('id'));
+                        $('li').removeClass("active")
+                        $(this).addClass("page-item active")
+                        allUsers(page)
+                    })
+                    allUsers(1)
+                }
             }
         })
 
@@ -281,93 +292,108 @@ $(function() {
 
 
     //GET ALL USERS FOR ADMIN
-    function allUsers(data) {
+    function allUsers(page) {
+        $.get(`/api/dashboard/getAll?page=${page}`, (data, response) => {
 
-        $('.users').html('')
-        for (let i = 0; i < data.length; i++) {
-            let date = data[i].createdAt
-            date = date.substring(0, date.length - 14);
-            $('.users').append(`
-            <div class="card " style="width: 18rem; margin:10px">
-                <img src="/images/avatars/${data[i].avatar}" class="card-img-top" style="width:150px; height:150px; border-radius:50px;">
-                <div class="card-body">
-                <h5 class="card-title">User Name: ${data[i].username}</h5>
-                <p class="card-text">First Name: ${data[i].firstName}</p>
-                <p class="card-text">Last Name:  ${data[i].lastName}</p>
-                <p class="card-text">Gender:  ${data[i].sex}</p>
-                <p class="card-text">Mobile:  ${data[i].mobile}</p>
-                <p class="card-text">Joined: ${data[i].createdAt}</p>
-                <div class="${data[i]._id}" id="reset">
-                <button class="resetPassword">RESET PASSWORD</button>
-                <button class="deleteUser">DELETE USER</button>
+            if (response !== 'success') {
+                $('.modal-body').html(''), $('.modal-body').html(response)
+                setTimeout(function() {
+                    location.reload()
+                }, 2000);
+            }
+            $('.usersHeader').html(`All Users <br> Page: ${page}`)
+            $('.usersBox').html('')
+            const allUsers = data.users
+            for (let i = 0; i < allUsers.length; i++) {
+                let date = allUsers[i].createdAt
+                date = date.substring(0, date.length - 14);
+                $('.usersBox').append(`
+                <div class="card" style="width: 18rem; margin:10px">
+                    <div class="d-flex justify-content-center mb-2">
+                    <img src="/images/avatars/${allUsers[i].avatar}" class="card-img-top" style="width:150px; height:150px; border-radius:50px;">
+                    </div>
+                    <div style='text-align:center;'>
+                    <h5 class="card-title">User Name: ${allUsers[i].username}</h5>
+                    <p class="card-text">First Name: ${allUsers[i].firstName}</p>
+                    <p class="card-text">Last Name:  ${allUsers[i].lastName}</p>
+                    <p class="card-text">Gender:  ${allUsers[i].sex}</p>
+                    <p class="card-text">Mobile:  ${allUsers[i].mobile}</p>
+                    <p class="card-text">Joined: ${allUsers[i].createdAt}</p>
+                    <div class="${allUsers[i]._id}" id="reset">
+                    <button class="resetPassword">RESET PASSWORD</button>
+                    <button class="deleteUser">DELETE USER</button>
+                    </div>
                 </div>
-            </div>
-             </div> `)
-        }
-        //DELETE USER FUNCTION
-        $('body').on('click', '.deleteUser', function() {
-            const user_id = ($(this).parent().attr('class'));
-            $('.modal-body').html(''), $('.modal-body').html(`
-                    <h3> ARE YOU SURE YOU WANT TO DELETE THIS USER?</h3>
-                    <button id="deleteThis">YES</button>
-                    <button id="no">NO</button>
-                    `), $("#triger").click();
-            $('body').on('click', '#no', function() {
-                $('.modal-body').html(''), $("#triger").click();
-            })
-            $('body').on('click', '#deleteThis', function() {
-                $.ajax({
-                    url: `/api/dashboard/delete/${user_id}`,
-                    type: 'GET',
-                    success: function(data) {
+                 </div> `)
+            }
+            //DELETE USER FUNCTION
+            $('body').on('click', '.deleteUser', function() {
+                const user_id = ($(this).parent().attr('class'));
+                $('.modal-body').html(''), $('.modal-body').html(`
+                        <h3> ARE YOU SURE YOU WANT TO DELETE THIS USER?</h3>
+                        <button id="deleteThis">YES</button>
+                        <button id="no">NO</button>
+                        `), $("#triger").click();
+                $('body').on('click', '#no', function() {
+                    $('.modal-body').html(''), $("#triger").click();
+                })
+                $('body').on('click', '#deleteThis', function() {
+                    $.ajax({
+                        url: `/api/dashboard/delete/${user_id}`,
+                        type: 'GET',
+                        success: function(data) {
 
-                        $('.modal-body').html(''), $('.modal-body').html(data)
-                        setTimeout(function() {
-                            $("#triger").click();
-                            $("#allUsers").click();
-                        }, 2000);
+                            $('.modal-body').html(''), $('.modal-body').html(data)
+                            setTimeout(function() {
+                                $("#triger").click();
+                                $("#allUsers").click();
+                            }, 2000);
 
-                    },
-                    error: function(err) {
-                        $('.modal-body').html(''), $('.modal-body').html(err.responseText)
-                        setTimeout(function() {
-                            location.reload()
-                        }, 2000);
-                    }
-                });
+                        },
+                        error: function(err) {
+                            $('.modal-body').html(''), $('.modal-body').html(err.responseText)
+                            setTimeout(function() {
+                                location.reload()
+                            }, 2000);
+                        }
+                    });
+                })
             })
+            $('body').on('click', '.resetPassword', function() {
+                const user_id = ($(this).parent().attr('class'));
+                $('.modal-body').html(''), $('.modal-body').html(`
+                        <h3> ARE YOU SURE YOU WANT TO RESET THIS USERS PASSWORD TO MOBILE?</h3>
+                        <button id="resetThis">YES</button>
+                        <button id="no">NO</button>
+                        `), $("#triger").click();
+                $('body').on('click', '#no', function() {
+                    $('.modal-body').html(''), $("#triger").click();
+                })
+                $('body').on('click', '#resetThis', function() {
+                    $.ajax({
+                        url: `/api/dashboard/resetPassword/${user_id}`,
+                        type: 'GET',
+                        success: function(data) {
+
+                            $('.modal-body').html(''), $('.modal-body').html(`${data}<button id="no">OK</button>`)
+
+
+                        },
+                        error: function(err) {
+                            $('.modal-body').html(''), $('.modal-body').html(err.responseText)
+                            setTimeout(function() {
+                                $("#triger").click();
+                            }, 2000);
+                        }
+                    });
+                })
+            })
+
+
+
         })
-        $('body').on('click', '.resetPassword', function() {
-            const user_id = ($(this).parent().attr('class'));
-            $('.modal-body').html(''), $('.modal-body').html(`
-                    <h3> ARE YOU SURE YOU WANT TO RESET THIS USERS PASSWORD TO MOBILE?</h3>
-                    <button id="resetThis">YES</button>
-                    <button id="no">NO</button>
-                    `), $("#triger").click();
-            $('body').on('click', '#no', function() {
-                $('.modal-body').html(''), $("#triger").click();
-            })
-            $('body').on('click', '#resetThis', function() {
-                $.ajax({
-                    url: `/api/dashboard/resetPassword/${user_id}`,
-                    type: 'GET',
-                    success: function(data) {
 
-                        $('.modal-body').html(''), $('.modal-body').html(`${data}<button id="no">OK</button>`)
-
-
-                    },
-                    error: function(err) {
-                        $('.modal-body').html(''), $('.modal-body').html(err.responseText)
-                        setTimeout(function() {
-                            $("#triger").click();
-                        }, 2000);
-                    }
-                });
-            })
-        })
     }
-
     //GET USER ARTICLES FROM SERVER AND RENDER THEM
     $.ajax({
         url: `/api/articles/myArticles/${$('#id').val()}`,

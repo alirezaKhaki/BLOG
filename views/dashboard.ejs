@@ -68,138 +68,144 @@
             </div>
 
             <% if(session.role==="admin") { %>
-                <div class="users row" style="width: 85%;">
-                    <h1>All Users</h1>
-                </div>
-                <%}%>
-
-                    <div class="my_profile card" style="width: 85%;">
-                        <div class="card-body">
-                            <h5 class="card-title">My Profile</h5>
-                            <img id="userAvatar" src="/images/avatars/<%= session.avatar%>" alt="avatar" style="width: 80px; height: 80px; border-radius: 50px;">
-                            <table class="table table-borderless">
-                                <thead>
-                                    <tr>
-                                        <th scope="col">ID</th>
-                                        <th scope="col">USERNAME</th>
-                                        <th scope="col">FIRST NAME</th>
-                                        <th scope="col">LAST NAME</th>
-                                        <th scope="col">GENDER</th>
-                                        <th scope="col">PHONE NUMBER</th>
-                                        <th scope="col">ROLE</th>
-
-                                    </tr>
-                                </thead>
-                                <tbody>
-                                    <tr>
-
-                                        <td>
-                                            <%= session._id %>
-                                        </td>
-                                        <td>
-                                            <%= session.username %>
-                                        </td>
-                                        <td>
-                                            <%= session.firstName %>
-                                        </td>
-                                        <td>
-                                            <%= session.lastName%>
-                                        </td>
-                                        <td>
-                                            <%= session.sex%>
-                                        </td>
-                                        <td>
-                                            <%= session.mobile %>
-                                        </td>
-                                        <td>
-                                            <%= session.role %>
-                                        </td>
-                                    </tr>
-                                </tbody>
-                            </table>
-                            <button id="edit">Edit Profile</button>
-                            <button id="change">Change Password</button>
-                            <button id="delete"> DELETE Account</button>
-                            <button id="closeBtn">Close</button>
-                        </div>
+                <div class="users" style="width: 85%;">
+                    <h1 class="usersHeader">All Users</h1>
+                    <div class="usersBox row"></div>
+                    <div class="d-flex justify-content-center mb-2">
+                        <nav aria-label="Page navigation example">
+                            <ul class="usersNav pagination">
+                            </ul>
+                        </nav>
                     </div>
-                    <div class="edit card" style="width: 85%;">
-                        <div class="card-body">
-                            <h5 class="card-title">Edit Profile</h5>
-                            <div class="edit_box">
-                                <p>ID:</p>
-                                <input type="text" id="id" value="<%= session._id %>" disabled>
-                                <p>USERNAME:</p>
-                                <input type="text" id="username" value="<%= session.username %>">
+                    <%}%>
 
-                                <p>FIRST NAME:</p>
-                                <input type="text" id="firstName" value="<%= session.firstName %>">
-                                <p>LAST NAME:</p>
-                                <input type="text" id="lastName" value="<%= session.lastName %>">
+                        <div class="my_profile card" style="width: 85%;">
+                            <div class="card-body">
+                                <h5 class="card-title">My Profile</h5>
+                                <img id="userAvatar" src="/images/avatars/<%= session.avatar%>" alt="avatar" style="width: 80px; height: 80px; border-radius: 50px;">
+                                <table class="table table-borderless">
+                                    <thead>
+                                        <tr>
+                                            <th scope="col">ID</th>
+                                            <th scope="col">USERNAME</th>
+                                            <th scope="col">FIRST NAME</th>
+                                            <th scope="col">LAST NAME</th>
+                                            <th scope="col">GENDER</th>
+                                            <th scope="col">PHONE NUMBER</th>
+                                            <th scope="col">ROLE</th>
+
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        <tr>
+
+                                            <td>
+                                                <%= session._id %>
+                                            </td>
+                                            <td>
+                                                <%= session.username %>
+                                            </td>
+                                            <td>
+                                                <%= session.firstName %>
+                                            </td>
+                                            <td>
+                                                <%= session.lastName%>
+                                            </td>
+                                            <td>
+                                                <%= session.sex%>
+                                            </td>
+                                            <td>
+                                                <%= session.mobile %>
+                                            </td>
+                                            <td>
+                                                <%= session.role %>
+                                            </td>
+                                        </tr>
+                                    </tbody>
+                                </table>
+                                <button id="edit">Edit Profile</button>
+                                <button id="change">Change Password</button>
+                                <button id="delete"> DELETE Account</button>
+                                <button id="closeBtn">Close</button>
+                            </div>
+                        </div>
+                        <div class="edit card" style="width: 85%;">
+                            <div class="card-body">
+                                <h5 class="card-title">Edit Profile</h5>
+                                <div class="edit_box">
+                                    <p>ID:</p>
+                                    <input type="text" id="id" value="<%= session._id %>" disabled>
+                                    <p>USERNAME:</p>
+                                    <input type="text" id="username" value="<%= session.username %>">
+
+                                    <p>FIRST NAME:</p>
+                                    <input type="text" id="firstName" value="<%= session.firstName %>">
+                                    <p>LAST NAME:</p>
+                                    <input type="text" id="lastName" value="<%= session.lastName %>">
 
 
-                                <p>NUMBER:</p>
-                                <input type="number" id="number" value="<%= session.mobile %>">
-                                <p>GENDER:</p>
-                                <div style="display: flex; justify-content: center;">
-                                    <input style="margin: 0; padding: 0; width: 15px;" type="radio" id="gender" name="gender" value="male">
-                                    <label style="margin:0 7px 0 7px;">MALE</label>
-                                    <input style="margin: 0; padding: 0; width: 15px;" type="radio" id="gender" name="gender" value="female">
-                                    <label style="margin:0 7px 0 7px;">FEMALE</label>
+                                    <p>NUMBER:</p>
+                                    <input type="number" id="number" value="<%= session.mobile %>">
+                                    <p>GENDER:</p>
+                                    <div style="display: flex; justify-content: center;">
+                                        <input style="margin: 0; padding: 0; width: 15px;" type="radio" id="gender" name="gender" value="male">
+                                        <label style="margin:0 7px 0 7px;">MALE</label>
+                                        <input style="margin: 0; padding: 0; width: 15px;" type="radio" id="gender" name="gender" value="female">
+                                        <label style="margin:0 7px 0 7px;">FEMALE</label>
 
+                                    </div>
+                                </div>
+                                <div style="width: 85%; display: flex; justify-content: space-between;">
+                                    <button id="save" style="width: 45%;"> SAVE</button>
+                                    <button id="closeBtn" style="width: 45%;">Close</button>
                                 </div>
                             </div>
-                            <div style="width: 85%; display: flex; justify-content: space-between;">
-                                <button id="save" style="width: 45%;"> SAVE</button>
-                                <button id="closeBtn" style="width: 45%;">Close</button>
+                        </div>
+
+                        <div class="newArticle card" style="width: 85%;">
+                            <div class="card-body">
+                                <h5 class="card-title">New Article</h5>
+                                <form name='avatarForm' action="/api/dashboard/newArticle" method="post" enctype="multipart/form-data">
+                                    <label>Choose Article Title:</label>
+                                    <input style="width: 90%;" type="text" class='form-control form-control-sm' name="title">
+                                    <br>
+                                    <label>Choose Article Text:</label>
+                                    <textarea style="vertical-align: top;" id="mytextarea" cols="100" rows="10" name="text"></textarea>
+                                    <br>
+                                    <label>Choose Article Avatar:</label>
+                                    <input style="width: 90%;" type="file" class='form-control form-control-sm' name="avatar">
+                                    <button type="submit">Submit</button>
+                                </form>
+                                <button id="closeBtn">close</button>
                             </div>
                         </div>
-                    </div>
 
-                    <div class="newArticle card" style="width: 85%;">
-                        <div class="card-body">
-                            <h5 class="card-title">New Article</h5>
-                            <form name='avatarForm' action="/api/dashboard/newArticle" method="post" enctype="multipart/form-data">
-                                <label>Choose Article Title:</label>
-                                <input style="width: 90%;" type="text" class='form-control form-control-sm' name="title">
-                                <br>
-                                <label>Choose Article Text:</label>
-                                <textarea style="vertical-align: top;" id="mytextarea" cols="100" rows="10" name="text"></textarea>
-                                <br>
-                                <label>Choose Article Avatar:</label>
-                                <input style="width: 90%;" type="file" class='form-control form-control-sm' name="avatar">
-                                <button type="submit">Submit</button>
-                            </form>
-                            <button id="closeBtn">close</button>
+
+                        <div class="password card" style="width: 85%;">
+                            <div class="card-body">
+                                <h5 class="card-title">Change Password</h5>
+                                <input type="password" id="old_pass" placeholder="previous password">
+                                <input type="password" id="new_pass" placeholder="new password">
+                                <button id="pass_save">Save</button>
+                                <button id="closeBtn">Close</button>
+                            </div>
                         </div>
-                    </div>
 
-
-                    <div class="password card" style="width: 85%;">
-                        <div class="card-body">
-                            <h5 class="card-title">Change Password</h5>
-                            <input type="password" id="old_pass" placeholder="previous password">
-                            <input type="password" id="new_pass" placeholder="new password">
-                            <button id="pass_save">Save</button>
-                            <button id="closeBtn">Close</button>
+                        <div class=" delete card" style="width: 85%;">
+                            <div class="card-body">
+                                <h5 class="card-title">Delete Acount</h5>
+                                <input type="password" id="delete_pass" placeholder="enter your password">
+                                <button id="delete_account">Delete Acount</button>
+                                <button id="closeBtn">close</button>
+                            </div>
                         </div>
-                    </div>
 
-                    <div class=" delete card" style="width: 85%;">
-                        <div class="card-body">
-                            <h5 class="card-title">Delete Acount</h5>
-                            <input type="password" id="delete_pass" placeholder="enter your password">
-                            <button id="delete_account">Delete Acount</button>
-                            <button id="closeBtn">close</button>
-                        </div>
-                    </div>
-
-        </div>
-        <%- include('./partials/modal.ejs') %>
+                </div>
+                <%- include('./partials/modal.ejs') %>
 
 
-            <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
-            <script src="/javascripts/dashboard.js"></script>
+                    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+                    <script src="/javascripts/dashboard.js"></script>
 </body>
 
 </html>

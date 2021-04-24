@@ -22,12 +22,26 @@ router.get('/logout', (req, res) => {
 
 // *****USER CRUD*****
 //ALL USERS FOR ADMIN
-router.get('/getAll', generalTools.loginChecker, (req, res) => {
+router.get('/getAll', generalTools.loginChecker, async(req, res) => {
         if (req.session.user.role !== 'admin') return res.status(403).send('acces denied!')
-        users.find({ role: { $ne: 'admin' } }, (err, user) => {
-            if (err) return res.status(500).send({ "msg": "server error " })
-            if (user) return res.send(user)
-        })
+        try {
+            let page = req.query.page;
+            let size = 4;
+
+            if (!page) {
+                page = 1;
+            }
+            console.log(page);
+            const limit = parseInt(size);
+            const skip = (page - 1) * size;
+            const usersLength = await users.find({ role: { $ne: 'admin' } });
+            const allUsers = await users.find({ role: { $ne: 'admin' } }).limit(limit).skip(skip).sort({ createdAt: -1 }).populate('owner')
+            res.send({ users: allUsers, usersLength: usersLength.length, page: page });
+
+        } catch (err) {
+            res.status(500).send('server error');
+        }
+
     })
     //PROFILE EDIT
 router.post('/edit', generalTools.loginChecker, async(req, res) => {
