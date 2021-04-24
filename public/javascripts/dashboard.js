@@ -406,9 +406,9 @@ $(function() {
             url: `/api/articles/myArticles/${$('#id').val()}?page=${page}`,
             type: 'get',
             success: function(data) {
-                console.log(data.page);
-
                 $('.articles').html(``);
+                $('#header').html(``);
+                $('#header').html(`YOUR ARTICLES <br/> PAGE : ${data.page}`);
                 for (let i = 0; i < data.article.length; i++) {
                     let date = data.article[i].createdAt
                     date = date.substring(0, date.length - 14);
