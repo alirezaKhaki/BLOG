@@ -106,18 +106,5 @@ $(function() {
         })
     })
 
-    $.ajax({
-        url: `/api/articles/getIp/${id}`,
-        type: 'GET',
-        success: function(data) {
-            $('#views').html(`VIEW COUNT:${data.length}`)
-        },
-        error: function(err) {
-            console.log(err);
-            $('.modal-body').html(''), $('.modal-body').html(err.responseText)
-            setTimeout(function() {
-                $("#triger").click();
-            }, 2000);
-        }
-    });
+
 })

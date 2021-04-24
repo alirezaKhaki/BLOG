@@ -6,15 +6,36 @@ const router = express.Router();
 const generalTools = require('../tools/general-tools');
 const fs = require('fs')
     // ALL ARTICLES
-router.get('/', generalTools.loginChecker, (req, res) => {
-    articles.find({}).populate('owner').sort({ createdAt: -1 }).exec((err, article) => {
+router.get('/', (req, res) => {
+
+    const query = req.query;
+
+    let page = query.page;
+    let size = query.size;
+
+    if (!page) {
+        page = 1;
+    }
+    if (!size) {
+        size = 10;
+    }
+    let regexp = new RegExp(/\[0-9]/g);
+    if (page <= 0) return res.redirect('/')
+    const limit = parseInt(size);
+    const skip = (page - 1) * size;
+    articles.find({}, (err, allArticles) => {
         if (err) return res.status(500).json({ msg: "Server Error :)", err: err.message })
-        if (article) return res.render('allArticles', { article: article, session: req.session.user })
+        const pages = Math.ceil(allArticles.length / size)
+        articles.find().populate('owner').limit(limit).skip(skip).sort({ createdAt: -1 }).exec((err, article) => {
+            if (err) return res.status(500).json({ msg: "Server Error :)", err: err.message })
+            if (page > pages) return res.redirect(`/?page=${pages}`)
+            if (article) return res.render('allArticles', { article: article, session: req.session.user, limit: limit, skip: skip, pages: pages, page: page })
+        })
     })
 })
 
 // DETAILS OF ONE ARTICLE 
-router.get('/article/:id', (req, res) => {
+router.get('/article/:id', generalTools.loginChecker, (req, res) => {
     articles.findOne({ _id: req.params.id }).populate('owner', 'username').exec((err, article) => {
         if (err) return res.status(500).json({ msg: "Server Error :)", err: err.message })
         if (article) return res.send(article)
@@ -58,7 +79,6 @@ router.post('/newArticle', generalTools.loginChecker, async(req, res) => {
     // if (!req.body.owner) return res.status(400).send('article must have an owner');
     const upload = generalTools.uploadArticle.single('avatar');
     upload(req, res, async(err) => {
-        console.log(req.body);
         if (err) {
             res.status(500).send("server error")
         } else {
@@ -73,9 +93,11 @@ router.post('/newArticle', generalTools.loginChecker, async(req, res) => {
                     newArticle = await newArticle.save()
                     if (newArticle) return res.send("New Article Created")
                 } catch (err) {
-                    if (err.stack.includes("maximum allowed length")) return res.status(400).send(' text maximum allowed length is (1000)')
+                    if (err.stack.includes("Path `title` is required")) return res.status(400).send('title and text is required')
                     if (err.stack.includes("Path `text` is required")) return res.status(400).send('title and text is required')
+                    if (err.stack.includes("is shorter than the minimum allowed length")) return res.status(400).send(' title is shorter than the minimum allowed length (3)')
                     if (err.stack.includes("minimum allowed length")) return res.status(400).send(' text minimum allowed length is (100)')
+                    if (err.stack.includes("maximum allowed length")) return res.status(400).send(' text maximum allowed length is (1000)')
                 }
 
 
@@ -91,9 +113,11 @@ router.post('/newArticle', generalTools.loginChecker, async(req, res) => {
                     newArticle = await newArticle.save()
                     if (newArticle) return res.send("New Article Created")
                 } catch (err) {
-                    if (err.stack.includes("maximum allowed length")) return res.status(400).send(' text maximum allowed length is (1000)')
+                    if (err.stack.includes("Path `title` is required")) return res.status(400).send('title and text is required')
                     if (err.stack.includes("Path `text` is required")) return res.status(400).send('title and text is required')
-                    if (err.stack.includes("minimum allowed length")) return res.status(400).send(' text is minimum allowed length(100)')
+                    if (err.stack.includes("is shorter than the minimum allowed length")) return res.status(400).send(' title is shorter than the minimum allowed length (3)')
+                    if (err.stack.includes("minimum allowed length")) return res.status(400).send(' text minimum allowed length is (100)')
+                    if (err.stack.includes("maximum allowed length")) return res.status(400).send(' text maximum allowed length is (1000)')
                 }
 
             }
