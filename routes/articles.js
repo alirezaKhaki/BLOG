@@ -8,33 +8,53 @@ const fs = require('fs')
     // ALL ARTICLES
 router.get('/', (req, res) => {
 
-    const query = req.query;
+        const query = req.query;
 
-    let page = query.page;
-    let size = query.size;
+        let page = query.page;
+        let size = query.size;
 
-    if (!page) {
-        page = 1;
-    }
-    if (!size) {
-        size = 10;
-    }
-    let regexp = new RegExp(/\[0-9]/g);
-    if (page <= 0) return res.redirect('/')
-    const limit = parseInt(size);
-    const skip = (page - 1) * size;
-    articles.find({}, (err, allArticles) => {
-        if (err) return res.status(500).json({ msg: "Server Error :)", err: err.message })
-        const pages = Math.ceil(allArticles.length / size)
-        articles.find().populate('owner').limit(limit).skip(skip).sort({ createdAt: -1 }).exec((err, article) => {
+        if (!page) {
+            page = 1;
+        }
+        if (!size) {
+            size = 10;
+        }
+        let regexp = new RegExp(/\[0-9]/g);
+        if (page <= 0) return res.redirect('/')
+        const limit = parseInt(size);
+        const skip = (page - 1) * size;
+        articles.find({}, (err, allArticles) => {
             if (err) return res.status(500).json({ msg: "Server Error :)", err: err.message })
-            if (page > pages) return res.redirect(`/?page=${pages}`)
-            if (article) return res.render('allArticles', { article: article, session: req.session.user, limit: limit, skip: skip, pages: pages, page: page })
+            const pages = Math.ceil(allArticles.length / size)
+            articles.find().populate('owner').limit(limit).skip(skip).sort({ createdAt: -1 }).exec((err, article) => {
+                if (err) return res.status(500).json({ msg: "Server Error :)", err: err.message })
+                if (page > pages) return res.redirect(`/?page=${pages}`)
+                if (article) return res.render('allArticles', { article: article, session: req.session.user, limit: limit, skip: skip, pages: pages, page: page })
+            })
         })
     })
-})
+    // ARTICLES OF ONE BLOGGER
+router.get('/myArticles/:id', generalTools.loginChecker, async(req, res) => {
+        try {
+            let page = req.query.page;
+            let size = 10;
 
-// DETAILS OF ONE ARTICLE 
+            if (!page) {
+                page = 1;
+            }
+            console.log(page);
+            const limit = parseInt(size);
+            const skip = (page - 1) * size;
+            const articlesLength = await articles.find({ owner: req.params.id });
+            const article = await articles.find({ owner: req.params.id }).limit(limit).skip(skip).sort({ createdAt: -1 }).populate('owner')
+            res.send({ article: article, length: articlesLength.length, page: page });
+
+        } catch (err) {
+            res.status(500).send('server error');
+        }
+
+    })
+    // DETAILS OF ONE ARTICLE 
 router.get('/article/:id', generalTools.loginChecker, (req, res) => {
     articles.findOne({ _id: req.params.id }).populate('owner', 'username').exec((err, article) => {
         if (err) return res.status(500).json({ msg: "Server Error :)", err: err.message })
@@ -129,18 +149,8 @@ router.post('/newArticle', generalTools.loginChecker, async(req, res) => {
 
 })
 
-// ARTICLES OF ONE BLOGGER
-router.get('/myArticles/:id', generalTools.loginChecker, async(req, res) => {
-        try {
-            const article = await articles.find({ owner: req.params.id }).sort({ createdAt: -1 }).populate('owner')
-            res.send({ article });
 
-        } catch (err) {
-            res.status(500).send('server error');
-        }
-
-    })
-    //DELETE ARTICLE
+//DELETE ARTICLE
 router.get('/delete/:id', generalTools.loginChecker, async(req, res) => {
     if (req.session.user.role !== "admin") {
         articles.findOne({ _id: req.params.id, owner: req.session.user._id }, (err, article) => {

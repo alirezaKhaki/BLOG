@@ -373,54 +373,229 @@ $(function() {
         url: `/api/articles/myArticles/${$('#id').val()}`,
         type: 'get',
         success: function(data) {
-            for (let i = 0; i < data.article.length; i++) {
-                let date = data.article[i].createdAt
-                date = date.substring(0, date.length - 14);
-                $('.container').append(`
-                <div class="card-body">
-                <div class="pages mt-3 col-12 col-md-6 col-lg-4" style="width:100%;">
-                <div class="card">
-                    <div class="card-body" style="border-radius: 10px;">
-                    <img style="width:50px;height:50px;" src="/images/avatars/${data.article[i].owner.avatar}" alt="avatar" class="photo">
-                        <h5 class="card-title">TITLE:${data.article[i].title} </h5>
-                        <h6 class="card-title">BY:${data.article[i].owner.username} </h6>
-                        <div class="article_text">TEXT:${data.article[i].text}</div> 
-                        <a href="/api/articles/${data.article[i]._id}">more...</a>
-                        <p>CREATED AT:${date}</p>
-                        <img style="width:auto;" src="/images/avatars/${data.article[i].avatar}" alt="avatar" class="photo">
-                        <div class="${data.article[i]._id}">
-                        <button class="editArticle">EDIT</button>
-                        <button class="deleteArticle">DELETE</button>
+            for (let i = 0; i < Math.ceil(data.length / 10); i++) {
+                $('.ulNav').append(`
+            <li class="page-item" id="${i+1}"><a class="page-link" href="#nav">${i+1}</a></li>
+            
+        `)
+
+                $('body').on('click', `#${i+1}`, function() {
+                    const page = ($(this).attr('id'));
+                    $('li').removeClass("active")
+                    $(this).addClass("page-item active")
+                    articlesRender(page)
+                })
+
+            }
+            articlesRender(1)
+
+        },
+        error: function(err) {
+            $('.modal-body').html(''), $('.modal-body').html(err.responseText)
+            setTimeout(function() {
+                $("#triger").click();
+            }, 2000);
+        }
+    })
+
+    function articlesRender(page) {
+        if (!page) {
+            page = 1
+        }
+        $.ajax({
+            url: `/api/articles/myArticles/${$('#id').val()}?page=${page}`,
+            type: 'get',
+            success: function(data) {
+                console.log(data.page);
+
+                $('.articles').html(``);
+                for (let i = 0; i < data.article.length; i++) {
+                    let date = data.article[i].createdAt
+                    date = date.substring(0, date.length - 14);
+                    $('.articles').append(`
+                    <div class="card-body">
+                    <div class="pages mt-3 col-12 col-md-6 col-lg-4" style="width:100%;">
+                    <div class="card">
+                        <div class="card-body" style="border-radius: 10px;">
+                        <img style="width:50px;height:50px;" src="/images/avatars/${data.article[i].owner.avatar}" alt="avatar" class="photo">
+                            <h5 class="card-title">TITLE:${data.article[i].title} </h5>
+                            <h6 class="card-title">BY:${data.article[i].owner.username} </h6>
+                            <div class="article_text">TEXT:${data.article[i].text}</div> 
+                            <a href="/api/articles/${data.article[i]._id}">more...</a>
+                            <p>CREATED AT:${date}</p>
+                            <img style="width:auto;" src="/images/avatars/${data.article[i].avatar}" alt="avatar" class="photo">
+                            <div class="${data.article[i]._id}">
+                            <button class="editArticle">EDIT</button>
+                            <button class="deleteArticle">DELETE</button>
+                            </div>
                         </div>
                     </div>
                 </div>
-            </div>
-               `)
+                   `)
 
-            }
-            //DELETE ARTICLE FUNCTION
-            $('body').on('click', '.deleteArticle', function() {
-                $('.modal-body').html(''), $('.modal-body').html(`
-                <h3> ARE YOU SURE YOU WANT TO DELETE THIS ARTICLE?</h3>
-                <button id="deleteThis">YES</button>
-                <button id="no">NO</button>
-                `), $("#triger").click();
-                const article_id = ($(this).parent().attr('class'));
-                $('body').on('click', '#no', function() {
-                    $('.modal-body').html(''), $("#triger").click();
-                })
-                $('body').on('click', '#deleteThis', function() {
+                }
+
+
+                //DELETE ARTICLE FUNCTION
+                $('body').on('click', '.deleteArticle', function() {
+                        $('.modal-body').html(''), $('.modal-body').html(`
+                    <h3> ARE YOU SURE YOU WANT TO DELETE THIS ARTICLE?</h3>
+                    <button id="deleteThis">YES</button>
+                    <button id="no">NO</button>
+                    `), $("#triger").click();
+                        const article_id = ($(this).parent().attr('class'));
+                        $('body').on('click', '#no', function() {
+                            $('.modal-body').html(''), $("#triger").click();
+                        })
+                        $('body').on('click', '#deleteThis', function() {
+                            $.ajax({
+                                url: `/api/articles/delete/${article_id}`,
+                                type: 'GET',
+                                success: function(data) {
+
+                                    $('.modal-body').html(''), $('.modal-body').html(data)
+
+                                    setTimeout(function() {
+                                        window.location.href = '/api/register'
+
+                                    }, 2000);
+                                },
+                                error: function(err) {
+                                    $('.modal-body').html(''), $('.modal-body').html(err.responseText)
+                                    setTimeout(function() {
+                                        $("#triger").click();
+                                    }, 2000);
+                                }
+                            });
+                        })
+                    })
+                    //EDIT ARITCLE FUNCTION
+                $('body').on('click', '.editArticle', function() {
+                    const article_id = ($(this).parent().attr('class'));
+                    $('body').on('click', '#no', function() {
+                        $('.modal-body').html(''), $("#triger").click();
+                    })
                     $.ajax({
-                        url: `/api/articles/delete/${article_id}`,
+                        url: `/api/articles/article/${article_id}`,
                         type: 'GET',
                         success: function(data) {
+                            $('.modal-body').html(''), $('.modal-body').html(`
+        <img id="article_avatar" src="/images/avatars/${data.avatar}" alt="avatar" style="width: 80px; height: 80px; border-radius: 50px;">
+        <br>
+        <label>Choose Article Title:</label>
+        <input id="title_input" style="width: 90%;" type="text" class='form-control form-control-sm' name="title" value="${data.title}">
+        <br>
+        <label>Choose Article Text:</label>
+        <textarea id="text_input" style="vertical-align: top;"  cols="50" rows="10" name="text">${data.text}</textarea>
+        <br>
+        <button id="send_edit">Submit</button>
+        <button id="no">close</button>`).promise().done(function() {
+                                tinymce.init({
+                                    selector: "textarea",
+                                    width: '100%',
+                                    height: 500,
+                                    plugins: ["advlist autolink lists link image charmap print preview anchor",
+                                        "searchreplace visualblocks code fullscreen",
+                                        "insertdatetime media table paste"
+                                    ],
+                                    toolbar: "insertfile undo redo | styleselect | bold italic | alignleft aligncenter alignright alignjustify | bullist numlist outdent indent | link image",
+                                    setup: function(editor) {
+                                        editor.on('change', function() {
+                                            tinymce.triggerSave();
+                                        });
+                                    }
+                                });
+                            }), $("#triger").click();
+                            //POST EDIT ARTICLE DATA TO SERVER
+                            $('body').on('click', '#send_edit', function() {
+                                    $.ajax({
+                                        url: `/api/articles/article/${article_id}`,
+                                        type: 'POST',
+                                        data: {
+                                            title: $('#title_input').val(),
+                                            text: $('textarea#text_input').val(),
+                                            lastUpdate: Date.now
+                                        },
+                                        success: function(data) {
+                                            console.log(data);
+                                            $('.modal-body').html(''), $('.modal-body').html(data)
 
-                            $('.modal-body').html(''), $('.modal-body').html(data)
+                                            setTimeout(function() {
+                                                window.location.href = '/api/register'
 
-                            setTimeout(function() {
-                                window.location.href = '/api/register'
+                                            }, 2000);
+                                        },
+                                        error: function(err) {
+                                            $('.modal-body').html(''), $('.modal-body').html(err.responseText)
+                                            setTimeout(function() {
+                                                $("#triger").click();
+                                            }, 2000);
+                                        }
+                                    });
+                                })
+                                //change/delete avatar
+                            $('body').on('click', '#article_avatar', function() {
+                                $('.modal-body').html(''), $('.modal-body').html(`
+            <form name='articleAvatarForm'  action="/api/articles/newAvatar" method="post" enctype="multipart/form-data">
+                <label>Choose Article Avatar:</label>
+                <input style="width: 90%;" type="file" class='form-control form-control-sm' name="avatar">
+                <button style="width: 95%;"  type="submit">Submit</button>
+            </form>
+            <div style='display:flex;flex-direction:column'>
+            <button id="deleteAvatar">Delete Avatar</button>
+            <button id="no">close</button>
+            </div>
+                `)
+                                $('body').on('click', '#deleteAvatar', function() {
+                                    $.ajax({
+                                        url: `/api/articles/deleteAvatar/${article_id}`,
+                                        type: 'DELETE',
+                                        success: function(data) {
 
-                            }, 2000);
+                                            $('.modal-body').html(''), $('.modal-body').html(data)
+
+                                            setTimeout(function() {
+                                                window.location.href = '/api/register'
+
+                                            }, 2000);
+                                        },
+                                        error: function(err) {
+                                            $('.modal-body').html(''), $('.modal-body').html(err.responseText)
+                                            setTimeout(function() {
+                                                $("#triger").click();
+                                            }, 2000);
+                                        }
+                                    });
+                                })
+                                $("form[name='articleAvatarForm']").on("submit", function(ev) {
+                                    ev.preventDefault(); // Prevent browser default submit.
+
+                                    var formData = new FormData(this);
+
+
+                                    $.ajax({
+                                        url: `/api/articles/addAvatar/${article_id}`,
+                                        type: "POST",
+                                        data: formData,
+                                        success: function(msg) {
+                                            $('.modal-body').html(''), $('.modal-body').html(msg)
+                                            setTimeout(function() {
+                                                window.location.href = '/api/dashboard'
+                                            }, 2000);
+                                        },
+                                        error: function(err) {
+                                            $('.modal-body').html(''), $('.modal-body').html(err.responseText)
+                                            setTimeout(function() {
+                                                $("#triger").click();
+                                            }, 2000);
+                                        },
+                                        cache: false,
+                                        contentType: false,
+                                        processData: false
+                                    });
+
+                                });
+                            })
                         },
                         error: function(err) {
                             $('.modal-body').html(''), $('.modal-body').html(err.responseText)
@@ -429,153 +604,18 @@ $(function() {
                             }, 2000);
                         }
                     });
-                })
-            })
-
-            //EDIT ARITCLE FUNCTION
-            $('body').on('click', '.editArticle', function() {
-                const article_id = ($(this).parent().attr('class'));
-                $('body').on('click', '#no', function() {
-                    $('.modal-body').html(''), $("#triger").click();
-                })
-                $.ajax({
-                    url: `/api/articles/article/${article_id}`,
-                    type: 'GET',
-                    success: function(data) {
-                        $('.modal-body').html(''), $('.modal-body').html(`
-                        <img id="article_avatar" src="/images/avatars/${data.avatar}" alt="avatar" style="width: 80px; height: 80px; border-radius: 50px;">
-                        <br>
-                        <label>Choose Article Title:</label>
-                        <input id="title_input" style="width: 90%;" type="text" class='form-control form-control-sm' name="title" value="${data.title}">
-                        <br>
-                        <label>Choose Article Text:</label>
-                        <textarea id="text_input" style="vertical-align: top;"  cols="50" rows="10" name="text">${data.text}</textarea>
-                        <br>
-                        <button id="send_edit">Submit</button>
-                        <button id="no">close</button>`).promise().done(function() {
-                            tinymce.init({
-                                selector: "textarea",
-                                width: '100%',
-                                height: 500,
-                                plugins: ["advlist autolink lists link image charmap print preview anchor",
-                                    "searchreplace visualblocks code fullscreen",
-                                    "insertdatetime media table paste"
-                                ],
-                                toolbar: "insertfile undo redo | styleselect | bold italic | alignleft aligncenter alignright alignjustify | bullist numlist outdent indent | link image",
-                                setup: function(editor) {
-                                    editor.on('change', function() {
-                                        tinymce.triggerSave();
-                                    });
-                                }
-                            });
-                        }), $("#triger").click();
-                        //POST EDIT ARTICLE DATA TO SERVER
-                        $('body').on('click', '#send_edit', function() {
-                                $.ajax({
-                                    url: `/api/articles/article/${article_id}`,
-                                    type: 'POST',
-                                    data: {
-                                        title: $('#title_input').val(),
-                                        text: $('textarea#text_input').val(),
-                                        lastUpdate: Date.now
-                                    },
-                                    success: function(data) {
-                                        console.log(data);
-                                        $('.modal-body').html(''), $('.modal-body').html(data)
-
-                                        setTimeout(function() {
-                                            window.location.href = '/api/register'
-
-                                        }, 2000);
-                                    },
-                                    error: function(err) {
-                                        $('.modal-body').html(''), $('.modal-body').html(err.responseText)
-                                        setTimeout(function() {
-                                            $("#triger").click();
-                                        }, 2000);
-                                    }
-                                });
-                            })
-                            //change/delete avatar
-                        $('body').on('click', '#article_avatar', function() {
-                            $('.modal-body').html(''), $('.modal-body').html(`
-                            <form name='articleAvatarForm'  action="/api/articles/newAvatar" method="post" enctype="multipart/form-data">
-                                <label>Choose Article Avatar:</label>
-                                <input style="width: 90%;" type="file" class='form-control form-control-sm' name="avatar">
-                                <button style="width: 95%;"  type="submit">Submit</button>
-                            </form>
-                            <div style='display:flex;flex-direction:column'>
-                            <button id="deleteAvatar">Delete Avatar</button>
-                            <button id="no">close</button>
-                            </div>
-                                `)
-                            $('body').on('click', '#deleteAvatar', function() {
-                                $.ajax({
-                                    url: `/api/articles/deleteAvatar/${article_id}`,
-                                    type: 'DELETE',
-                                    success: function(data) {
-
-                                        $('.modal-body').html(''), $('.modal-body').html(data)
-
-                                        setTimeout(function() {
-                                            window.location.href = '/api/register'
-
-                                        }, 2000);
-                                    },
-                                    error: function(err) {
-                                        $('.modal-body').html(''), $('.modal-body').html(err.responseText)
-                                        setTimeout(function() {
-                                            $("#triger").click();
-                                        }, 2000);
-                                    }
-                                });
-                            })
-                            $("form[name='articleAvatarForm']").on("submit", function(ev) {
-                                ev.preventDefault(); // Prevent browser default submit.
-
-                                var formData = new FormData(this);
-
-
-                                $.ajax({
-                                    url: `/api/articles/addAvatar/${article_id}`,
-                                    type: "POST",
-                                    data: formData,
-                                    success: function(msg) {
-                                        $('.modal-body').html(''), $('.modal-body').html(msg)
-                                        setTimeout(function() {
-                                            window.location.href = '/api/dashboard'
-                                        }, 2000);
-                                    },
-                                    error: function(err) {
-                                        $('.modal-body').html(''), $('.modal-body').html(err.responseText)
-                                        setTimeout(function() {
-                                            $("#triger").click();
-                                        }, 2000);
-                                    },
-                                    cache: false,
-                                    contentType: false,
-                                    processData: false
-                                });
-
-                            });
-                        })
-                    },
-                    error: function(err) {
-                        $('.modal-body').html(''), $('.modal-body').html(err.responseText)
-                        setTimeout(function() {
-                            $("#triger").click();
-                        }, 2000);
-                    }
                 });
-            });
-        },
-        error: function(err) {
-            $('.modal-body').html(''), $('.modal-body').html(err.responseText)
-            setTimeout(function() {
-                $("#triger").click();
-            }, 2000);
-        }
-    });
+            },
+            error: function(err) {
+                $('.modal-body').html(''), $('.modal-body').html(err.responseText)
+                setTimeout(function() {
+                    $("#triger").click();
+                }, 2000);
+            }
+        });
+
+    }
+
 
     //SEND NEW ARTICLE DATA TO SERVER
     $("form[name='avatarForm']").on("submit", function(ev) {
