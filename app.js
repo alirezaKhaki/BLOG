@@ -6,6 +6,7 @@ const logger = require('morgan');
 const mongoose = require('mongoose')
 const api = require('./routes/api')
 const session = require('express-session');
+const fs = require("fs");
 
 const app = express();
 
@@ -13,11 +14,9 @@ mongoose.set('useNewUrlParser', true);
 mongoose.set('useFindAndModify', false);
 mongoose.set('useCreateIndex', true)
 mongoose.connect(
-    process.env.MONGO_URL, {
+    'mongodb://localhost:27017/blog', {
         useNewUrlParser: true,
         useUnifiedTopology: true
-    }, () => {
-        console.log('connected to DB');
     }
 );;
 // view engine setup
@@ -69,5 +68,18 @@ app.use(function(err, req, res, next) {
     res.status(err.status || 500);
     res.render('error');
 });
+
+
+(function() {
+    fs.existsSync(path.join(__dirname, "../public/images")) ||
+        fs.mkdirSync(path.join(__dirname, "../public/images"));
+    fs.existsSync(path.join(__dirname, "../public/images/avatars")) ||
+        fs.mkdirSync(path.join(__dirname, "../public/images/avatars"));
+    fs.existsSync(path.join(__dirname, "../public/images/articles")) ||
+        fs.mkdirSync(path.join(__dirname, "../public/images/articles"));
+    fs.existsSync(path.join(__dirname, "../public/images/uploads")) ||
+        fs.mkdirSync(path.join(__dirname, "../public/images/uploads"));
+})()
+
 
 module.exports = app;

@@ -21,7 +21,6 @@ router.post('/', async function(req, res, next) {
         if (validate) {
             let saveUser = new users(req.body)
             saveUser = await saveUser.save()
-            console.log(saveUser);
             if (saveUser) return res.send({ "msg": "success" })
 
         }

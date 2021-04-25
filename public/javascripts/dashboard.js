@@ -105,6 +105,7 @@ $(function() {
     });
     //OPEN ADD NEW ARTICLE PANEL
     $('body').on('click', '#addArticle', function() {
+        console.log(123);
         $(".container").slideUp(1200);
         $(".password").slideUp(1200);
         $(".edit").slideUp(1200);
