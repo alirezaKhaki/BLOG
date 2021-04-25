@@ -16,6 +16,8 @@ mongoose.connect(
     process.env.MONGO_URL, {
         useNewUrlParser: true,
         useUnifiedTopology: true
+    }, () => {
+        console.log('connected to DB');
     }
 );;
 // view engine setup
