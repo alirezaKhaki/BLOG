@@ -70,16 +70,5 @@ app.use(function(err, req, res, next) {
 });
 
 
-(function() {
-    fs.existsSync(path.join(__dirname, "../public/images")) ||
-        fs.mkdirSync(path.join(__dirname, "../public/images"));
-    fs.existsSync(path.join(__dirname, "../public/images/avatars")) ||
-        fs.mkdirSync(path.join(__dirname, "../public/images/avatars"));
-    fs.existsSync(path.join(__dirname, "../public/images/articles")) ||
-        fs.mkdirSync(path.join(__dirname, "../public/images/articles"));
-    fs.existsSync(path.join(__dirname, "../public/images/uploads")) ||
-        fs.mkdirSync(path.join(__dirname, "../public/images/uploads"));
-})()
-
 
 module.exports = app;
