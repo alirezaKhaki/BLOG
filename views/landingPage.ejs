@@ -1,0 +1,105 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.0-beta2/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-BmbxuPwQa2lc/FVzBcNJ7UAyJxM6wuqIj61tLrc4wSX0szH/Ev+nYRRuWlolflfl" crossorigin="anonymous">
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.0-beta2/dist/js/bootstrap.bundle.min.js" integrity="sha384-b5kHyXgcpbZJO/tY9Ul7kGkf1S0CWuKcCD38l8YkeH8z8QjE0GmW1gYU5S9FOnJ0" crossorigin="anonymous"></script>
+
+    <style>
+        section {
+            padding: 150px 0;
+        }
+        
+        a {
+            text-decoration: none;
+        }
+    </style>
+    <title> BLOG WORLD</title>
+</head>
+
+<body id="page-top">
+
+
+
+    <!-- Navigation -->
+    <%- include('./partials/navbar.ejs') %>
+
+        <!-- /.Navigation -->
+        <!-- home section -->
+        <section id="home" class="bg-dark">
+            <div class="container">
+                <div class="row">
+                    <div class="col-lg-8 mx-auto text-white text-center">
+                        <h1>Welcome To BLOG WORLD</h1>
+                        <p class="lead">A Unique BLOG Experience For Those Who Love To Write</p>
+                    </div>
+                </div>
+            </div>
+        </section>
+        <!-- /.home section -->
+        <!-- about section -->
+        <section id="about">
+            <div class="container">
+                <div class="row">
+                    <div class="col-lg-8 mx-auto">
+                        <h2>About Our BLOG</h2>
+                        <p class="lead">This is a great place to talk about your ideas. This blog is purposefully unstyled so you can use it as a boilerplate or starting point for you own blogs! This blog features:</p>
+                        <ul class="list-group list-group-flush">
+                            <li class="list-group-item">Easy to use dashboard</li>
+                            <li class="list-group-item">Responsive behavior perfect for a one page website</li>
+                            <li class="list-group-item">You can leave comments on other's blogs</li>
+                            <li class="list-group-item">Real-Time chat room to talk to other blogers</li>
+                            <li class="list-group-item">Edit and Delete your blogs whenever you want</li>
+                            <li class="list-group-item">Shows how many times your blog has been viewd</li>
+                            <li class="list-group-item">And many other things for you to find out</li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+        </section>
+        <!-- /.about section -->
+        <!-- service section -->
+        <section id="services" class="bg-dark" style="color: white; text-align: center;">
+            <div class="container">
+                <div class="row">
+                    <div class="col-lg-8 mx-auto">
+                        <h2>Interested in our services? why don't you join us now?</h2>
+                        <button id="register" class="btn btn-outline-secondary mt-5"><a href="/api/register" class="link-light"> CREAT NEW ACCOUNT</a></button>
+                    </div>
+                </div>
+            </div>
+        </section>
+        <!-- /.service section -->
+        <!-- contact section -->
+        <section id="contact">
+            <div class="container">
+                <div class="row">
+                    <div class="col-lg-8 mx-auto">
+                        <h2>Contact us</h2>
+                        <ul class="list-group list-group-flush">
+                            <li class="list-group-item"><a class="link-dark" href="https://github.com/alirezaKhaki">GITHUB</a></li>
+                            <li class="list-group-item"><a class="link-dark" href="https://t.me/alirezamansourkhaki">TELEGRAM</a></li>
+                            <li class="list-group-item"><a class="link-dark" href="https://www.linkedin.com/in/alireza-khaki-3a6519205/">LINKEDIN</a></li>
+                            <li class="list-group-item"><a class="link-dark" href="alireza.mkhaki@gmail.com">EMAIL:alireza.mkhaki@gmail.com</a></li>
+                            <li class="list-group-item">mobile:+989129457824</li>
+
+                        </ul>
+                    </div>
+                </div>
+            </div>
+        </section>
+        <!-- /.contact section -->
+        <!-- footer -->
+        <footer class="py-5 bg-dark">
+            <div class="container">
+                <p class="m-0 text-center text-white">Copyright &copy; BLOG WORLD 2021</p>
+            </div>
+        </footer>
+        <!-- /.footer -->
+
+</body>
+
+</html>

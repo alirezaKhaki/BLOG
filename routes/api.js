@@ -14,7 +14,9 @@ router.use('/register', register);
 router.use('/dashboard', dashbord);
 router.use('/articles', articles);
 router.use('/comments', comments);
-router.get('/', articles)
+router.get('/', (req, res) => {
+    res.render('landingPage', { session: req.session.user })
+})
 
 
 

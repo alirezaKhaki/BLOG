@@ -148,10 +148,17 @@
                                     <input type="number" id="number" value="<%= session.mobile %>">
                                     <p>GENDER:</p>
                                     <div style="display: flex; justify-content: center;">
-                                        <input style="margin: 0; padding: 0; width: 15px;" type="radio" id="gender" name="gender" value="male">
-                                        <label style="margin:0 7px 0 7px;">MALE</label>
-                                        <input style="margin: 0; padding: 0; width: 15px;" type="radio" id="gender" name="gender" value="female">
-                                        <label style="margin:0 7px 0 7px;">FEMALE</label>
+                                        <% if(session.sex==='male') { %>
+                                            <input style="margin: 0; padding: 0; width: 15px;" type="radio" id="gender" name="gender" value="male" checked="checked">
+                                            <label style="margin:0 7px 0 7px;">MALE</label>
+                                            <input style="margin: 0; padding: 0; width: 15px;" type="radio" id="gender" name="gender" value="female">
+                                            <label style="margin:0 7px 0 7px;">FEMALE</label>
+                                            <% }else{ %>
+                                                <input style="margin: 0; padding: 0; width: 15px;" type="radio" id="gender" name="gender" value="male">
+                                                <label style="margin:0 7px 0 7px;">MALE</label>
+                                                <input style="margin: 0; padding: 0; width: 15px;" type="radio" id="gender" name="gender" value="female" checked="checked">
+                                                <label style="margin:0 7px 0 7px;">FEMALE</label>
+                                                <% } %>
 
                                     </div>
                                 </div>

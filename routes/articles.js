@@ -6,7 +6,7 @@ const router = express.Router();
 const generalTools = require('../tools/general-tools');
 const fs = require('fs')
     // ALL ARTICLES
-router.get('/', (req, res) => {
+router.get('/', generalTools.loginChecker, (req, res) => {
 
         const query = req.query;
 
@@ -20,7 +20,7 @@ router.get('/', (req, res) => {
             size = 10;
         }
         let regexp = new RegExp(/\[0-9]/g);
-        if (page <= 0) return res.redirect('/')
+        if (page <= 0) return res.redirect('/api/articles')
         const limit = parseInt(size);
         const skip = (page - 1) * size;
         articles.find({}, (err, allArticles) => {
@@ -28,7 +28,7 @@ router.get('/', (req, res) => {
             const pages = Math.ceil(allArticles.length / size)
             articles.find().populate('owner').limit(limit).skip(skip).sort({ createdAt: -1 }).exec((err, article) => {
                 if (err) return res.status(500).json({ msg: "Server Error :)", err: err.message })
-                if (page > pages) return res.redirect(`/?page=${pages}`)
+                if (page > pages) return res.redirect(`/api/articles/?page=${pages}`)
                 if (article) return res.render('allArticles', { article: article, session: req.session.user, limit: limit, skip: skip, pages: pages, page: page })
             })
         })

@@ -1,12 +1,12 @@
 const express = require('express');
 const users = require('../model/user')
-const url = require('url')
 const router = express.Router();
 const bcrypt = require('bcrypt');
 const generalTools = require('../tools/general-tools');
 const nodemailer = require('nodemailer');
 require('dotenv').config()
 const JoiSchema = require('../tools/joiValidator')
+
 
 router.get('/', generalTools.sessionChecker, (req, res) => {
     res.render('login', { session: req.session.user })
