@@ -84,46 +84,50 @@
                         <div class="card-body">
                             <h5 class="card-title">My Profile</h5>
                             <img id="userAvatar" src="/images/avatars/<%= session.avatar%>" alt="avatar" style="width: 80px; height: 80px; border-radius: 50px;">
-                            <table class="table table-borderless">
-                                <thead>
-                                    <tr>
-                                        <th scope="col">ID</th>
-                                        <th scope="col">USERNAME</th>
-                                        <th scope="col">FIRST NAME</th>
-                                        <th scope="col">LAST NAME</th>
-                                        <th scope="col">GENDER</th>
-                                        <th scope="col">PHONE NUMBER</th>
-                                        <th scope="col">ROLE</th>
+                            <div class="table-responsive">
+                                <table class="table table-borderless">
+                                    <thead>
+                                        <tr>
+                                            <th scope="col">ID</th>
+                                            <th scope="col">USERNAME</th>
+                                            <th scope="col">FIRST NAME</th>
+                                            <th scope="col">LAST NAME</th>
+                                            <th scope="col">GENDER</th>
+                                            <th scope="col">PHONE NUMBER</th>
+                                            <th scope="col">ROLE</th>
 
-                                    </tr>
-                                </thead>
-                                <tbody>
-                                    <tr>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        <tr>
 
-                                        <td>
-                                            <%= session._id %>
-                                        </td>
-                                        <td>
-                                            <%= session.username %>
-                                        </td>
-                                        <td>
-                                            <%= session.firstName %>
-                                        </td>
-                                        <td>
-                                            <%= session.lastName%>
-                                        </td>
-                                        <td>
-                                            <%= session.sex%>
-                                        </td>
-                                        <td>
-                                            <%= session.mobile %>
-                                        </td>
-                                        <td>
-                                            <%= session.role %>
-                                        </td>
-                                    </tr>
-                                </tbody>
-                            </table>
+                                            <td>
+                                                <%= session._id %>
+                                            </td>
+                                            <td>
+                                                <%= session.username %>
+                                            </td>
+                                            <td>
+                                                <%= session.firstName %>
+                                            </td>
+                                            <td>
+                                                <%= session.lastName%>
+                                            </td>
+                                            <td>
+                                                <%= session.sex%>
+                                            </td>
+                                            <td>
+                                                <%= session.mobile %>
+                                            </td>
+                                            <td>
+                                                <%= session.role %>
+                                            </td>
+                                        </tr>
+                                    </tbody>
+                                </table>
+                            </div>
+
+
                             <button id="edit">Edit Profile</button>
                             <button id="change">Change Password</button>
                             <button id="delete"> DELETE Account</button>

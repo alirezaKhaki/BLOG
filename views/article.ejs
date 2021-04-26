@@ -101,12 +101,12 @@
                     <div class="card">
                         <div class="card-body" style="border-radius: 10px;">
                             <img src="/images/avatars/<%= comments[i].owner.avatar%>" alt="avatar" style="width:50px;height:50px;border-radius:50px">
-                            <div class="article_text">USERNAME:
-                                <%= comments[i].owner.username%>
-                            </div>
                             <p class="card-title">COMMENT:
                                 <%= comments[i].text%>
                             </p>
+                            <div class="article_text">BY:
+                                <%= comments[i].owner.username%>
+                            </div>
                             <p id="created">CREATED AT:
                                 <%= comments[i].createdAt%>
                             </p>
