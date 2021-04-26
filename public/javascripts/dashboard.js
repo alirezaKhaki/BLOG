@@ -363,7 +363,7 @@ $(function() {
             $('body').on('click', '.resetPassword', function() {
                 const user_id = ($(this).parent().attr('class'));
                 $('.modal-body').html(''), $('.modal-body').html(`
-                        <h3> ARE YOU SURE YOU WANT TO RESET THIS USERS PASSWORD TO MOBILE?</h3>
+                        <h3> ARE YOU SURE YOU WANT TO RESET THIS USERS PASSWORD TO THEIR MOBILE NUMBER?</h3>
                         <button id="resetThis">YES</button>
                         <button id="no">NO</button>
                         `), $("#triger").click();
@@ -444,13 +444,13 @@ $(function() {
                     <div class="pages mt-3 col-12 col-md-6 col-lg-4" style="width:100%;">
                     <div class="card">
                         <div class="card-body" style="border-radius: 10px;">
-                        <img style="width:50px;height:50px;" src="/images/avatars/${data.article[i].owner.avatar}" alt="avatar" class="photo">
+                        <img  style="width:50px;height:50px;" src="/images/avatars/${data.article[i].owner.avatar}" alt="avatar" class="photo">
                             <h5 class="card-title">TITLE:${data.article[i].title} </h5>
                             <h6 class="card-title">BY:${data.article[i].owner.username} </h6>
                             <div class="article_text">TEXT:${data.article[i].text}</div> 
                             <a href="/api/articles/${data.article[i]._id}">more...</a>
                             <p>CREATED AT:${date}</p>
-                            <img style="width:auto;" src="/images/avatars/${data.article[i].avatar}" alt="avatar" class="photo">
+                            <img class="img-fluid" style="width:auto;" src="/images/avatars/${data.article[i].avatar}" alt="avatar" class="photo">
                             <div class="${data.article[i]._id}">
                             <button class="editArticle">EDIT</button>
                             <button class="deleteArticle">DELETE</button>
