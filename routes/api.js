@@ -7,6 +7,7 @@ const comments = require('./comment');
 const router = express.Router();
 const joiSchema = require('../tools/joiValidator')
 const users = require('../model/user')
+const chatRoom = require('./chatroom')
 const Joi = require("joi")
     /* GET home page. */
 router.use('/login', login);
@@ -14,6 +15,7 @@ router.use('/register', register);
 router.use('/dashboard', dashbord);
 router.use('/articles', articles);
 router.use('/comments', comments);
+router.use('/chatRoom', chatRoom);
 router.get('/', (req, res) => {
     res.render('landingPage', { session: req.session.user })
 })
