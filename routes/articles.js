@@ -92,7 +92,7 @@ router.get('/:id', generalTools.loginChecker, (req, res) => {;
 
 // ADD NEW ARTICLE
 router.post('/newArticle', generalTools.loginChecker, async(req, res) => {
-    if (!req.body.owner) return res.status(400).send('article must have an owner');
+    // if (!req.body.owner) return res.status(400).send('article must have an owner');
     const upload = generalTools.uploadArticle.single('avatar');
     upload(req, res, async(err) => {
         if (err) {
