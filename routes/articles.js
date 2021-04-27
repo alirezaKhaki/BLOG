@@ -40,7 +40,6 @@ router.get('/myArticles/:id', generalTools.loginChecker, async(req, res) => {
             if (!page) {
                 page = 1;
             }
-            console.log(page);
             const limit = parseInt(size);
             const skip = (page - 1) * size;
             const articlesLength = await articles.find({ owner: req.params.id });
@@ -93,8 +92,7 @@ router.get('/:id', generalTools.loginChecker, (req, res) => {;
 
 // ADD NEW ARTICLE
 router.post('/newArticle', generalTools.loginChecker, async(req, res) => {
-    // if (!req.body.title || !req.body.text) return res.status(400).send('article must have title and text');
-    // if (!req.body.owner) return res.status(400).send('article must have an owner');
+    if (!req.body.owner) return res.status(400).send('article must have an owner');
     const upload = generalTools.uploadArticle.single('avatar');
     upload(req, res, async(err) => {
         if (err) {
@@ -179,31 +177,36 @@ router.get('/delete/:id', generalTools.loginChecker, async(req, res) => {
 //edit text and title of article
 router.post('/article/:id', generalTools.loginChecker, (req, res) => {
 
-        articles.findOne({ _id: req.params.id, owner: req.session.user._id }, (err, article) => {
+    articles.findOne({ _id: req.params.id, owner: req.session.user._id }, (err, article) => {
+        if (err) return res.status(500).send('server error')
+        if (!article) return res.status(403).send('acces denied!')
+        articles.findByIdAndUpdate({ _id: req.params.id }, req.body, { new: true }, (err, article) => {
             if (err) return res.status(500).send('server error')
-            if (!article) return res.status(403).send('acces denied!')
-            articles.findByIdAndUpdate({ _id: req.params.id }, req.body, { new: true }, (err, article) => {
-                if (err) return res.status(500).send('server error')
-                if (article) return res.send('article edited!')
-            })
+            if (article) return res.send('article edited!')
         })
     })
-    //delete article avatar
+})
+
+
+
+//delete article avatar
 router.delete('/deleteAvatar/:id', generalTools.loginChecker, (req, res) => {
 
-        articles.findOne({ _id: req.params.id, owner: req.session.user._id }, (err, article) => {
+    articles.findOne({ _id: req.params.id, owner: req.session.user._id }, (err, article) => {
+        if (err) return res.status(500).send('server error')
+        if (!article) return res.status(403).send('acces denied!')
+        if (article.avatar === 'ArticleDefault.jpg') return res.status(400).send('this article don not have an avatar')
+        fs.unlinkSync(`public/images/avatars/${article.avatar}`)
+        articles.findByIdAndUpdate({ _id: req.params.id }, { avatar: 'ArticleDefault.jpg' }, { new: true }, (err, article) => {
             if (err) return res.status(500).send('server error')
-            if (!article) return res.status(403).send('acces denied!')
-            console.log(article.avatar);
-            if (article.avatar === 'ArticleDefault.jpg') return res.status(400).send('this article don not have an avatar')
-            fs.unlinkSync(`public/images/avatars/${article.avatar}`)
-            articles.findByIdAndUpdate({ _id: req.params.id }, { avatar: 'ArticleDefault.jpg' }, { new: true }, (err, article) => {
-                if (err) return res.status(500).send('server error')
-                if (article) return res.send('avatar deleted!')
-            })
+            if (article) return res.send('avatar deleted!')
         })
     })
-    //add article avatar
+})
+
+
+
+//add article avatar
 router.post('/addAvatar/:id', generalTools.loginChecker, (req, res) => {
 
     articles.findOne({ _id: req.params.id, owner: req.session.user._id }, (err, article) => {

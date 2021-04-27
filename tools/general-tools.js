@@ -5,6 +5,7 @@ const multer = require('multer')
 const fs = require("fs");
 const path = require("path");
 
+//check if the clinet is logged in then redirects them to dashboard page
 generalTools.sessionChecker = function(req, res, next) {
     if (req.cookies.user_sid && req.session.user) {
         return res.redirect('/api/dashboard')
@@ -13,6 +14,7 @@ generalTools.sessionChecker = function(req, res, next) {
     return next()
 };
 
+//check if the clinet isn't logged in the redirects them to login page
 generalTools.loginChecker = function(req, res, next) {
     if (!req.session.user) {
         return res.redirect("/api/login")
@@ -20,6 +22,8 @@ generalTools.loginChecker = function(req, res, next) {
 
     return next()
 };
+
+//path of the user's avatar
 const avatarStorage = multer.diskStorage({
     destination: function(req, file, cb) {
         cb(null, path.join(__dirname, '../public/images/avatars'))
@@ -29,7 +33,7 @@ const avatarStorage = multer.diskStorage({
     }
 });
 
-
+//path of the article's avatar
 const articleStorage = multer.diskStorage({
     destination: function(req, file, cb) {
         cb(null, path.join(__dirname, '../public/images/avatars'))
@@ -39,13 +43,14 @@ const articleStorage = multer.diskStorage({
     }
 });
 
+//check the file type for article's avatar
 generalTools.uploadArticle = multer({
-    storage: articleStorage,
-    fileFilter: function(req, file, cb) {
-        checkFile(file, cb)
-    }
-})
-
+        storage: articleStorage,
+        fileFilter: function(req, file, cb) {
+            checkFile(file, cb)
+        }
+    })
+    //check the file type for users's avatar
 generalTools.uploadAvatar = multer({
     storage: avatarStorage,
     fileFilter: function(req, file, cb) {
@@ -73,15 +78,6 @@ function checkFile(file, cb) { //allowed ectentions
     }
 
 }
-
-//CREAT AVATAR FOLDER
-
-module.exports = (function() {
-    // createAdmin();
-    (fs.existsSync(path.join(__dirname, '../public/images')) || fs.mkdirSync(path.join(__dirname, '../public/images')));
-    (fs.existsSync(path.join(__dirname, '../public/images/avatars')) || fs.mkdirSync(path.join(__dirname, '../public/images/avatars')));
-
-})();
 
 
 

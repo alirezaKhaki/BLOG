@@ -7,32 +7,36 @@ $(function() {
     $(".delete").hide();
     $(".my_profile").hide();
     $(".users").hide();
-    //*****BUTTONS*****
-
+    /*
+     ****************************************************
+     ********************BUTTONS*************************
+     ****************************************************
+     */
     //CLOSE BUTTON
     $('body').on('click', '#closeBtn', function() {
-            $(".password").slideUp(1200);
-            $(".delete").slideUp(1200);
-            $(".edit").slideUp(1200);
-            $(".my_profile").slideUp(1200);
-            $(".newArticle").slideUp(1200);
-            $(".container2").slideUp(1200);
-            $(".users").slideUp(1200);
-            $(".container").slideDown(1200);
+        $(".password").slideUp(1200);
+        $(".delete").slideUp(1200);
+        $(".edit").slideUp(1200);
+        $(".my_profile").slideUp(1200);
+        $(".newArticle").slideUp(1200);
+        $(".container2").slideUp(1200);
+        $(".users").slideUp(1200);
+        $(".container").slideDown(1200);
+    })
 
-        })
-        // OPEN MY PROFILE PANEL
+    // OPEN MY PROFILE PANEL
     $('body').on('click', '#my_profile', function() {
-            $(".password").slideUp(1200);
-            $(".delete").slideUp(1200);
-            $(".edit").slideUp(1200);
-            $(".container").slideUp(1200);
-            $(".newArticle").slideUp(1200);
-            $(".container2").slideUp(1200);
-            $(".users").slideUp(1200);
-            $(".my_profile").slideDown(1200);
-        })
-        //OPEN EDIT PANEL
+        $(".password").slideUp(1200);
+        $(".delete").slideUp(1200);
+        $(".edit").slideUp(1200);
+        $(".container").slideUp(1200);
+        $(".newArticle").slideUp(1200);
+        $(".container2").slideUp(1200);
+        $(".users").slideUp(1200);
+        $(".my_profile").slideDown(1200);
+    })
+
+    //OPEN EDIT PANEL
     $('body').on('click', '#edit', function() {
         $(".container").slideUp(1200);
         $(".password").slideUp(1200);
@@ -42,10 +46,9 @@ $(function() {
         $(".container2").slideUp(1200);
         $(".users").slideUp(1200);
         $(".edit").slideDown(1200);
-
     });
 
-    //OPEN OTHER ALL USERS PANEL
+    //OPEN OTHER ALL USERS PANEL FOR ADMIN
     $('body').on('click', '#allUsers', function() {
         $(".container").slideUp(1200);
         $(".container2").slideUp(1200);
@@ -91,8 +94,8 @@ $(function() {
         $(".users").slideUp(1200);
         $('.password').slideToggle(1200);
     });
-    //OPNE DELETE ACCOUNT PANEL
 
+    //OPNE DELETE ACCOUNT PANEL
     $('body').on('click', '#delete', function() {
         $(".container").slideUp(1200);
         $(".password").slideUp(1200);
@@ -103,9 +106,9 @@ $(function() {
         $(".users").slideUp(1200);
         $('.delete').slideDown(1200);
     });
+
     //OPEN ADD NEW ARTICLE PANEL
     $('body').on('click', '#addArticle', function() {
-        console.log(123);
         $(".container").slideUp(1200);
         $(".password").slideUp(1200);
         $(".edit").slideUp(1200);
@@ -117,7 +120,12 @@ $(function() {
 
     });
 
-    //*****FUNCTIONS*****
+    /*
+     ****************************************************
+     ********************FUNCTIONS***********************
+     ****************************************************
+     */
+
     //SEND EDIT PANEL DATA TO SERVER
     $('body').on('click', '#save', function() {
         const username = $('#username').val();
@@ -135,28 +143,21 @@ $(function() {
             lastName: lastName,
             sex: gender
         }
+
         $.ajax({
             type: "POST",
             url: "/api/dashboard/edit",
             data: user_edit,
             success: function(data) {
-                console.log(data);
                 if (data.msg === "success") {
-
                     $('.modal-body').html(''), $('.modal-body').html('your information edited sucssesfully you need to login again'), $("#triger").click();
-
                     setTimeout(function() {
                         window.location.href = '/api/login'
-
                     }, 3000);
-
                 }
             },
             error: function(err) {
-                console.log(err);
                 $('.modal-body').html(''), $('.modal-body').html(err.responseText), $("#triger").click();
-
-
             }
         })
     });
@@ -171,32 +172,27 @@ $(function() {
             password: pass,
             new_password: new_password
         }
+
         $.ajax({
             type: "POST",
             url: "/api/dashboard/password",
             data: new_pass,
             success: function(data) {
-
                 if (data.msg === 'sucsses') {
-
                     $('.modal-body').html(''), $('.modal-body').html('your password sucssesfully changed you need to login again'), $("#triger").click();
-
                     setTimeout(function() {
                         window.location.href = '/api/login'
-
                     }, 3000);
-
                 }
             },
             error: function(err) {
                 $('.modal-body').html(''), $('.modal-body').html(err.responseText), $("#triger").click();
-
-
             }
         })
     });
-    // SEND DELETE ACCOUNT DATA TO SERVER
 
+
+    // SEND DELETE ACCOUNT DATA TO SERVER
     $('body').on('click', '#delete_account', function() {
         const pass = $('#delete_pass').val()
 
@@ -204,43 +200,35 @@ $(function() {
             username: $('#username').val(),
             password: pass
         }
-        console.log(check_pass);
+
         $.ajax({
             type: "POST",
             url: "/api/dashboard/delete",
             data: check_pass,
             success: function(data) {
-
                 if (data === 'deleted') {
-
                     $('.modal-body').html(''), $('.modal-body').html('your account has been deleted!'), $("#triger").click();
-
                     setTimeout(function() {
                         window.location.href = '/api/register'
-
                     }, 3000);
-
                 }
             },
             error: function(err) {
                 $('.modal-body').html(''), $('.modal-body').html(err.responseText), $("#triger").click();
-
             }
         })
     });
-    // SEND DELETE AVATAR IMAGE DATA TO SERVER
 
+
+    // SEND DELETE AVATAR REQUEST TO SERVER
     $('body').on('click', '#deleteImage', function() {
         $.ajax({
             url: '/api/dashboard/deleteAvatar',
             type: 'DELETE',
             success: function(data) {
-
                 $('.modal-body').html(''), $('.modal-body').html(data)
-
                 setTimeout(function() {
                     window.location.href = '/api/register'
-
                 }, 2000);
             },
             error: function(err) {
@@ -251,8 +239,9 @@ $(function() {
             }
         });
     });
-    // SEND ADD NEW AVATAR DATA TO SERVER
 
+
+    // SEND ADD NEW AVATAR DATA TO SERVER
     $('body').on('click', '#userAvatar', function() {
         $('.modal-body').html(''), $('.modal-body').html(` 
         <form name='userAvatar' action="/api/dashboard/avatar" method="post" enctype="multipart/form-data">
@@ -262,9 +251,7 @@ $(function() {
         <button id="deleteImage">Delete Avatar</button>`), $("#triger").click();
         $("form[name='userAvatar']").on("submit", function(ev) {
             ev.preventDefault(); // Prevent browser default submit.
-
             var formData = new FormData(this);
-            console.log(formData);
 
 
             $.ajax({
@@ -295,15 +282,16 @@ $(function() {
     //GET ALL USERS FOR ADMIN
     function allUsers(page) {
         $.get(`/api/dashboard/getAll?page=${page}`, (data, response) => {
-
             if (response !== 'success') {
                 $('.modal-body').html(''), $('.modal-body').html(response)
                 setTimeout(function() {
                     location.reload()
                 }, 2000);
             }
+
             $('.usersHeader').html(`All Users <br> Page: ${page}`)
             $('.usersBox').html('')
+
             const allUsers = data.users
             for (let i = 0; i < allUsers.length; i++) {
                 let date = allUsers[i].createdAt
@@ -311,20 +299,20 @@ $(function() {
                 $('.usersBox').append(`
                 <div class="card" style="width: 18rem; margin:10px">
                     <div class="d-flex justify-content-center mb-2">
-                    <img src="/images/avatars/${allUsers[i].avatar}" class="card-img-top" style="width:150px; height:150px; border-radius:50px;">
+                        <img src="/images/avatars/${allUsers[i].avatar}" class="card-img-top" style="width:150px; height:150px; border-radius:50px;">
                     </div>
-                    <div style='text-align:center;'>
-                    <h5 class="card-title">User Name: ${allUsers[i].username}</h5>
-                    <p class="card-text">First Name: ${allUsers[i].firstName}</p>
-                    <p class="card-text">Last Name:  ${allUsers[i].lastName}</p>
-                    <p class="card-text">Gender:  ${allUsers[i].sex}</p>
-                    <p class="card-text">Mobile:  ${allUsers[i].mobile}</p>
-                    <p class="card-text">Joined: ${allUsers[i].createdAt}</p>
-                    <div class="${allUsers[i]._id}" id="reset">
-                    <button class="resetPassword">RESET PASSWORD</button>
-                    <button class="deleteUser">DELETE USER</button>
+                        <div style='text-align:center;'>
+                            <h5 class="card-title">User Name: ${allUsers[i].username}</h5>
+                            <p class="card-text">First Name: ${allUsers[i].firstName}</p>
+                            <p class="card-text">Last Name:  ${allUsers[i].lastName}</p>
+                            <p class="card-text">Gender:  ${allUsers[i].sex}</p>
+                            <p class="card-text">Mobile:  ${allUsers[i].mobile}</p>
+                            <p class="card-text">Joined: ${allUsers[i].createdAt}</p>
+                        <div class="${allUsers[i]._id}" id="reset">
+                            <button class="resetPassword">RESET PASSWORD</button>
+                            <button class="deleteUser">DELETE USER</button>
+                        </div>
                     </div>
-                </div>
                  </div> `)
             }
             //DELETE USER FUNCTION
@@ -343,13 +331,11 @@ $(function() {
                         url: `/api/dashboard/delete/${user_id}`,
                         type: 'GET',
                         success: function(data) {
-
                             $('.modal-body').html(''), $('.modal-body').html(data)
                             setTimeout(function() {
                                 $("#triger").click();
                                 $("#allUsers").click();
                             }, 2000);
-
                         },
                         error: function(err) {
                             $('.modal-body').html(''), $('.modal-body').html(err.responseText)
@@ -375,10 +361,7 @@ $(function() {
                         url: `/api/dashboard/resetPassword/${user_id}`,
                         type: 'GET',
                         success: function(data) {
-
                             $('.modal-body').html(''), $('.modal-body').html(`${data}<button id="no">OK</button>`)
-
-
                         },
                         error: function(err) {
                             $('.modal-body').html(''), $('.modal-body').html(err.responseText)
@@ -389,11 +372,7 @@ $(function() {
                     });
                 })
             })
-
-
-
         })
-
     }
     //GET USER ARTICLES FROM SERVER AND RENDER THEM
     $.ajax({
@@ -403,19 +382,15 @@ $(function() {
             for (let i = 0; i < Math.ceil(data.length / 10); i++) {
                 $('.ulNav').append(`
             <li class="page-item" id="${i+1}"><a class="page-link" href="#nav">${i+1}</a></li>
-            
         `)
-
                 $('body').on('click', `#${i+1}`, function() {
                     const page = ($(this).attr('id'));
                     $('li').removeClass("active")
                     $(this).addClass("page-item active")
                     articlesRender(page)
                 })
-
             }
             articlesRender(1)
-
         },
         error: function(err) {
             $('.modal-body').html(''), $('.modal-body').html(err.responseText)
@@ -461,8 +436,6 @@ $(function() {
                    `)
 
                 }
-
-
                 //DELETE ARTICLE FUNCTION
                 $('body').on('click', '.deleteArticle', function() {
                         $('.modal-body').html(''), $('.modal-body').html(`
@@ -479,12 +452,9 @@ $(function() {
                                 url: `/api/articles/delete/${article_id}`,
                                 type: 'GET',
                                 success: function(data) {
-
                                     $('.modal-body').html(''), $('.modal-body').html(data)
-
                                     setTimeout(function() {
                                         window.location.href = '/api/register'
-
                                     }, 2000);
                                 },
                                 error: function(err) {
@@ -507,16 +477,16 @@ $(function() {
                         type: 'GET',
                         success: function(data) {
                             $('.modal-body').html(''), $('.modal-body').html(`
-        <img id="article_avatar" src="/images/avatars/${data.avatar}" alt="avatar" style="width: 80px; height: 80px; border-radius: 50px;">
-        <br>
-        <label>Choose Article Title:</label>
-        <input id="title_input" style="width: 90%;" type="text" class='form-control form-control-sm' name="title" value="${data.title}">
-        <br>
-        <label>Choose Article Text:</label>
-        <textarea id="text_input" style="vertical-align: top;"  cols="50" rows="10" name="text">${data.text}</textarea>
-        <br>
-        <button id="send_edit">Submit</button>
-        <button id="no">close</button>`).promise().done(function() {
+                                    <img id="article_avatar" src="/images/avatars/${data.avatar}" alt="avatar" style="width: 80px; height: 80px; border-radius: 50px;">
+                                    <br>
+                                    <label>Choose Article Title:</label>
+                                    <input id="title_input" style="width: 90%;" type="text" class='form-control form-control-sm' name="title" value="${data.title}">
+                                    <br>
+                                    <label>Choose Article Text:</label>
+                                    <textarea id="text_input" style="vertical-align: top;"  cols="50" rows="10" name="text">${data.text}</textarea>
+                                    <br>
+                                    <button id="send_edit">Submit</button>
+                                    <button id="no">close</button>`).promise().done(function() {
                                 tinymce.init({
                                     selector: "textarea",
                                     width: '100%',
@@ -544,12 +514,9 @@ $(function() {
                                             lastUpdate: Date.now
                                         },
                                         success: function(data) {
-                                            console.log(data);
                                             $('.modal-body').html(''), $('.modal-body').html(data)
-
                                             setTimeout(function() {
                                                 window.location.href = '/api/register'
-
                                             }, 2000);
                                         },
                                         error: function(err) {
@@ -563,27 +530,24 @@ $(function() {
                                 //change/delete avatar
                             $('body').on('click', '#article_avatar', function() {
                                 $('.modal-body').html(''), $('.modal-body').html(`
-            <form name='articleAvatarForm'  action="/api/articles/newAvatar" method="post" enctype="multipart/form-data">
-                <label>Choose Article Avatar:</label>
-                <input style="width: 90%;" type="file" class='form-control form-control-sm' name="avatar">
-                <button style="width: 95%;"  type="submit">Submit</button>
-            </form>
-            <div style='display:flex;flex-direction:column'>
-            <button id="deleteAvatar">Delete Avatar</button>
-            <button id="no">close</button>
-            </div>
-                `)
+                                    <form name='articleAvatarForm'  action="/api/articles/newAvatar" method="post" enctype="multipart/form-data">
+                                    <label>Choose Article Avatar:</label>
+                                    <input style="width: 90%;" type="file" class='form-control form-control-sm' name="avatar">
+                                    <button style="width: 95%;"  type="submit">Submit</button>
+                                    </form>
+                                    <div style='display:flex;flex-direction:column'>
+                                    <button id="deleteAvatar">Delete Avatar</button>
+                                    <button id="no">close</button>
+                                    </div>
+                                    `)
                                 $('body').on('click', '#deleteAvatar', function() {
                                     $.ajax({
                                         url: `/api/articles/deleteAvatar/${article_id}`,
                                         type: 'DELETE',
                                         success: function(data) {
-
                                             $('.modal-body').html(''), $('.modal-body').html(data)
-
                                             setTimeout(function() {
                                                 window.location.href = '/api/register'
-
                                             }, 2000);
                                         },
                                         error: function(err) {
@@ -596,9 +560,7 @@ $(function() {
                                 })
                                 $("form[name='articleAvatarForm']").on("submit", function(ev) {
                                     ev.preventDefault(); // Prevent browser default submit.
-
                                     var formData = new FormData(this);
-
 
                                     $.ajax({
                                         url: `/api/articles/addAvatar/${article_id}`,
@@ -649,7 +611,6 @@ $(function() {
         ev.preventDefault(); // Prevent browser default submit.
 
         var formData = new FormData(this);
-        console.log(formData);
 
 
         $.ajax({

@@ -9,7 +9,9 @@ const joiSchema = require('../tools/joiValidator')
 const users = require('../model/user')
 const chatRoom = require('./chatroom')
 const Joi = require("joi")
-    /* GET home page. */
+
+
+/*  ALL THE MAIN ROUTES */
 router.use('/login', login);
 router.use('/register', register);
 router.use('/dashboard', dashbord);

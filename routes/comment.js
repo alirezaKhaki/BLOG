@@ -4,7 +4,7 @@ const router = express.Router();
 const generalTools = require('../tools/general-tools');
 
 
-
+// ROUTE FOR ALL THE COMENTS
 router.get('/allComments', generalTools.loginChecker, (req, res) => {
     if (req.session.user.role !== 'admin') return res.status(403).send('access denied!')
     comments.find().populate('owner').populate('article').exec((err, comment) => {
@@ -13,7 +13,7 @@ router.get('/allComments', generalTools.loginChecker, (req, res) => {
     })
 })
 
-
+//ROUTE FOR COMMENTS OF ONE ARTICLE
 router.get('/articleComment/:id', (req, res) => {
     comments.find({ article: req.params.id }).populate('owner').sort({ createdAt: -1 }).exec((err, comment) => {
         if (err) return res.status(500).send('server error')
@@ -21,7 +21,7 @@ router.get('/articleComment/:id', (req, res) => {
     })
 })
 
-
+//ROUTE FOR POSTING A NEW COMMENT
 router.post('/newComment/:id', async(req, res) => {
     try {
         if (!req.session.user) return res.status(400).send('login first')
@@ -39,6 +39,7 @@ router.post('/newComment/:id', async(req, res) => {
     }
 })
 
+//ROUTE FOR DEKETING A COMMENT FOR ADMIN
 router.delete('/delete/:id', (req, res) => {
     if (req.session.user.role !== 'admin') return res.status(403).send('access denied!')
     comments.findByIdAndDelete({ _id: req.params.id }, (err) => {

@@ -12,6 +12,8 @@ router.get('/', generalTools.sessionChecker, (req, res) => {
     res.render('login', { session: req.session.user })
 })
 
+
+//VALIDATE LOGIN DATA FROM CLIENT
 router.post('/', (req, res) => {
     if (!req.body.username || !req.body.password) return res.status(400).send('please fill the inputs!')
     users.findOne({ username: req.body.username }, function(err, user) {
@@ -33,6 +35,9 @@ router.post('/', (req, res) => {
         }
     })
 })
+
+
+//FORGOT PASSWORD FUNCTION AND RECOVERY EMAIL SEND
 router.post('/forgot', async(req, res) => {
     try {
         let validate = await JoiSchema.forgot.validateAsync(req.body);
