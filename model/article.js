@@ -13,7 +13,7 @@ const ArticleSchema = new Schema({
         required: true,
         trim: true,
         minlength: 100,
-        maxlength: 1000
+        maxlength: 100000
     },
     createdAt: {
         type: Date,
