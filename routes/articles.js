@@ -111,8 +111,8 @@ router.post('/newArticle', generalTools.loginChecker, async(req, res) => {
                 } catch (err) {
                     if (err.stack.includes("Path `title` is required")) return res.status(400).send('title and text is required')
                     if (err.stack.includes("Path `text` is required")) return res.status(400).send('title and text is required')
-                    if (err.stack.includes("is shorter than the minimum allowed length")) return res.status(400).send(' title is shorter than the minimum allowed length (3)')
-                    if (err.stack.includes("minimum allowed length")) return res.status(400).send(' text minimum allowed length is (100)')
+                    if (err.stack.includes("is shorter than the minimum allowed length (3)")) return res.status(400).send(' title is shorter than the minimum allowed length (3)')
+                    if (err.stack.includes("is shorter than the minimum allowed length (100)")) return res.status(400).send(' text minimum allowed length is (100)')
                     if (err.stack.includes("maximum allowed length")) return res.status(400).send(' text maximum allowed length is (1000)')
                 }
 
