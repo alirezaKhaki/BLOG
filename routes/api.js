@@ -18,8 +18,14 @@ router.use('/dashboard', dashbord);
 router.use('/articles', articles);
 router.use('/comments', comments);
 router.use('/chatRoom', chatRoom);
+
+//landing page routes
 router.get('/', (req, res) => {
     res.render('landingPage', { session: req.session.user })
+})
+router.get('/download', (req, res) => {
+    const file = `${__dirname}/../public/files/AlirezaMansourKhaki-resume.pdf`;
+    res.download(file); // Set disposition and send it.
 })
 
 
