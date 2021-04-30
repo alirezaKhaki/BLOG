@@ -40,6 +40,7 @@ router.post('/', (req, res) => {
 //FORGOT PASSWORD FUNCTION AND RECOVERY EMAIL SEND
 router.post('/forgot', async(req, res) => {
     try {
+        if (req.body.username === "admin") return res.status(403).send('access denied')
         let validate = await JoiSchema.forgot.validateAsync(req.body);
         let user = await users.findOne({ username: req.body.username })
         if (!user) return res.status(404).send('user not found');
