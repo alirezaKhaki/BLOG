@@ -64,6 +64,7 @@ $(function() {
                 return $('.modal-body').html(''), $('.modal-body').html(err.responseText), $("#triger").click();
             }
             if (data) {
+                $('.usersNav').html('');
                 for (let i = 0; i < Math.ceil(data.usersLength / 4); i++) {
                     $('.usersNav').append(`
                    <li class="page-item" id='${i+1}'><a class="page-link" href="#nav">${i+1}</a></li>

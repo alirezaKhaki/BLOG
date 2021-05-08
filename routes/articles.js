@@ -135,7 +135,6 @@ router.post('/newArticle', generalTools.loginChecker, async(req, res) => {
                     if (err.stack.includes("is shorter than the minimum allowed length (100)")) return res.status(400).send(' text minimum allowed length is (100)')
                     if (err.stack.includes("maximum allowed length")) return res.status(400).send(' text maximum allowed length is (100000)')
                 }
-
             }
         }
 
